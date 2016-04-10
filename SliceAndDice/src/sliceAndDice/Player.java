@@ -1,5 +1,6 @@
 package sliceAndDice;
 enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
+enum Condition {NONE}
 
 public class Player {
 	Status playerStatus;
@@ -14,23 +15,11 @@ public class Player {
 		// remove status at the end of a game
 		playerStatus = null;
 	}
-	int getHitPts() {
-		return playerStatus.getHitPts();
+	Status getStatus() {
+		return playerStatus;
 	}
-	int getMana() {
-		return playerStatus.getMana();
-	}
-	int getFoodCount() {
-		return playerStatus.getFoodCount();
-	}
-	void setHitPts(int newHP) {
-		playerStatus.setHitPts(newHP);
-	}
-	void setMana(int newMana) {
-		playerStatus.setMana(newMana);
-	}
-	void reduceFoodCount() {
-		playerStatus.reduceFoodCount();
+	void setStatus(Status newStatus) {
+		playerStatus = newStatus;
 	}
 	Move getNextMove() {
 		// Prompt user for their next attack
@@ -41,10 +30,21 @@ class Status {
 	private int hitPt;
 	private int mana;
 	private int food;
+	private final static int maxHP = 100;
+	private final static int maxMana = 30;
+	private final static int maxFood = 5;
+	private Condition playerCondition;
 	Status() {
-		hitPt = 100;
-		mana = 30;
-		food = 5;
+		hitPt = maxHP;
+		mana = maxMana;
+		food = maxFood;
+		playerCondition = Condition.NONE;
+	}
+	Status(Status oldStatus) {
+		hitPt = oldStatus.getHitPts();
+		mana = oldStatus.getMana();
+		food = oldStatus.getFoodCount();
+		playerCondition = oldStatus.getCondition();
 	}
 	int getHitPts() {
 		return hitPt;
@@ -55,6 +55,9 @@ class Status {
 	int getFoodCount() {
 		return food;
 	}
+	Condition getCondition() {
+		return playerCondition;
+	}
 	void setHitPts(int newHP) {
 		hitPt = newHP;
 	}
@@ -63,5 +66,11 @@ class Status {
 	}
 	void reduceFoodCount() {
 		food--;
+	}
+	void setCondition(Condition newCondition) {
+		playerCondition = newCondition;
+	}
+	static int getMaxHP() {
+		return maxHP;
 	}
 }
