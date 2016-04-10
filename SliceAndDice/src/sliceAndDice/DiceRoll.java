@@ -1,6 +1,6 @@
 package sliceAndDice;
 
-abstract class DiceRoll {
+final class DiceRoll {
 	static int[] roll(int numRoll) {
 		// Default dice roll, 6-sided dice
 		int[] rolls = new int[numRoll];
