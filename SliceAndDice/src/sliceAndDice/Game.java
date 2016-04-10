@@ -1,4 +1,4 @@
-package cse360project;
+package sliceAndDice;
 
 public class Game {
 
