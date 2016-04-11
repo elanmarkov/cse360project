@@ -30,6 +30,8 @@ public class Game {
 			}
 		}
 		gameTurns = new ArrayList<Turn>(0);
+		playerOne.resetStatus();
+		playerTwo.resetStatus();
 	}
 	void PlayGame () {
 		Winner gameWinner = Winner.NONE;
@@ -50,6 +52,8 @@ public class Game {
 		else {
 			throw new IllegalArgumentException("Game ended without a winner.");
 		}
+		playerOne.removeStatus();
+		playerTwo.removeStatus();
 	}
 	Player getWinner() {
 		return winner;
