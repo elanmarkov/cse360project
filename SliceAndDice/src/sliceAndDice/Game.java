@@ -4,139 +4,134 @@ import java.util.ArrayList;
 enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
 
 public class Game {
-	ArrayList<Turn> gameTurns;
 	Player playerOne;
 	Player playerTwo;
-	Data playerOneData;
-	Data playerTwoData;
-	Player winner;
-	Player loser;
+	int winnerID;
+	int loserID;
+	Status playerOneStatus;
+	Status playerTwoStatus;
 	int totalTurns;
-	boolean reversePlayerOrder;
 
-	Game(Player Player1, Player Player2, Data Player1Data, Data Player2Data) {
+	Game(Player playerOne, Player playerTwo) {
 		//Determine who is first and second by dice roll
 		//TODO: Add GUI interface where needed
 		totalTurns = 0;
-		boolean playersOrdered = false;
-		boolean reversePlayerOrder = false; // determines which data object is loaded into which 
-		int[] turnRoll;
-		while (!playersOrdered) {
-			turnRoll = DiceRoll.roll(2);
-			if(turnRoll[0] > turnRoll[1]) {
-				playerOne = Player1;
-				playerTwo = Player2;
-				playerOneData = Player1Data;
-				playerTwoData = Player2Data;
-				playersOrdered = true;
-				// reversePlayerOrder already false
-			}
-			else if(turnRoll[0] < turnRoll[1]) {
-				playerOne = Player2;
-				playerTwo = Player1;
-				playerOneData = Player2Data;
-				playerTwoData = Player1Data;
-				playersOrdered = true;
-				reversePlayerOrder = true;
-			}
-		}
-		gameTurns = new ArrayList<Turn>(0);
-		playerOne.resetStatus();
-		playerTwo.resetStatus();
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
+		playerOneStatus = new Status();
+		playerTwoStatus = new Status();
 	}
 	void PlayGame () {
 		Winner gameWinner = Winner.NONE;
 		while(gameWinner == Winner.NONE) {
-			gameTurns.add(new Turn(playerOne, playerTwo, playerOneData, playerTwoData));
-			Turn nextTurn = gameTurns.get(totalTurns);
-			gameWinner = nextTurn.playTurn(playerOneData, playerTwoData);
+			Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
+			gameWinner = nextTurn.playTurn();
 			totalTurns++;
 		}
 		if(gameWinner == Winner.PLAYER_ONE){
-			winner = playerOne;
-			loser = playerTwo;
-			playerOneData.incrWinCount();
+			winnerID = playerOne.getID();
+			loserID = playerTwo.getID();
+			playerOne.getPlayerData().incrWinCount();
 		}
 		else if(gameWinner == Winner.PLAYER_TWO){
-			winner = playerTwo;
-			loser = playerOne;
-			playerTwoData.incrWinCount();
+			winnerID = playerTwo.getID();
+			loserID = playerOne.getID();
+			playerTwo.getPlayerData().incrWinCount();
 		}
 		else {
 			throw new IllegalArgumentException("Game ended without a winner.");
 		}
-		playerOneData.incrGameCount();
-		playerOneData.updateHealthLost((playerOne.getStatus()).getHitPts());
-		playerOneData.updateManaUsed(playerOne.getStatus().getMana());
-		playerOneData.updateFoodUsed(playerOne.getStatus().getFoodCount());
-		playerTwoData.incrGameCount();
-		playerTwoData.updateHealthLost((playerTwo.getStatus()).getHitPts());
-		playerTwoData.updateManaUsed(playerTwo.getStatus().getMana());
-		playerTwoData.updateFoodUsed(playerTwo.getStatus().getFoodCount());
 		
-		playerOne.removeStatus();
-		playerTwo.removeStatus();
+		
 	}
-	Player getWinner() {
-		return winner;
+	boolean validMoveP1(Move moveP1) {
+		return false;
 	}
-	Player getLoser() {
-		return loser;
+	boolean validMoveP2(Move moveP2) {
+		return false;
 	}
-	boolean getPlayerOrder() {
-		if(!reversePlayerOrder) { // if player order not reversed, return true
-			return true;
+	int getWinner() {
+		return winnerID;
+	}
+	int getLoser() {
+		return loserID;
+	}
+	void updateStats() {
+		playerOne.getPlayerData().incrGameCount();
+		playerOne.getPlayerData().updateHealthLost(playerOneStatus.getHitPts());
+		playerOne.getPlayerData().updateManaUsed(playerOneStatus.getMana());
+		playerOne.getPlayerData().updateFoodUsed(playerOneStatus.getFoodCount());
+		playerTwo.getPlayerData().incrGameCount();
+		playerTwo.getPlayerData().updateHealthLost(playerTwoStatus.getHitPts());
+		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
+		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
+	}
+	void updateMoveCount(Move playerOneMove, Move playerTwoMove) {
+		switch (playerOneMove) {
+		case ATTACK:
+			playerOne.getPlayerData().incrNumAttacks();
+			break;
+		case FOOD:
+			playerOne.getPlayerData().incrNumMeals();
+			break;
+		case FREEZE:
+			break;
+		case DOUBLEATK:
+			break;
+		case SPATK3:
+			break;
+		case SPATK4:
+			break;
+		default:
+			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-		else { // if player order reversed, return false
-			return false;
+		playerOne.getPlayerData().incrNumTurns();
+		
+		switch (playerTwoMove) {
+		case ATTACK:
+			playerTwo.getPlayerData().incrNumAttacks();
+			break;
+		case FOOD:
+			playerTwo.getPlayerData().incrNumMeals();
+			break;
+		case FREEZE:
+			break;
+		case DOUBLEATK:
+			break;
+		case SPATK3:
+			break;
+		case SPATK4:
+			break;
+		default:
+			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-	}
-	Data getPlayerOneData() {
-		return playerOneData;
-	}
-	Data getPlayerTwoData() {
-		return playerTwoData;
+		playerTwo.getPlayerData().incrNumTurns();
 	}
 }
 
 class Turn {
-	Player playerOne;
-	Player playerTwo;
-	Data playerOneData;
-	Data playerTwoData;
 	Status statusP1;
 	Status statusP2;
+	Move moveP1;
+	Move moveP2;
 
-	Turn(Player playerOne, Player playerTwo, Data playerOneData, Data playerTwoData) {
-		this.playerOne = playerOne;
-		this.playerTwo = playerTwo;
-		this.playerOneData = playerOneData;
-		this.playerTwoData = playerTwoData;
-		statusP1 = new Status(playerOne.getStatus());
-		statusP2 = new Status(playerTwo.getStatus());
+	Turn(Status statusP1, Status statusP2) {
+		this.statusP1 = statusP1;
+		this.statusP2 = statusP2;
 	}
-	Winner playTurn(Data playerOneData, Data playerTwoData) {
+	Winner playTurn() {
 		Winner gameWinner = Winner.NONE;
-		Move nextMove = Move.ATTACK;;
-		boolean legalMove = false;
 		
-		while(!legalMove) {
-			nextMove = playerOne.getNextMove();
-			legalMove = moveIsLegal(statusP1, nextMove);
-			if(!legalMove) {
-				// GUI prompt user for new move
-			}
+		if(Turn.moveIsLegal(statusP1, moveP1) == false) {
+			throw new IllegalArgumentException("Error: Illegal move not caught.");
 		}
-		playerOneData.incrNumTurns();
 		
-		switch(nextMove) {
+		switch(moveP1) {
 		case ATTACK:
 			attack(statusP1, statusP2);
-			playerOneData.incrNumAttacks();
 			break;
 		case FOOD:
 			food(statusP1);
-			playerTwoData.incrNumMeals();
 			break;
 		case FREEZE:
 			freeze(statusP1, statusP2);
@@ -164,63 +159,53 @@ class Turn {
 		}
 		
 		if(gameWinner == Winner.NONE) {
-			legalMove = false;
-			nextMove = Move.ATTACK; // Default next move
 			
-			while(!legalMove) {
-				nextMove = playerTwo.getNextMove();
-				legalMove = moveIsLegal(statusP1, nextMove);
-				if(!legalMove) {
-					// GUI prompt user for new move
-				}
+			if(Turn.moveIsLegal(statusP2, moveP2) == false) {
+				throw new IllegalArgumentException("Error: Illegal move not caught.");
 			}
-			playerTwoData.incrNumTurns();
 			
-			switch(nextMove) {
+			switch(moveP2) {
 			case ATTACK:
 				attack(statusP2, statusP1);
-				playerTwoData.incrNumAttacks();
 				break;
 			case FOOD:
 				food(statusP2);
-				playerTwoData.incrNumMeals();
 				break;
 			case FREEZE:
 				freeze(statusP2, statusP1);
-				// incrNumFreeze();
 				break;
 			case DOUBLEATK:
 				doubleAtk(statusP2, statusP1);
-				// incrNumDoubleAtk
 				break;
 			case SPATK3:
 				spAtk3(statusP2, statusP1);
-				// incrNumSPATK3
 				break;
 			case SPATK4:
 				spAtk4(statusP2, statusP1);
-				// incrNumSPATK4
 				break;
 			default:
 				throw new IllegalArgumentException("Error: Illegal move not caught.");	
 			}
 			
 			if(statusP1.getHitPts() == 0) {
-				// Player 2 wins on the next attack
 				gameWinner = Winner.PLAYER_TWO;
 			}
 		}
-		
-		updateStats();
 		return Winner.NONE;
 	}
-	boolean moveIsLegal(Status turnPlayer, Move nextMove) {
-		// check if last move was legal
-		return false;
+	static boolean moveIsLegal(Status turnPlayer, Move nextMove) {
+		boolean legalMove = true;
+		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() == 0) {
+			legalMove = false;
+		}
+		else if (nextMove != Move.ATTACK) {
+			legalMove = false;
+		}
+		return legalMove;
 	}
 	void attack(Status turnPlayer, Status otherPlayer) {
-		// Roll 5 dice, do damage equal to combined result.
-		int numRoll = 5;
+		// Roll 4 dice, do damage equal to combined result.
+		int numRoll = 4;
 		int[] diceResult = DiceRoll.roll(numRoll);
 		int sumDamage = 0;
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
@@ -258,9 +243,5 @@ class Turn {
 	}
 	void spAtk4(Status turnPlayer, Status otherPlayer) {
 		// Special attacks not yet implemented
-	}
-	void updateStats() {
-		playerOne.setStatus(statusP1);
-		playerTwo.setStatus(statusP2);
 	}
 }

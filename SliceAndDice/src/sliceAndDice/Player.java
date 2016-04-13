@@ -9,33 +9,27 @@ enum Condition {NONE}
 
 public class Player {
 	String username;
-	Status playerStatus;
-	Player() {
-		playerStatus = null;
+	int playerID;
+	Data playerData;
+	Player(String username, int playerID)) {
+		this.username = username;
+		this.playerID = playerID;
+		playerData = new playerData();
 	}
-	void resetStatus() {
-		// Create a new status at the start of a game
-		playerStatus = new Status();
+	int setID(int playerID) {
+		this.playerID = playerID;
 	}
-	void removeStatus() {
-		// remove status at the end of a game
-		playerStatus = null;
-	}
-	Status getStatus() {
-		return playerStatus;
-	}
-	void setStatus(Status newStatus) {
-		playerStatus = newStatus;
-	}
-	Move getNextMove() {
-		// Prompt user for their next attack
-		return Move.ATTACK;
+	int getID() {
+		return playerID;
 	}
 	String getUsername() {
 		return username;
 	}
 	void setUsername(String username) {
 		this.username = username;
+	}
+	Data getPlayerData() {
+		return playerData;
 	}
 }
 class Status {
