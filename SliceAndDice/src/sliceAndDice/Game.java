@@ -21,6 +21,31 @@ public class Game {
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 	}
+	/* For reference for designing GUI
+	 * Functionality replaced by PlayNextTurn below
+	 * void PlayGame () {
+		Winner gameWinner = Winner.NONE;
+		while(gameWinner == Winner.NONE) {
+			Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
+			gameWinner = nextTurn.playTurn();
+			totalTurns++;
+		}
+		if(gameWinner == Winner.PLAYER_ONE){
+			winnerID = playerOne.getID();
+			loserID = playerTwo.getID();
+			playerOne.getPlayerData().incrWinCount();
+		}
+		else if(gameWinner == Winner.PLAYER_TWO){
+			winnerID = playerTwo.getID();
+			loserID = playerOne.getID();
+			playerTwo.getPlayerData().incrWinCount();
+		}
+		else {
+			throw new IllegalArgumentException("Game ended without a winner.");
+		}
+		
+		
+	}*/
 	void PlayGame () {
 		Winner gameWinner = Winner.NONE;
 		while(gameWinner == Winner.NONE) {
@@ -45,10 +70,10 @@ public class Game {
 		
 	}
 	boolean validMoveP1(Move moveP1) {
-		return false;
+		return Turn.moveIsLegal(playerOneStatus, moveP1);
 	}
 	boolean validMoveP2(Move moveP2) {
-		return false;
+		return Turn.moveIsLegal(playerOneStatus, moveP2);
 	}
 	int getWinner() {
 		return winnerID;
