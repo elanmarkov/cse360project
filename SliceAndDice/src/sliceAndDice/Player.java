@@ -1,8 +1,14 @@
 package sliceAndDice;
+
+import sliceAndDice.Condition;
+import sliceAndDice.Move;
+import sliceAndDice.Status;
+
 enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
 enum Condition {NONE}
 
 public class Player {
+	String username;
 	Status playerStatus;
 	Player() {
 		playerStatus = null;
@@ -24,6 +30,12 @@ public class Player {
 	Move getNextMove() {
 		// Prompt user for their next attack
 		return Move.ATTACK;
+	}
+	String getUsername() {
+		return username;
+	}
+	void setUsername(String username) {
+		this.username = username;
 	}
 }
 class Status {
