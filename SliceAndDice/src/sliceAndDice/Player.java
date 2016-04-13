@@ -36,6 +36,7 @@ class Status {
 	private int hitPt;
 	private int mana;
 	private int food;
+	private int[] lastRoll;
 	private final static int maxHP = 100;
 	private final static int maxMana = 30;
 	private final static int maxFood = 5;
@@ -61,6 +62,9 @@ class Status {
 	int getFoodCount() {
 		return food;
 	}
+	int[] getLastRoll() {
+		return lastRoll;
+	}
 	Condition getCondition() {
 		return playerCondition;
 	}
@@ -72,6 +76,9 @@ class Status {
 	}
 	void reduceFoodCount() {
 		food--;
+	}
+	void setLastRoll(int[] lastRoll) {
+		this.lastRoll = lastRoll;
 	}
 	void setCondition(Condition newCondition) {
 		playerCondition = newCondition;
