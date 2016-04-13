@@ -11,12 +11,12 @@ public class Player {
 	String username;
 	int playerID;
 	Data playerData;
-	Player(String username, int playerID)) {
+	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
-		playerData = new playerData();
+		playerData = new Data();
 	}
-	int setID(int playerID) {
+	void setID(int playerID) {
 		this.playerID = playerID;
 	}
 	int getID() {
