@@ -2,16 +2,19 @@ package sliceAndDice;
  
 import static org.junit.Assert.*;
  
-import java.io.IOException;
+//import java.io.IOException;
  
 import org.junit.Test;
- 
+
 public class Scoreboard2Test extends Scoreboard2{
-    @Test // passed - add user1 when statistics.txt just has 0
+	 /*
+	@Test // passed - add user1 when statistics.txt just has 0
     public void testAddNewPlayerStatsToStats1() throws IOException {    
         Scoreboard2 scoreboard = new Scoreboard2();
         scoreboard.addNewPlayerStatsToStats("user1"); // this should add 1 then user1 then five 0s
     }
+  * */
+
     /*
     @Test // passed - add user1 when statistics.txt just has 0
     public void testAddNewPlayerStatsToStats1() throws IOException {    

@@ -15,6 +15,8 @@ import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
 
+//enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
+
 public class SliceAndDiceUI {
 	private final int MAX_HEIGHT = 500;
 	private final int MAX_WIDTH = 1000;
@@ -38,6 +40,10 @@ public class SliceAndDiceUI {
 	public int plTwoHlth = 100;
 	public int plTwoMana = 100;
 	public int plTwoFood = 100;
+	
+	Game game;
+	
+	Winner winner = Winner.NONE;
 	
 		/**
 		 * Gets String of installed LAF based on selection String passed as parameter
@@ -96,12 +102,9 @@ public class SliceAndDiceUI {
 				/*
 				 * Get image and add to panel
 				 */
-				BufferedImage modePanelImage = null;
-				try{
-					modePanelImage = ImageIO.read(getClass().getResourceAsStream("/sliceAndDice/game_resources/die_pic.jpg"));
-				}catch(IOException e){}
-				ImageIcon addImage = new ImageIcon(modePanelImage);
-				final JLabel imageLabel = new JLabel(addImage);
+				Icon mainPanelDieAnim = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/dice_roll_0.gif"));
+				
+				final JLabel imageLabel = new JLabel(mainPanelDieAnim);
 				
 				final JPanel imagePanel = new JPanel(new BorderLayout(5, 5));
 					imagePanel.add(imageLabel, BorderLayout.CENTER);
@@ -146,11 +149,11 @@ public class SliceAndDiceUI {
 					newGameButton.setForeground(Color.red);
 					newGameButton.setToolTipText("Start new game");
 					
-				final JButton loadGameButton = new JButton("Load Game");
-					loadGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-					loadGameButton.setFont(bigButtonFont);
-					loadGameButton.setForeground(Color.red);
-					loadGameButton.setToolTipText("Continue previous game");
+//				final JButton loadGameButton = new JButton("Load Game");
+//					loadGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//					loadGameButton.setFont(bigButtonFont);
+//					loadGameButton.setForeground(Color.red);
+//					loadGameButton.setToolTipText("Continue previous game");
 					
 				final JButton playerStatusButton = new JButton("Player Stats");
 					playerStatusButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -168,9 +171,10 @@ public class SliceAndDiceUI {
 				 * Add buttons to panel
 				 */
 				modePanelButtons.add(newGameButton);
-				modePanelButtons.add(loadGameButton);
+//				modePanelButtons.add(loadGameButton);
 				modePanelButtons.add(playerStatusButton);
 				modePanelButtons.add(abtGameButton);
+				modePanelButtons.add(new JPanel());
 
 /*
  * New game panel components
@@ -346,51 +350,51 @@ public class SliceAndDiceUI {
 					newGamePlayersExist.add(notifyTextThree);
 					newGamePlayersExist.add(notifyPlayerButtons);
 
-/*
- * Load game panel components
- */
-			
-			/*
-			 * Create load game panels
-			 */
-			final JPanel loadGamePanel = new JPanel(new BorderLayout(5,5));
-				loadGamePanel.setBorder(BorderFactory.createTitledBorder(null, "Load Game", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
-				
-			final JPanel loadGameOptionsPanel = new JPanel(new GridLayout(8, 2, 2, 5));
-			
-			/*
-			 * Load game buttons
-			 */
-			final JLabel loadUserName = new JLabel("Enter Username:");
-				loadUserName.setAlignmentX(Component.LEFT_ALIGNMENT);
-				loadUserName.setFont(labelFont);
-				loadUserName.setForeground(Color.red);
-				
-			final JTextField loadUserNameText = new JTextField();
-				loadUserNameText.setAlignmentX(Component.RIGHT_ALIGNMENT);
-				
-			final JButton loadUserNameFind = new JButton("Find");
-				loadUserNameFind.setAlignmentX(Component.CENTER_ALIGNMENT);
-				loadUserNameFind.setFont(smallButtonFont);
-				loadUserNameFind.setForeground(Color.red);
-				loadUserNameFind.setToolTipText("Find saved game");
-				
-			final JButton loadUserExit = new JButton("Back");
-				loadUserExit.setAlignmentX(Component.CENTER_ALIGNMENT);
-				loadUserExit.setFont(smallButtonFont);
-				loadUserExit.setForeground(Color.red);
-				loadUserExit.setToolTipText("Go back to previous menu");
-				
-				/*
-				 * add buttons to panel
-				 */
-				loadGameOptionsPanel.add(loadUserName);
-				loadGameOptionsPanel.add(loadUserNameText);
-				for(int i = 2; i<14; i++){
-					loadGameOptionsPanel.add(new JPanel());
-				}
-				loadGameOptionsPanel.add(loadUserExit);
-				loadGameOptionsPanel.add(loadUserNameFind);
+///*
+// * Load game panel components
+// */
+//			
+//			/*
+//			 * Create load game panels
+//			 */
+//			final JPanel loadGamePanel = new JPanel(new BorderLayout(5,5));
+//				loadGamePanel.setBorder(BorderFactory.createTitledBorder(null, "Load Game", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
+//				
+//			final JPanel loadGameOptionsPanel = new JPanel(new GridLayout(8, 2, 2, 5));
+//			
+//			/*
+//			 * Load game buttons
+//			 */
+//			final JLabel loadUserName = new JLabel("Enter Username:");
+//				loadUserName.setAlignmentX(Component.LEFT_ALIGNMENT);
+//				loadUserName.setFont(labelFont);
+//				loadUserName.setForeground(Color.red);
+//				
+//			final JTextField loadUserNameText = new JTextField();
+//				loadUserNameText.setAlignmentX(Component.RIGHT_ALIGNMENT);
+//				
+//			final JButton loadUserNameFind = new JButton("Find");
+//				loadUserNameFind.setAlignmentX(Component.CENTER_ALIGNMENT);
+//				loadUserNameFind.setFont(smallButtonFont);
+//				loadUserNameFind.setForeground(Color.red);
+//				loadUserNameFind.setToolTipText("Find saved game");
+//				
+//			final JButton loadUserExit = new JButton("Back");
+//				loadUserExit.setAlignmentX(Component.CENTER_ALIGNMENT);
+//				loadUserExit.setFont(smallButtonFont);
+//				loadUserExit.setForeground(Color.red);
+//				loadUserExit.setToolTipText("Go back to previous menu");
+//				
+//				/*
+//				 * add buttons to panel
+//				 */
+//				loadGameOptionsPanel.add(loadUserName);
+//				loadGameOptionsPanel.add(loadUserNameText);
+//				for(int i = 2; i<14; i++){
+//					loadGameOptionsPanel.add(new JPanel());
+//				}
+//				loadGameOptionsPanel.add(loadUserExit);
+//				loadGameOptionsPanel.add(loadUserNameFind);
 
 /*
  * Player stats panel components
@@ -957,18 +961,22 @@ public class SliceAndDiceUI {
 					// display the choose player dice roll winner user name
 					if(player > 0){
 						activePlayer.setText(usernameOne);
-					}
-					if(player == 0){
-						activePlayer.setText(usernameTwo);
+						game = new Game(usernameOne, usernameTwo);	// pass user names to game
+					}else{
+						String tmp = usernameOne;	// Swap user names so the winner of the roll will now be "user name 
+						usernameOne = usernameTwo;
+						usernameTwo = tmp;
+						activePlayer.setText(usernameOne);
+						game = new Game(usernameOne, usernameTwo);	// pass user names to game
 					}
 					
-						playerOneHealthRatio.setText(plOneHlth + "/100");
-						playerOneManaRatio.setText(plOneMana + "/100");
-						playerOneFoodRatio.setText(plOneFood + "/100");
+						playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
+						playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
+						playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
 						
-						playerTwoHealthRatio.setText(plTwoHlth + "/100");
-						playerTwoManaRatio.setText(plTwoMana + "/100");
-						playerTwoFoodRatio.setText(plTwoFood + "/100");
+						playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
+						playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
+						playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
 						
 						gameFrame.setContentPane(gamePlayPanel);
 						gameFrame.pack();
@@ -1051,45 +1059,45 @@ public class SliceAndDiceUI {
 				}
 			});
 			
-			loadGameButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					loadGamePanel.removeAll();
-					gameFrame.remove(modePanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, loadGameOptionsPanel, imagePanel);
-					loadGamePanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(loadGamePanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			loadUserNameFind.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					// TODO add find player game stuff
-					if(loadUserNameText.getText().isEmpty()){
-						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name");
-						return;
-					}
-					//JOptionPane.showMessageDialog(gameFrame, "Need back end control function for this");
-				}
-			});
-			
-			loadUserExit.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					if(!loadUserNameText.getText().isEmpty()){
-						loadUserNameText.setText("");
-					}
-					modePanel.removeAll();
-					gameFrame.remove(loadGamePanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
-					modePanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(modePanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
+//			loadGameButton.addActionListener(new ActionListener(){
+//				public void actionPerformed(ActionEvent ae){
+//					loadGamePanel.removeAll();
+//					gameFrame.remove(modePanel);
+//					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, loadGameOptionsPanel, imagePanel);
+//					loadGamePanel.add(splitPane, BorderLayout.CENTER);
+//					gameFrame.setContentPane(loadGamePanel);
+//					gameFrame.pack();
+//					splitPane.setDividerLocation(.30);
+//					gameFrame.validate();
+//				}
+//			});
+//			
+//			loadUserNameFind.addActionListener(new ActionListener(){
+//				public void actionPerformed(ActionEvent ae){
+//					// TODO add find player game stuff
+//					if(loadUserNameText.getText().isEmpty()){
+//						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name");
+//						return;
+//					}
+//					//JOptionPane.showMessageDialog(gameFrame, "Need back end control function for this");
+//				}
+//			});
+//			
+//			loadUserExit.addActionListener(new ActionListener(){
+//				public void actionPerformed(ActionEvent ae){
+//					if(!loadUserNameText.getText().isEmpty()){
+//						loadUserNameText.setText("");
+//					}
+//					modePanel.removeAll();
+//					gameFrame.remove(loadGamePanel);
+//					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
+//					modePanel.add(splitPane, BorderLayout.CENTER);
+//					gameFrame.setContentPane(modePanel);
+//					gameFrame.pack();
+//					splitPane.setDividerLocation(.30);
+//					gameFrame.validate();
+//				}
+//			});
 			
 			playerStatusButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
@@ -1175,8 +1183,45 @@ public class SliceAndDiceUI {
 			 */
 			attackButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					try{
+						winner = game.PlayNextTurn(Move.ATTACK);
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(gameFrame, e.getMessage());
+					}
 					
-					// TODO add attack stuff
+					if(winner.equals(Winner.NONE)){
+						if(game.getFirst()){
+							activePlayer.setText(usernameTwo);
+							
+							playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
+							playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
+							playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
+							
+							gameFrame.setContentPane(gamePlayPanel);
+							gameFrame.pack();
+							playerPane.setDividerLocation(.20);
+							gameFrame.validate();
+							return;
+						}else if(!game.getFirst()){
+							activePlayer.setText(usernameOne);
+							
+							playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
+							playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
+							playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
+							
+							gameFrame.setContentPane(gamePlayPanel);
+							gameFrame.pack();
+							playerPane.setDividerLocation(.20);
+							gameFrame.validate();
+							return;
+						}else{
+							JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong in Winner PlayNextTurn() method");
+						}
+					}else if(winner.equals(Winner.PLAYER_ONE)){
+						// TODO add player one winner stuff
+					}else if(winner.equals(Winner.PLAYER_TWO)){
+						// TODO add player two winner stuff
+					}
 				}
 			});
 			

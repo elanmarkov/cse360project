@@ -37,70 +37,67 @@ public class Scoreboard2{
         }
          
         /**
-         * returns userId of player
          * @return userId of player
          */
         int getUserId() {
             return userId;
         }
         /**
-         * returns username of player
          * @return username of player
          */
         String getUserName() {
             return username;
         }
     }
-     
-     
-    /**
-     * contains data for players and a toString() method to aid writing to statistics.txt
-     */
-    class PlayerStats{
-        String username;
-        int numberOfWins;
-        int numberOfGames;
-        int numberOfAttacks;
-        int numberOfSPAttacks;
-        int numberOfMeals;
          
-        /**
-         * creates a formatted string using the username and data of the player
-         * @return String of data in format needed to write to statistics.txt
-         */
-        public String playerStatsToString() {
-            String stats = "";
-            stats = stats + username + "\n";
-            stats = stats + numberOfWins + "\n";
-            stats = stats + numberOfGames + "\n";
-            stats = stats + numberOfAttacks + "\n";
-            stats = stats + numberOfSPAttacks + "\n";
-            stats = stats + numberOfMeals + "\n";
-            return stats;
+    	/**
+    	 * converts the given data object to string and returns it
+    	 * @param data data to be converted to string
+    	 * @param player player whose username is read
+    	 * @return String containing player's username and data on separate lines
+    	 */
+        public String scoreboardDataToString(Data data, Player player) {
+            String dataString = "";
+            dataString = dataString + player.getUsername() + "\n";
+            dataString = dataString + data.getGame() + "\n";
+            dataString = dataString + data.getWin() + "\n";
+            dataString = dataString + data.getTurn() + "\n";
+            dataString = dataString + data.getAttack() + "\n";
+            //dataString = dataString + data.getSPAttack() + "\n";
+            dataString = dataString + data.getMeal() + "\n";
+            dataString = dataString + data.getHPLost() + "\n";
+            dataString = dataString + data.getManaUsed() + "\n";
+            dataString = dataString + data.getFoodUsed() + "\n";
+            return dataString;
         }
-    }
-     
      
     /**
-     * prints out player's username and data
-     * @param statistics PlayerStats object containing data to print
+     * @param data data to print
+     * @param player player with username to print
      */
-    public void printPlayerStats(PlayerStats statistics) {
-        System.out.print(statistics.playerStatsToString());
+    public void printData(Data data, Player player) {
+        System.out.print(scoreboardDataToString(data, player));
     }
      
     /**
-     * reads player username and data from file and puts it into given PlayerStats object
-     * @param statistics PlayerStats object to be updated
-     * @param statsReader scanner to read data into PlayerStats object
+     * reads username and data and stores them in given data and player objects
+     * @param data object to be modified with data from file
+     * @param player object to be modified with username from file
+     * @param dataReader scanner to read username and data from file
      */
-    public void readPlayerStats(PlayerStats statistics, Scanner statsReader) {
-        statistics.username = statsReader.next();
-        statistics.numberOfWins = statsReader.nextInt();
-        statistics.numberOfGames = statsReader.nextInt();
-        statistics.numberOfAttacks = statsReader.nextInt();
-        statistics.numberOfSPAttacks = statsReader.nextInt();
-        statistics.numberOfMeals = statsReader.nextInt();
+    public void readData(Data data, Player player, Scanner dataReader) {
+    	player.setUsername(dataReader.next());
+    	data.setGame(dataReader.nextInt());
+    	data.setWin(dataReader.nextInt());
+    	data.setTurn(dataReader.nextInt());
+        data.setAttack(dataReader.nextInt());
+        // data.setSPAttack(dataReader.nextInt());
+        data.setMeal(dataReader.nextInt());
+        data.setHPLost(dataReader.nextInt());
+        data.setManaUsed(dataReader.nextInt());
+        data.setFoodUsed(dataReader.nextInt());
+        // totalTime
+        // turnTime
     }
      
     /**
@@ -108,25 +105,32 @@ public class Scoreboard2{
      * @param oldStats PlayerStats object to be updated
      * @param newStats PlayerStats object to take username and data from
      */
-    public void setPlayerStats(PlayerStats oldStats, PlayerStats newStats) {
-        oldStats.username = newStats.username;
-        oldStats.numberOfWins = newStats.numberOfWins;
-        oldStats.numberOfGames = newStats.numberOfGames;
-        oldStats.numberOfAttacks = newStats.numberOfAttacks;
-        oldStats.numberOfSPAttacks = newStats.numberOfSPAttacks;
-        oldStats.numberOfMeals = newStats.numberOfMeals;
+    public void setData(Data oldData, Data newData) {
+        oldData.setGame(newData.getGame());
+        oldData.setWin(newData.getWin());
+        oldData.setTurn(newData.getTurn());
+        oldData.setAttack(newData.getAttack());
+        //oldData.setSPAttack(newData.getSPAttack());
+        oldData.setMeal(newData.getMeal());
+        oldData.setHPLost(newData.getHPLost());
+        oldData.setManaUsed(newData.getManaUsed());
+        oldData.setFoodUsed(newData.getFoodUsed());
     }
      
     /**
      * sets all of the data in a PlayerStats object to 0
      * @param oldStats PlayerStats object to be reset
      */
-    public void resetPlayerStats(PlayerStats oldStats) {
-        oldStats.numberOfWins = 0;
-        oldStats.numberOfGames = 0;
-        oldStats.numberOfAttacks = 0;
-        oldStats.numberOfSPAttacks = 0;
-        oldStats.numberOfMeals = 0;
+    public void resetData(Data data) {
+        data.setGame(0);
+        data.setWin(0);
+        data.setTurn(0);
+        data.setAttack(0);
+        //data.setSPAttack(0);
+        data.setMeal(0);
+        data.setHPLost(0);
+        data.setManaUsed(0);
+        data.setFoodUsed(0);
     }
      
     /**
@@ -140,23 +144,23 @@ public class Scoreboard2{
         if(numberOfPlayers == 0) { // no need to store data to rewrite
             try {
                 FileWriter writer = new FileWriter("players.txt");
-                BufferedWriter playerWriter = new BufferedWriter(writer);
+                BufferedWriter playerNameWriter = new BufferedWriter(writer);
                 numberOfPlayers++;
                 Integer numPlayers = numberOfPlayers; // allows conversion to string for writing
-                playerWriter.write(numPlayers.toString());
-                playerWriter.write("\n");
-                playerWriter.write(numPlayers.toString()); // write userId as 1 because only 1 player
-                playerWriter.write("\n");
-                playerWriter.write(username);
-                playerWriter.write("\n");
-                playerWriter.close();
+                playerNameWriter.write(numPlayers.toString());
+                playerNameWriter.write("\n");
+                playerNameWriter.write(numPlayers.toString()); // userId is 1 because only 1 player
+                playerNameWriter.write("\n");
+                playerNameWriter.write(username);
+                playerNameWriter.write("\n");
+                playerNameWriter.close();
             }
             catch(IOException e) {
                 System.out.println(e);
             }
         }
         else {
-            /* Store all current usernames and userIds in a directory to rewrite to file */
+            /* Store all current usernames and userIds into a directory to rewrite to file */
             PlayerName[] directory = new PlayerName[numberOfPlayers];
              
             for(int index = 0; index < numberOfPlayers; index++) {
@@ -232,41 +236,44 @@ public class Scoreboard2{
      * @param username username of the player added to statistics.txt
      * @throws IOException
      */
-    public void addNewPlayerStatsToStats(String username) throws IOException{
+    public void addNewDataToData(String username) throws IOException{
         Scanner statsReader = new Scanner(new BufferedReader(new FileReader("statistics.txt")));
         int numberOfPlayers = statsReader.nextInt();
-        PlayerStats[] statsDirectory = new PlayerStats[numberOfPlayers];
-         
+        Player[] playerDirectory = new Player[numberOfPlayers];
+        Data[] dataDirectory = new Data[numberOfPlayers];
+        
         for(int count = 0; count < numberOfPlayers; count++) {
-            PlayerStats tempPlayerStats = new PlayerStats();
-            /* load temporary stats object with stats */
-            readPlayerStats(tempPlayerStats, statsReader);
-            /* add new stats object to directory */
-            statsDirectory[count] = tempPlayerStats;
+            Data tempData = new Data();
+            Player tempPlayer = new Player();
+            /* load temporary data, player objects with data from file */
+            readData(tempData, tempPlayer, statsReader);
+            /* add new data, player objects to directories */
+            dataDirectory[count] = tempData;
+            playerDirectory[count] = tempPlayer;
         }
          
         statsReader.close();
         /* rewrite the statistics file with user stats reset */
         FileWriter writer = new FileWriter("statistics.txt");
-        BufferedWriter statsWriter = new BufferedWriter(writer);
+        BufferedWriter dataWriter = new BufferedWriter(writer);
         numberOfPlayers++;
         Integer numPlayers = numberOfPlayers;
-        statsWriter.write(numPlayers.toString()); // write the number of players
-        statsWriter.write("\n");
+        dataWriter.write(numPlayers.toString()); // write the number of players
+        dataWriter.write("\n");
         for(int count = 0; count < numberOfPlayers - 1; count++) { // - 1 because numberOfPlayers was incremented
-            statsWriter.write(statsDirectory[count].playerStatsToString()); // write player to statistics.txt
+            dataWriter.write(scoreboardDataToString(dataDirectory[count], playerDirectory[count])); // write player to statistics.txt
         }
         /* add new entry with 0s at end */
             Integer zero = 0;
-            statsWriter.write(username);
-            statsWriter.write("\n");
+            dataWriter.write(username);
+            dataWriter.write("\n");
              
             for(int count = 0; count < 5; count++) {
-                statsWriter.write(zero.toString());
-                statsWriter.write("\n");
+                dataWriter.write(zero.toString());
+                dataWriter.write("\n");
             }
              
-        statsWriter.close();
+        dataWriter.close();
     }
      
     /**
@@ -279,22 +286,25 @@ public class Scoreboard2{
         int numberOfPlayers;
         boolean found = false; // used to determine if username is in statistics.txt
         numberOfPlayers = statsReader.nextInt();
-        PlayerStats[] statsDirectory = new PlayerStats[numberOfPlayers];
+        Data[] dataDirectory = new Data[numberOfPlayers];
+        Player[] playerDirectory = new Player[numberOfPlayers];
          
         for(int count = 0; count < numberOfPlayers; count++) {
-            PlayerStats tempPlayerStats = new PlayerStats();
+            Data tempData = new Data();
+            Player tempPlayer = new Player();
             /* load temporary stats object with stats */
-            readPlayerStats(tempPlayerStats, statsReader);
+            readData(tempData, tempPlayer, statsReader);
             /* add new stats object to directory */
-            statsDirectory[count] = tempPlayerStats;
+            dataDirectory[count] = tempData;
+            playerDirectory[count] = tempPlayer;
         }
          
         statsReader.close();
          
         /* update the stats of the two players */
         for(int index = 0; index < numberOfPlayers; index++) {
-            if((statsDirectory[index].username).equals(username) == true) { // modify first player stats
-                resetPlayerStats(statsDirectory[index]);
+            if((playerDirectory[index].getUsername()).equals(username) == true) { // modify first player stats
+                resetData(dataDirectory[index]);
                 found = true;
             }
         }
@@ -302,16 +312,16 @@ public class Scoreboard2{
         if(found) {
             /* rewrite the statistics file with user stats reset */
             FileWriter writer = new FileWriter("statistics.txt");
-            BufferedWriter statsWriter = new BufferedWriter(writer);
+            BufferedWriter dataWriter = new BufferedWriter(writer);
             Integer numPlayers = numberOfPlayers;
-            statsWriter.write(numPlayers.toString()); // write the number of players
-            statsWriter.write("\n");
+            dataWriter.write(numPlayers.toString()); // write the number of players
+            dataWriter.write("\n");
              
             for(int count = 0; count < numberOfPlayers; count++) {
-                statsWriter.write(statsDirectory[count].playerStatsToString());
+                dataWriter.write(scoreboardDataToString(dataDirectory[count], playerDirectory[count]));
             }
              
-            statsWriter.close();
+            dataWriter.close();
         }
         // else if username was not found in statistics.txt, do not make changes
     }
@@ -322,29 +332,32 @@ public class Scoreboard2{
      * @param stats2 PlayerStats object with data used to update second player data in statistics.txt
      * @throws IOException
      */
-    public void updateTwoPlayersStatsInStats(PlayerStats stats1, PlayerStats stats2) throws IOException {
+    public void updateTwoPlayersStatsInStats(Data data1, Player player1, Data data2, Player player2) throws IOException {
         Scanner statsReader = new Scanner(new BufferedReader(new FileReader("statistics.txt")));
         int numberOfPlayers;
         numberOfPlayers = statsReader.nextInt();
-        PlayerStats[] statsDirectory = new PlayerStats[numberOfPlayers];
+        Data[] dataDirectory = new Data[numberOfPlayers];
+        Player[] playerDirectory = new Player[numberOfPlayers];
          
         for(int count = 0; count < numberOfPlayers; count++) {
-            PlayerStats tempPlayerStats = new PlayerStats();
+            Data tempData = new Data();
+            Player tempPlayer = new Player();
             /* load temporary stats object with stats */
-            readPlayerStats(tempPlayerStats, statsReader);
+            readData(tempData, tempPlayer, statsReader);
             /* add new stats object to directory */
-            statsDirectory[count] = tempPlayerStats;
+            dataDirectory[count] = tempData;
+            playerDirectory[count] = tempPlayer;
         }
          
         statsReader.close();
          
         /* update the stats of the two players */
         for(int index = 0; index < numberOfPlayers; index++) {
-            if((statsDirectory[index].username).equals(stats1.username) == true) { // modify first player stats
-                setPlayerStats(statsDirectory[index], stats1);
+            if((playerDirectory[index].getUsername()).equals(player1.getUsername()) == true) { // modify first player stats
+                setData(dataDirectory[index], data1);
             }
-            else if((statsDirectory[index].username).equals(stats2.username) == true) { // modify second player stats
-                setPlayerStats(statsDirectory[index], stats2);
+            else if((playerDirectory[index].getUsername()).equals(player2.getUsername()) == true) { // modify second player stats
+                setData(dataDirectory[index], data2);
             }
         }
          
@@ -356,7 +369,7 @@ public class Scoreboard2{
         statsWriter.write("\n");
          
         for(int count = 0; count < numberOfPlayers; count++) {
-            statsWriter.write(statsDirectory[count].playerStatsToString()); // write player to statistics.txt
+            statsWriter.write(scoreboardDataToString(dataDirectory[count], playerDirectory[count])); // write player to statistics.txt
         }
          
         statsWriter.close();
@@ -368,54 +381,35 @@ public class Scoreboard2{
      * @return PlayerStats object with data of user given by username
      * @throws IOException
      */
-    public PlayerStats readPlayerStatsFromStats(String username) throws IOException{
+    public Data readDataFromData(String username) throws IOException{
         int numberOfPlayers;
         boolean found = false;
         int iteration = 0;
-        Scanner statReader = new Scanner(new BufferedReader(new FileReader("statistics.txt")));
-        PlayerStats stats = new PlayerStats();
-        numberOfPlayers = statReader.nextInt(); // read in the number of players
+        Scanner dataReader = new Scanner(new BufferedReader(new FileReader("statistics.txt")));
+        Data data = new Data();
+        Player player = new Player();
+        numberOfPlayers = dataReader.nextInt(); // read in the number of players
          
         while((iteration < numberOfPlayers) && (!found)) {
-            readPlayerStats(stats, statReader);
-            if((stats.username).equals(username) == true){
+            readData(data, player, dataReader);
+            if((player.getUsername()).equals(username) == true){
                 found = true;
-                statReader.close();
-                return stats;
+                dataReader.close();
+                return data;
             }
             else {
                 iteration++;
                 // maybe make this below into its own function to save space
-                stats.username = username;
-                resetPlayerStats(stats);
+                player.setUsername(username);
+                resetData(data);
             }
         }
          
-        statReader.close();
-        return stats;
+        dataReader.close();
+        return data;
     }
-     
-    /**
-     * 
-     * @param args
-     * @throws IOException
-     */
-    public static void main(String[] args) throws IOException{
-        int userId;
-        Scoreboard2 scoreboard = new Scoreboard2();
-        try {
-            scoreboard.addPlayerToPlayers("user1");
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        userId = scoreboard.checkPlayerInPlayers("user1"); // this should return 1
-        System.out.println(userId); // print out 1
-        try {
-            scoreboard.addPlayerToPlayers("user2");
-            scoreboard.addPlayerToPlayers("user3");
-            scoreboard.addPlayerToPlayers("user4");
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+    
+    public float winPercentage(int numberOfWins, int numberOfGames) {
+    	return (numberOfWins / numberOfGames);
     }
 }

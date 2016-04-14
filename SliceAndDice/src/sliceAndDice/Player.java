@@ -1,35 +1,45 @@
 package sliceAndDice;
+
+import sliceAndDice.Condition;
+import sliceAndDice.Move;
+import sliceAndDice.Status;
+
 enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
 enum Condition {NONE}
 
 public class Player {
-	Status playerStatus;
-	Player() {
-		playerStatus = null;
+	String username;
+	int playerID;
+	Data playerData;
+	Player(String username, int playerID) {
+		this.username = username;
+		this.playerID = playerID;
+		playerData = new Data();
 	}
-	void resetStatus() {
-		// Create a new status at the start of a game
-		playerStatus = new Status();
+	Player(){
+		playerData = new Data();
 	}
-	void removeStatus() {
-		// remove status at the end of a game
-		playerStatus = null;
+	void setID(int playerID) {
+		this.playerID = playerID;
 	}
-	Status getStatus() {
-		return playerStatus;
+	int getID() {
+		return playerID;
 	}
-	void setStatus(Status newStatus) {
-		playerStatus = newStatus;
+	String getUsername() {
+		return username;
 	}
-	Move getNextMove() {
-		// Prompt user for their next attack
-		return Move.ATTACK;
+	void setUsername(String username) {
+		this.username = username;
+	}
+	Data getPlayerData() {
+		return playerData;
 	}
 }
 class Status {
 	private int hitPt;
 	private int mana;
 	private int food;
+	private int[] lastRoll;
 	private final static int maxHP = 100;
 	private final static int maxMana = 30;
 	private final static int maxFood = 5;
@@ -55,6 +65,9 @@ class Status {
 	int getFoodCount() {
 		return food;
 	}
+	int[] getLastRoll() {
+		return lastRoll;
+	}
 	Condition getCondition() {
 		return playerCondition;
 	}
@@ -67,10 +80,25 @@ class Status {
 	void reduceFoodCount() {
 		food--;
 	}
+	void setLastRoll(int[] lastRoll) {
+		this.lastRoll = lastRoll;
+	}
 	void setCondition(Condition newCondition) {
 		playerCondition = newCondition;
 	}
-	static int getMaxHP() {
+	public static int getMaxHP() {
 		return maxHP;
 	}
+	
+	/*
+	 * Added by Jacob Loden
+	 */
+	public static int getMaxMana(){
+		return maxMana;
+	}
+	
+	public static int getMaxFood(){
+		return maxFood;
+	}
+
 }
