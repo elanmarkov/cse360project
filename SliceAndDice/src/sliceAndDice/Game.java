@@ -13,8 +13,6 @@ public class Game {
 	int totalTurns;
 
 	Game(Player playerOne, Player playerTwo) {
-		//Determine who is first and second by dice roll
-		//TODO: Add GUI interface where needed
 		totalTurns = 0;
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
@@ -263,15 +261,15 @@ class Turn {
 		turnPlayer.reduceFoodCount();
 	}
 	void freeze(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	void doubleAtk(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	void spAtk3(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	void spAtk4(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 }

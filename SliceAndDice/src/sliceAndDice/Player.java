@@ -11,6 +11,11 @@ public class Player {
 	String username;
 	int playerID;
 	Data playerData;
+	Player() {
+		playerID = -1;
+		username = "";
+		playerData = null;
+	}
 	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
@@ -27,6 +32,9 @@ public class Player {
 	}
 	void setUsername(String username) {
 		this.username = username;
+	}
+	void setPlayerData(Data PlayerData) {
+		this.playerData =  playerData;
 	}
 	Data getPlayerData() {
 		return playerData;
