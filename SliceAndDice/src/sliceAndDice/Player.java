@@ -35,6 +35,11 @@ public class Player {
 	 * @param username player's(unique) username
 	 * @param playerID unique ID for player
 	 */
+	Player() {
+		username = "";
+		playerID = -1;
+		playerData = new Data();
+	}
 	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
