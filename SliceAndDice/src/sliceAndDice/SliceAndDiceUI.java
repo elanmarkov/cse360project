@@ -820,14 +820,16 @@ public class SliceAndDiceUI {
 			
 			onePlayer.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					newGamePanel.removeAll();
-					gameFrame.remove(newGamePanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newOnePlayerGameUser, imagePanel);
-					newGamePanel.add(splitPane);
-					gameFrame.setContentPane(newGamePanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
+					JOptionPane.showMessageDialog(gameFrame,  "Fucntion not implemented.");
+					return;
+//					newGamePanel.removeAll();
+//					gameFrame.remove(newGamePanel);
+//					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newOnePlayerGameUser, imagePanel);
+//					newGamePanel.add(splitPane);
+//					gameFrame.setContentPane(newGamePanel);
+//					gameFrame.pack();
+//					splitPane.setDividerLocation(.30);
+//					gameFrame.validate();
 				}
 			});
 			
