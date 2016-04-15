@@ -17,8 +17,10 @@ public class Game {
 	
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		this.playerOne = Scoreboard2.getPlayerByUsername(playerOne);
-		this.playerTwo = Scoreboard2.getPlayerByUsername(playerOne);
+		//this.playerOne = Scoreboard2.getPlayerByUsername(playerOne);
+		//this.playerTwo = Scoreboard2.getPlayerByUsername(playerOne);
+		this.playerOne = new Player(playerOne, 0);
+		this.playerTwo = new Player(playerTwo, 1);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
