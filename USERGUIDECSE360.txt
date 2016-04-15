@@ -1,0 +1,102 @@
+
+ __ _ _                            _      ___ _          
+/ _| (_) ___ ___    __ _ _ __   __| |    /   (_) ___ ___ 
+\ \| | |/ __/ _ \  / _` | '_ \ / _` |   / /\ | |/ __/ _ \
+_\ | | | (_|  __/ | (_| | | | | (_| |  / /_//| | (_|  __/
+\__|_|_|\___\___|  \__,_|_| |_|\__,_| /___,' |_|\___\___|
+
+			   Slice and Dice
+___________________________________________________________________
+		          Table of Contents
+___________________________________________________________________
+
+1. Creators
+
+2. Rules
+
+3. Gameplay
+
+4. Special Attacks
+
+5. Game Modes
+
+6. Stats
+
+___________________________________________________________________
+			      1. Creators
+___________________________________________________________________
+
+Team 1
+
+Jacob Loden
+
+Elan Markov
+
+Daniel Saman
+
+Eisher Saroya
+
+Andrew Stanton
+
+___________________________________________________________________
+			      2. Rules
+___________________________________________________________________
+
+1. All players begin the round with 100 hit points
+
+2. All players begin the round with 30 Mana points
+
+3. All players begin the round with 5 healing foods
+
+4. Only 1 decision per turn(Attack, SP Attack, Eat)
+
+___________________________________________________________________
+			     3. Gameplay
+___________________________________________________________________
+
+Objective:The goal of Slice and Dice is to attack your enemy until their HP reaches 0.
+To achieve this you will need to use basic attacks and special attacks while 
+also healing yourself using food.
+
+
+Attack: Roll a 6 sided dice to attack your enemy
+Cost:No Mana Cost
+Damage: 4 x Roll
+
+Special Attack: Roll dice to (choose first?) use a unique ability
+Cost:?
+Damage:?
+
+Eat: Consume 1 Food and heal 25 HP( food can not be eaten unless at 75hp or lower)
+
+___________________________________________________________________
+			  4. Special Attacks
+___________________________________________________________________
+
+Freeze: Enemy is Frozen for 1 turn ( a Frozen player can not use any attacks or eat)
+Cost: X Mana
+
+Double Attack: Roll two dice and attack your opponent twice in one turn
+Cost: X Mana
+
+___________________________________________________________________
+			  5. Game Modes
+___________________________________________________________________
+
+Single Player: Battle against a computer enemy
+
+Dual: Battle against a human enemy
+
+___________________________________________________________________
+			 6. Stats
+___________________________________________________________________
+
+View stats about your played games:
+
+Number of wins
+Number of turns
+Food used
+Mana used
+HP lost
+
+
