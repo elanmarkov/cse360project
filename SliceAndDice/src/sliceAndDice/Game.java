@@ -2,6 +2,7 @@ package sliceAndDice;
 
 import java.util.ArrayList;
 enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
+enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
 
 public class Game {
 	Player playerOne;
@@ -23,17 +24,19 @@ public class Game {
 		playerOneTurn = true;
 	}
 
-	Winner  PlayNextTurn(Move newMove) {
+	Winner  PlayNextTurn(Move nextMove) {
 		Winner gameWinner = Winner.NONE;
-				
-		nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 		
 		if(playerOneTurn){	// Determines whose move it is
-			gameWinner = nextTurn.playTurnPlayerOne(newMove);
+			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
+			gameWinner = nextTurn.playTurnPlayerOne(nextMove);
 			playerOneTurn = false;
-		}else{
-			gameWinner = nextTurn.playTurnPlayerTwo(newMove);
+			updateMoveCount(playerOne, nextMove);
+		}
+		else{
+			gameWinner = nextTurn.playTurnPlayerTwo(nextMove);
 			playerOneTurn = true;
+			updateMoveCount(playerTwo, nextMove);
 		}
 
 		totalTurns++;
@@ -52,8 +55,17 @@ public class Game {
 		return gameWinner;
 		
 	}
-	
-	boolean isPlayerOneTurn(){	// Changed by Jacob
+	IllegalMove nextMoveLegality(Move nextMove) {
+		IllegalMove violation = IllegalMove.NONE;
+		if(playerOneTurn) {
+			violation = Turn.moveIsLegal(playerOneStatus, nextMove);
+		}
+		else {
+			violation = Turn.moveIsLegal(playerTwoStatus, nextMove);
+		}
+		return violation;
+	}
+	boolean isPlayerOneTurn(){
 		return playerOneTurn;
 	}
 	Status getPlayerOneStatus() {
@@ -84,15 +96,13 @@ public class Game {
 		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
 		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
 	}
-	void updateMoveCount(Move playerOneMove, Move playerTwoMove) {
-		switch (playerOneMove) {
-		case NONE:
-			break;
+	void updateMoveCount(Player turnPlayer, Move turnPlayerMove) {
+		switch (turnPlayerMove) {
 		case ATTACK:
-			playerOne.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumAttacks();
 			break;
 		case FOOD:
-			playerOne.getPlayerData().incrNumMeals();
+			turnPlayer.getPlayerData().incrNumMeals();
 			break;
 		case FREEZE:
 			break;
@@ -105,27 +115,7 @@ public class Game {
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-		
-		switch (playerTwoMove) {
-		case NONE:
-			break;
-		case ATTACK:
-			playerTwo.getPlayerData().incrNumAttacks();
-			break;
-		case FOOD:
-			playerTwo.getPlayerData().incrNumMeals();
-			break;
-		case FREEZE:
-			break;
-		case DOUBLEATK:
-			break;
-		case SPATK3:
-			break;
-		case SPATK4:
-			break;
-		default:
-			throw new IllegalArgumentException("Error: Illegal move not caught.");	
-		}
+
 	}
 }
 
@@ -142,18 +132,14 @@ class Turn {
 	Winner playTurnPlayerOne(Move moveP1) {
 		Winner gameWinner = Winner.NONE;	
 		
-		if(!Turn.moveIsLegal(statusP1, moveP1)) {
+		if(Turn.moveIsLegal(statusP1, moveP1) != IllegalMove.NONE) {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");
 		}
 		
 		playNextTurn(moveP1, statusP1, statusP2);
 		
-		if(statusP1.getHitPts() == 0) {
-			gameWinner = Winner.PLAYER_TWO;
-		}
-		
 		if(statusP2.getHitPts() == 0) {
-			// Return if player one has won before P2 gets to play
+			// Return if player one has won
 			gameWinner = Winner.PLAYER_ONE;
 		}
 		return gameWinner;
@@ -162,7 +148,7 @@ class Turn {
 	Winner playTurnPlayerTwo(Move moveP2){	
 		Winner gameWinner = Winner.NONE;
 		
-		if(!Turn.moveIsLegal(statusP2, moveP2)) {
+		if(Turn.moveIsLegal(statusP2, moveP2) != IllegalMove.NONE) {
 				throw new IllegalArgumentException("Error: Illegal move not caught.");
 		}
 		
@@ -202,20 +188,17 @@ class Turn {
 		return lastRoll;
 	}
 
-	static boolean moveIsLegal(Status turnPlayer, Move nextMove) {
-		boolean legalMove = true;
+	static IllegalMove moveIsLegal(Status turnPlayer, Move nextMove) {
+		IllegalMove violation = IllegalMove.NONE;
 		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() == 0) {
-			legalMove = false;
+			violation = IllegalMove.NOFOOD;
 		}
 		else if (nextMove != Move.ATTACK) {
-			legalMove = false;
+			violation = IllegalMove.NOTIMPLEMENTED;
 		}
-		return legalMove;
+		return violation;
 	}
 	
-	/*
-	 * Changed attack method to accept a dice roll
-	 */
 	void attack(Status turnPlayer, Status otherPlayer) {
 		// Roll 4 dice, do damage equal to combined result.
 		int numRoll = 4;
