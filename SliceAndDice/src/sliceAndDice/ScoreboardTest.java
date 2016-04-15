@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
  
 import org.junit.Test;
 
-public class Scoreboard2Test extends Scoreboard2{
+public class ScoreboardTest extends Scoreboard{
 	 /*
 	@Test // passed - add user1 when statistics.txt just has 0
     public void testAddNewPlayerStatsToStats1() throws IOException {    
