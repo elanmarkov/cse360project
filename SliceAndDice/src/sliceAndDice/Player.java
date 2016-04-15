@@ -53,13 +53,6 @@ public class Player {
 		this.playerID = playerID;
 	}
 	/**
-	 * Getter class for ID.
-	 * @return User's unique ID, integer.
-	 */
-	int getID() {
-		return playerID;
-	}
-	/**
 	 * Setter class for player's username.
 	 * @param username Player's username, String.
 	 */
@@ -67,14 +60,25 @@ public class Player {
 		this.username = username;
 	}
 	/**
+	 * Setter class for player Data statistics.
+	 * @param playerData Data to be assigned to this player.
+	 */
+	void setPlayerData(Data playerData) {
+		this.playerData =  playerData;
+	}
+	/**
+	 * Getter class for ID.
+	 * @return User's unique ID, integer.
+	 */
+	int getID() {
+		return playerID;
+	}
+		/**
 	 * Getter class for player's username.
 	 * @return Player's username, String.
 	 */
 	String getUsername() {
 		return username;
-	}
-	void setPlayerData(Data playerData) {
-		this.playerData =  playerData;
 	}
 	/**
 	 * Getter class for user's data statistics.
@@ -84,6 +88,12 @@ public class Player {
 		return playerData;
 	}
 }
+/**
+ * Status class. Stores the player's current status in the middle
+ * of a game. Contains static methods to pass maximum HP/MP/food.
+ * Stores player's hitpoints (HP), mana points (MP), food, and 
+ * condition (from special attacks).
+ */
 class Status {
 	private int hitPt;
 	private int mana;
@@ -92,48 +102,100 @@ class Status {
 	private final static int maxMana = 30;
 	private final static int maxFood = 5;
 	private Condition playerCondition;
+	/**
+	 * Default constructor for status. 
+	 * Gives full HP, mana, and food.
+	 * No player condition(ailment)
+	 */
 	Status() {
 		hitPt = maxHP;
 		mana = maxMana;
 		food = maxFood;
 		playerCondition = Condition.NONE;
 	}
+	/**
+	 * Creates a Status as a copy of an existing status.
+	 * @param oldStatus Status to be copied.
+	 */
 	Status(Status oldStatus) {
 		hitPt = oldStatus.getHitPts();
 		mana = oldStatus.getMana();
 		food = oldStatus.getFoodCount();
 		playerCondition = oldStatus.getCondition();
 	}
+	/**
+	 * Getter class for hitpoints.
+	 * @return Current hitpoints.
+	 */
 	int getHitPts() {
 		return hitPt;
 	}
+	/**
+	 * Getter class for mana.
+	 * @return Current mana.
+	 */
 	int getMana() {
 		return mana;
 	}
+	/**
+	 * Getter class for food.
+	 * @return Current food count.
+	 */
 	int getFoodCount() {
 		return food;
 	}
+	/**
+	 * Getter class for condition.
+	 * @return Current condition.
+	 */
 	Condition getCondition() {
 		return playerCondition;
 	}
+	/**
+	 * Setter class for hitpoints.
+	 * @param newHP New hitpoints for the player.
+	 */
 	void setHitPts(int newHP) {
 		hitPt = newHP;
 	}
+	/**
+	 * Setter class for mana.
+	 * @param newMana New mana for the player.
+	 */
 	void setMana(int newMana) {
 		mana = newMana;
 	}
+	/**
+	 * Reduces the player's food count (ate food).
+	 */
 	void reduceFoodCount() {
 		food--;
 	}
+	/**
+	 * Setter class for player condition.
+	 * @param newCondition Condition to be assigned for the player.
+	 */
 	void setCondition(Condition newCondition) {
 		playerCondition = newCondition;
 	}
+	/**
+	 * Static method to track maximum player HP.
+	 * @return current maximum HP level
+	 */
 	public static int getMaxHP() {
 		return maxHP;
 	}
+	/**
+	 * Static method to track maximum player mana.
+	 * @return current maximum MP level
+	 */
 	public static int getMaxMana() {
 		return maxMana;
 	}
+	/**
+	 * Static method to track maximum player food count.
+	 * @return maximum food count
+	 */
 	public static int getMaxFood(){
 		return maxFood;
 	}

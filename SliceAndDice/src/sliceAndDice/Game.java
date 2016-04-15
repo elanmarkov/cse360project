@@ -1,9 +1,30 @@
 package sliceAndDice;
-
+/**
+ * Game class to run a game, including create turns, track
+ * interface with GUI, and update statistics between turns.
+ * Turn class to play turns, roll dice, and evaluate legality
+ * of any given move.
+ * 
+ * @author Team 1, CSE 360 Spring 2016
+ * Group members:
+ * Jacob Loden
+ * Elan Markov
+ * Daniel Saman
+ * Eisher Saroya
+ * Andrew Stanton
+ *
+ */
 import java.util.ArrayList;
 enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
 enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
 
+/**
+ * Game class. Runs an instance of a game played by the UI and
+ * handles logic for the interaction between users and the UI.
+ * Calls Turn to play individual turns, completes statistics
+ * between turns.
+ *
+ */
 public class Game {
 	Player playerOne;
 	Player playerTwo;
@@ -15,21 +36,33 @@ public class Game {
 	boolean playerOneTurn;
 	Turn nextTurn;
 	
+	/**
+	 * Constructor for Game class from two usernames.
+	 * @param playerOne Username of player that goes first
+	 * @param playerTwo Username of player that goes second
+	 */
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		//this.playerOne = Scoreboard2.getPlayerByUsername(playerOne);
-		//this.playerTwo = Scoreboard2.getPlayerByUsername(playerOne);
+		//this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
+		//this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
 		this.playerOne = new Player(playerOne, 0);
 		this.playerTwo = new Player(playerTwo, 1);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
+		winnerID = -1; // no winner yet
+		loserID = -1; // no winner yet
 	}
-
+	
+	/**
+	 * Plays the next (half-) turn of the game.
+	 * @param nextMove The move to be performed by the next player, must be legal.
+	 * @return The winner of the game (player 1, player 2, or no winner yet).
+	 */
 	Winner  PlayNextTurn(Move nextMove) {
-		Winner gameWinner = Winner.NONE;
+		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		
-		if(playerOneTurn){	// Determines whose move it is
+		if(playerOneTurn){	// Different turn based on whose move it is
 			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 			gameWinner = nextTurn.playTurnPlayerOne(nextMove);
 			playerOneTurn = false;
@@ -43,20 +76,28 @@ public class Game {
 
 		totalTurns++;
 		
+		//Evaluate the game winner.
 		if(gameWinner == Winner.PLAYER_ONE){
 			winnerID = playerOne.getID();
 			loserID = playerTwo.getID();
 			playerOne.getPlayerData().incrWinCount();
+			updateStats();
 		}
 		else if(gameWinner == Winner.PLAYER_TWO){
 			winnerID = playerTwo.getID();
 			loserID = playerOne.getID();
 			playerTwo.getPlayerData().incrWinCount();
+			updateStats();
 		}
 		
 		return gameWinner;
 		
 	}
+	/**
+	 * Evaluate legality of the next move.
+	 * @param nextMove Next move to be performed.
+	 * @return The violation of the current move, or none.
+	 */
 	IllegalMove nextMoveLegality(Move nextMove) {
 		IllegalMove violation = IllegalMove.NONE;
 		if(playerOneTurn) {
@@ -67,27 +108,59 @@ public class Game {
 		}
 		return violation;
 	}
+	/**
+	 * Returns if it is currently player 1's turn 
+	 * (otherwise, it is player 2's turn).
+	 * @return true if it is player 1's turn, otherwise false.
+	 */
 	boolean isPlayerOneTurn(){
 		return playerOneTurn;
 	}
+	/**
+	 * Getter class for player 1's status data.
+	 * @return Player 1's Status object for this game.
+	 */
 	Status getPlayerOneStatus() {
 		return playerOneStatus;
 	}
+	/**
+	 * Getter class for player 2's status data.
+	 * @return Player 2's Status object for this game.
+	 */
 	Status getPlayerTwoStatus() {
 		return playerTwoStatus;
 	}
+	/**
+	 * Gives the ID of the winner for a completed game.
+	 * @return ID of the player who won this game, -1 if no winner.
+	 */
 	int getWinnerID() {
 		return winnerID;
 	}
+	/**
+	 * Gives the ID of the loser for a completed game.
+	 * @return ID of the player who lost this game, -1 if no winner.
+	 */
 	int getLoserID() {
 		return loserID;
 	}
+	/**
+	 * Gives the number of total (half) turns played this game.
+	 * @return Total half-turns played in this game.
+	 */
 	int getTotalTurns() {
 		return totalTurns;
 	}
+	/**
+	 * Returns the last roll made in the current turn.
+	 * @return Array containing each individual roll for this game.
+	 */
 	int[] getLastRoll() {
 		return nextTurn.getLastRoll();
 	}
+	/**
+	 * Updates the player statistics for each player at the end of the game.
+	 */
 	void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
 		playerOne.getPlayerData().updateHealthLost(playerOneStatus.getHitPts());
@@ -98,6 +171,11 @@ public class Game {
 		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
 		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
 	}
+	/**
+	 * Updates the move count for each player after each turn.
+	 * @param turnPlayer the Player who just made a move
+	 * @param turnPlayerMove the move made by the player
+	 */
 	void updateMoveCount(Player turnPlayer, Move turnPlayerMove) {
 		switch (turnPlayerMove) {
 		case ATTACK:
@@ -120,17 +198,33 @@ public class Game {
 
 	}
 }
-
+/**
+ * Turn class for the game logic. Plays one round between two players
+ * and updates the Status objects associated with each player.
+ * Evaluates legality for each move based on status of each player.
+ * Performs and stores dice rolls for the previous move.
+ *
+ */
 class Turn {
 	Status statusP1;
 	Status statusP2;
 	static int[] lastRoll;
 
+	/**
+	 * Constructor for the Turn class.
+	 * @param statusP1 Status object for a player.
+	 * @param statusP2 Status object for another player.
+	 */
 	Turn(Status statusP1, Status statusP2) {
 		this.statusP1 = statusP1;
 		this.statusP2 = statusP2;
 	}
 	
+	/**
+	 * Plays a move if it is player 1's turn.
+	 * @param moveP1 the most recent (legal) move of player 1.
+	 * @return Winner of the current game, or no winner.
+	 */
 	Winner playTurnPlayerOne(Move moveP1) {
 		Winner gameWinner = Winner.NONE;	
 		
@@ -146,7 +240,11 @@ class Turn {
 		}
 		return gameWinner;
 	}
-	
+	/**
+	 * 
+	 * @param moveP2
+	 * @return
+	 */
 	Winner playTurnPlayerTwo(Move moveP2){	
 		Winner gameWinner = Winner.NONE;
 		
