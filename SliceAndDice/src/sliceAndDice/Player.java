@@ -17,7 +17,7 @@ import sliceAndDice.Condition;
 import sliceAndDice.Move;
 import sliceAndDice.Status;
 
-enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
+enum Move {NONE, ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
 enum Condition {NONE}
 
 /**
