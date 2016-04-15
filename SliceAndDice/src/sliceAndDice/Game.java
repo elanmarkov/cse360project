@@ -114,7 +114,7 @@ public class Game {
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-		playerOne.getPlayerData().incrNumTurns();
+		//playerOne.getPlayerData().incrNumTurns();
 		
 		switch (playerTwoMove) {
 		case ATTACK:
@@ -134,7 +134,7 @@ public class Game {
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-		playerTwo.getPlayerData().incrNumTurns();
+		//playerTwo.getPlayerData().incrNumTurns();
 	}
 }
 
