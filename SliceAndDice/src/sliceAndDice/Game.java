@@ -305,10 +305,11 @@ class Turn {
 	 */
 	static IllegalMove moveIsLegal(Status turnPlayer, Move nextMove) {
 		IllegalMove violation = IllegalMove.NONE;
-		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() == 0) {
+		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() <= 0) {
 			violation = IllegalMove.NOFOOD;
 		}
-		else if (nextMove != Move.ATTACK) {
+		else if (nextMove != Move.ATTACK && nextMove != Move.FOOD) { 
+			// Moves that have not yet been created
 			violation = IllegalMove.NOTIMPLEMENTED;
 		}
 		return violation;
