@@ -123,7 +123,13 @@ class Status {
 	void setCondition(Condition newCondition) {
 		playerCondition = newCondition;
 	}
-	static int getMaxHP() {
+	public static int getMaxHP() {
 		return maxHP;
+	}
+	public static int getMaxMana() {
+		return maxMana;
+	}
+	public static int getMaxFood(){
+		return maxFood;
 	}
 }

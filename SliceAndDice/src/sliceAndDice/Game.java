@@ -11,47 +11,35 @@ public class Game {
 	Status playerOneStatus;
 	Status playerTwoStatus;
 	int totalTurns;
-
-	Game(Player playerOne, Player playerTwo) {
+	boolean first;	// Added this; Keeps track of who's turn it is
+	
+	/*
+	 * Changed to string parameters
+	 * 
+	 * GUI will pass in user names only
+	 */
+	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		this.playerOne = playerOne;
-		this.playerTwo = playerTwo;
+		this.playerOne = new Player(playerOne, 1);	// TODO provide playerID assignment logic
+		this.playerTwo = new Player(playerTwo, 2);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
+		first = true;
 	}
-	/* For reference for designing GUI
-	 pseudocode
-	 game(playerOne, PlayerTwo) // player 1 goes first
-	 winner = NONE
-	 while no winner
-	 	legalmove = false
-	 	while not legalmove
-	 		prompt P1 for move
-	 		if Turn.isLegalMove(StatusP1, MoveP1)
-	 			legalmove = true
-	 		else
-	 			tell user move is illegal
-	 	legalmove = false
-	 	while not legalmove
-	 		prompt P2 for move
-	 		if Turn.isLegalMove(StatusP2, Move)
-	 			legalmove = true
-	 		else
-	 			tell user move is illegal
-	 	winner = PlayNextTurn(MoveP1, MoveP2)
-	 	rollP1 = StatusP1.getLastRoll()
-	 	Play out P1 move and update displayed status
-	 	if winner = NONE
-	 		rollP2 = StatusP2.getLastRoll()
-	 		Play out P2 move and update displayed status
-	 Winner on screen.
-	 
-	*/
-	Winner  PlayNextTurn(Move moveP1, Move moveP2) {
+
+	Winner  PlayNextTurn(Move newMove) {	// Changed to accept one move
 		Winner gameWinner = Winner.NONE;
 				
 		Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
-		gameWinner = nextTurn.playTurn(moveP1, moveP2);
+		
+		if(first){	// Determines who's move it is
+			gameWinner = nextTurn.playTurnPlayerOne(newMove);
+			first = false;
+		}else{
+			gameWinner = nextTurn.playTurnPlayerTwo(newMove);
+			first = true;
+		}
+
 		totalTurns++;
 		
 		if(gameWinner == Winner.PLAYER_ONE){
@@ -64,11 +52,16 @@ public class Game {
 			loserID = playerOne.getID();
 			playerTwo.getPlayerData().incrWinCount();
 		}
-		else {
-			throw new IllegalArgumentException("Game ended without a winner.");
-		}
+		
 		return gameWinner;
 		
+	}
+	
+	/*
+	 * Lets GUI see who's turn it is
+	 */
+	boolean getFirst(){	// Changed by Jacob
+		return first;
 	}
 	Status getPlayerOneStatus() {
 		return playerOneStatus;
@@ -114,40 +107,25 @@ public class Game {
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-		playerOne.getPlayerData().incrNumTurns();
-		
-		switch (playerTwoMove) {
-		case ATTACK:
-			playerTwo.getPlayerData().incrNumAttacks();
-			break;
-		case FOOD:
-			playerTwo.getPlayerData().incrNumMeals();
-			break;
-		case FREEZE:
-			break;
-		case DOUBLEATK:
-			break;
-		case SPATK3:
-			break;
-		case SPATK4:
-			break;
-		default:
-			throw new IllegalArgumentException("Error: Illegal move not caught.");	
-		}
-		playerTwo.getPlayerData().incrNumTurns();
 	}
 }
 
 class Turn {
 	Status statusP1;
 	Status statusP2;
+	Winner gameWinner;	// Changed by Jacob
+	static int[] roll;
 
 	Turn(Status statusP1, Status statusP2) {
 		this.statusP1 = statusP1;
 		this.statusP2 = statusP2;
+		gameWinner = Winner.NONE;	// Changed by Jacob
 	}
-	Winner playTurn(Move moveP1, Move moveP2) {
-		Winner gameWinner = Winner.NONE;
+	
+	Winner playTurnPlayerOne(Move moveP1) {
+		//Winner gameWinner = Winner.NONE;	// Changed by Jacob
+		int numRoll = 4;					// Added by Jacob
+		roll = DiceRoll.roll(numRoll);		// Added by Jacob; Gui needs to see the roll result
 		
 		if(!Turn.moveIsLegal(statusP1, moveP1)) {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");
@@ -155,7 +133,7 @@ class Turn {
 		
 		switch(moveP1) {
 		case ATTACK:
-			attack(statusP1, statusP2);
+			attack(statusP1, statusP2, roll);	// Added this
 			break;
 		case FOOD:
 			food(statusP1);
@@ -182,8 +160,14 @@ class Turn {
 		
 		if(statusP2.getHitPts() == 0) {
 			// Return if player one has won before P2 gets to play
-			gameWinner = Winner.PLAYER_ONE; 
+			gameWinner = Winner.PLAYER_ONE;
 		}
+		return gameWinner;
+	}
+	
+	Winner playTurnPlayerTwo(Move moveP2){	// Changed by Jacob: Added additional method Winner method
+		int numRoll = 4;					// Added by Jacob
+		roll = DiceRoll.roll(numRoll);		// Added by Jacob; Gui needs to see the roll result
 		
 		if(gameWinner == Winner.NONE) {
 			
@@ -193,7 +177,7 @@ class Turn {
 			
 			switch(moveP2) {
 			case ATTACK:
-				attack(statusP2, statusP1);
+				attack(statusP2, statusP1, roll);
 				break;
 			case FOOD:
 				food(statusP2);
@@ -218,8 +202,13 @@ class Turn {
 				gameWinner = Winner.PLAYER_TWO;
 			}
 		}
-		return Winner.NONE;
+		return gameWinner;
 	}
+	
+	static int[] getRoll(){
+		return roll;
+	}
+
 	static boolean moveIsLegal(Status turnPlayer, Move nextMove) {
 		boolean legalMove = true;
 		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() == 0) {
@@ -230,13 +219,17 @@ class Turn {
 		}
 		return legalMove;
 	}
-	void attack(Status turnPlayer, Status otherPlayer) {
+	
+	/*
+	 * Changed attack method to accept a dice roll
+	 */
+	void attack(Status turnPlayer, Status otherPlayer, int[] turnRoll) {
 		// Roll 4 dice, do damage equal to combined result.
-		int numRoll = 4;
-		int[] diceResult = DiceRoll.roll(numRoll);
+		int numRoll = turnRoll.length;
+		//int[] diceResult = DiceRoll.roll(numRoll);
 		int sumDamage = 0;
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
-			sumDamage += diceResult[rollCount];
+			sumDamage += turnRoll[rollCount];
 		}
 		
 		int oppHP = otherPlayer.getHitPts();
@@ -246,8 +239,9 @@ class Turn {
 		else {
 			otherPlayer.setHitPts(oppHP - sumDamage);
 		}
-		//turnPlayer.setLastRoll(diceResult);
+		turnPlayer.setLastRoll(turnRoll);
 	}
+	
 	void food(Status turnPlayer) {
 		// Add 25 hp, do not overmax hp
 		int healValue = 25;
@@ -260,16 +254,21 @@ class Turn {
 		}
 		turnPlayer.reduceFoodCount();
 	}
+	
 	void freeze(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
+	
 	void doubleAtk(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
+	
 	void spAtk3(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
+	
 	void spAtk4(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 }
+
