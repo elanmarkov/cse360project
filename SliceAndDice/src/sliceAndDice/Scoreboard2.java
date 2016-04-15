@@ -15,8 +15,12 @@ import java.lang.Integer;
  * player objects with data. It contains the main method for the program.
  */
 public class Scoreboard2{
- 
-	static public Player getPlayerByID(int userID, ArrayList<Player> players) {
+static ArrayList<Player> players;
+	
+public Scoreboard2() {
+players = new ArrayList<Player>();
+}
+	static public Player getPlayerByID(int userID) {
 		for(int index = 0; index < players.size(); index++){
 			if(players.get(index).getID() == userID) {
 				return players.get(index);
@@ -25,7 +29,7 @@ public class Scoreboard2{
 		return null;
 	}
 	
-	static public Player getPlayerByUsername(String username, ArrayList<Player> players) {
+	static public Player getPlayerByUsername(String username) {
 		for(int index = 0; index < players.size(); index++){
 			if(players.get(index).getUsername() == username) {
 				return players.get(index);
@@ -34,13 +38,7 @@ public class Scoreboard2{
 		return null;
 	}
 	
-	/**
-	 * find user ID given username
-	 * @param username
-	 * @param players ArrayList of Players
-	 * @return
-	 */
-	static public int getIDByUsername(String username, ArrayList<Player> players) {
+	static public int getIDByUsername(String username) {
 		for(int index = 0; index < players.size(); index++) {
 			if(players.get(index).getUsername() == username) {
 				return players.get(index).getID();
@@ -49,7 +47,7 @@ public class Scoreboard2{
 		return -1;
 	}
 	
-	static public String getUsernameByID(int userID, ArrayList<Player> players) {
+	static public String getUsernameByID(int userID) {
 		for(int index = 0; index < players.size(); index++) {
 			if(players.get(index).getID() == userID) {
 				return players.get(index).getUsername();
