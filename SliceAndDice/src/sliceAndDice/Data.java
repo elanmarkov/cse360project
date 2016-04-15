@@ -5,7 +5,7 @@ import sliceAndDice.Data;
 public class Data {
 	int totalGameCount;
 	int totalWinCount;
-	int totalNumTurns;
+	//int totalNumTurns;
 	int totalNumAttacks;
 	int totalNumMeals;
 	// int totalNumSPAttacks;
@@ -16,22 +16,22 @@ public class Data {
 	// float totalTurnTime;
 
 Data() {
-int totalGameCount = 0;
-int totalWinCount = 0;
-int totalNumTurns = 0;
-int totalNumAttacks = 0;
-int totalNumMeals = 0;
-// int totalNumSPAttacks = 0;
-int totalHealthLost = 0;
-int totalManaUsed = 0;
-int totalFoodUsed = 0;
-// float totalGameTime = 0;
-// float totalTurnTime = 0;
+totalGameCount = 0;
+totalWinCount = 0;
+//totalNumTurns = 0;
+totalNumAttacks = 0;
+totalNumMeals = 0;
+// totalNumSPAttacks = 0;
+totalHealthLost = 0;
+totalManaUsed = 0;
+totalFoodUsed = 0;
+// totalGameTime = 0;
+// totalTurnTime = 0;
 }
 void loadData(Data data) {
 totalGameCount = data.getGame();
 totalWinCount = data.getWin();
-totalNumTurns = data.getTurn();
+//totalNumTurns = data.getTurn();
 totalNumAttacks = data.getAttack();
 totalNumMeals = data.getMeal();
 // totalNumSPAttacks = data.getSPAttack();
@@ -49,9 +49,9 @@ void setWin(int totalWinCount) {
 	this.totalWinCount = totalWinCount;
 }
 
-void setTurn(int totalNumTurns) {
-	this.totalNumTurns = totalNumTurns;
-}
+//void setTurn(int totalNumTurns) {
+//	this.totalNumTurns = totalNumTurns;
+//}
 
 void setAttack(int totalNumAttacks) {
 	this.totalNumAttacks = totalNumAttacks;
@@ -80,9 +80,9 @@ int getWin() {
 	return totalWinCount;
 }
 
-int getTurn() {
-	return totalNumTurns;
-}
+//int getTurn() {
+//	return totalNumTurns;
+//}
 
 int getAttack() {
 	return totalNumAttacks;
@@ -113,9 +113,9 @@ public void incrWinCount() {
 	totalWinCount++;
 }
 // called at end of each turn
-public void incrNumTurns() {
-	totalNumTurns++;
-}
+//public void incrNumTurns() {
+//	totalNumTurns++;
+//}
 // called at end of each game
 public void updateHealthLost(int finalHP) {
 	totalHealthLost = 100 - finalHP; // 100 is maxHP
@@ -140,10 +140,7 @@ public void incrNumSPAttacks() {
 	totalNumSPAttacks++;
 }
 public void updateTotalGameTime() {
-
 }
-
 public void update totalTurnTime() {
-
 }
 */

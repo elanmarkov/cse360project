@@ -1205,18 +1205,21 @@ public class SliceAndDiceUI {
 			/*
 			 * game play button listeners
 			 */
-			// debug variable
 			attackButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-//					if(debug > 1){
-//						debug++;
-//					}
+
 					try{
 						winner = game.PlayNextTurn(Move.ATTACK);
-//						debug++;
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(gameFrame, e.getMessage());
+						
+						// either exit game or return to start page;  This is a fatal error!!
+						
 					}
+					
+					
+					//add test for illegal move here, notify the user and return
+					
 					
 //					if(winner.equals(Winner.NONE)){
 //						//middleGamePanel.removeAll();
@@ -1236,27 +1239,26 @@ public class SliceAndDiceUI {
 //						gameFrame.validate();
 //					}
 					
-					/*
-					 * Logic Error:	If computer goes first, runs fine.  If user goes first, damage is assessed to the wrong player
-					 */
 					if(winner.equals(Winner.NONE)){
-						if(!game.getFirst()){
+						if(!game.isPlayerOneTurn()){
 							
 							playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
 							playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
 							playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
 							plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
-							if(plTwoHealthStatus.getValue() < (MAX_HEALTH / 2)){
-								UIDefaults defaults = new UIDefaults();
-								defaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
+							if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 2)){
+								UIDefaults onedefaults = new UIDefaults();
+								onedefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
+								onedefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
 								plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  defaults);
+								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  onedefaults);
 								//plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
-							}else if(plTwoHealthStatus.getValue() < (MAX_HEALTH / 4)){
-								UIDefaults defaults = new UIDefaults();
-								defaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
+							}else if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 4)){
+								UIDefaults twodefaults = new UIDefaults();
+								twodefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
+								twodefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
 								plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  defaults);
+								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  twodefaults);
 								//plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 							}else{
 								plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
@@ -1271,7 +1273,7 @@ public class SliceAndDiceUI {
 							gameFrame.pack();
 							playerPane.setDividerLocation(.20);
 							gameFrame.validate();
-						}else if(game.getFirst()){
+						}else if(game.isPlayerOneTurn()){
 							
 							playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 							playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());

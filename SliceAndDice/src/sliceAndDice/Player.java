@@ -1,5 +1,18 @@
 package sliceAndDice;
-
+/**
+ * Player class to store information about each player, 
+ * including username, ID, and game statistics.
+ * Status class to store player status within a game.
+ * 
+ * @author Team 1, CSE 360 Spring 2016
+ * Group members:
+ * Jacob Loden
+ * Elan Markov
+ * Daniel Saman
+ * Eisher Saroya
+ * Andrew Stanton
+ *
+ */
 import sliceAndDice.Condition;
 import sliceAndDice.Move;
 import sliceAndDice.Status;
@@ -7,35 +20,61 @@ import sliceAndDice.Status;
 enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
 enum Condition {NONE}
 
+/**
+ * Player class. Stores identifying information (username and 
+ * unique ID) along with statistical data (Data object) for each
+ * player.
+ *
+ */
 public class Player {
 	String username;
 	int playerID;
 	Data playerData;
-	Player() {
-		playerID = -1;
-		username = "";
-		playerData = null;
-	}
+	/**
+	 * Constructor for player class.
+	 * @param username player's(unique) username
+	 * @param playerID unique ID for player
+	 */
 	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
 		playerData = new Data();
 	}
+	/**
+	 * Setter class for ID.
+	 * @param playerID ID value; corresponds to player location in storage, integer.
+	 */
 	void setID(int playerID) {
 		this.playerID = playerID;
 	}
+	/**
+	 * Getter class for ID.
+	 * @return User's unique ID, integer.
+	 */
 	int getID() {
 		return playerID;
 	}
-	String getUsername() {
-		return username;
-	}
+	/**
+	 * Setter class for player's username.
+	 * @param username Player's username, String.
+	 */
 	void setUsername(String username) {
 		this.username = username;
 	}
-	void setPlayerData(Data PlayerData) {
+	/**
+	 * Getter class for player's username.
+	 * @return Player's username, String.
+	 */
+	String getUsername() {
+		return username;
+	}
+	void setPlayerData(Data playerData) {
 		this.playerData =  playerData;
 	}
+	/**
+	 * Getter class for user's data statistics.
+	 * @return Data object containing statistics.
+	 */
 	Data getPlayerData() {
 		return playerData;
 	}
@@ -44,7 +83,6 @@ class Status {
 	private int hitPt;
 	private int mana;
 	private int food;
-	private int[] lastRoll;
 	private final static int maxHP = 100;
 	private final static int maxMana = 30;
 	private final static int maxFood = 5;
@@ -70,9 +108,6 @@ class Status {
 	int getFoodCount() {
 		return food;
 	}
-	int[] getLastRoll() {
-		return lastRoll;
-	}
 	Condition getCondition() {
 		return playerCondition;
 	}
@@ -85,13 +120,16 @@ class Status {
 	void reduceFoodCount() {
 		food--;
 	}
-	void setLastRoll(int[] lastRoll) {
-		this.lastRoll = lastRoll;
-	}
 	void setCondition(Condition newCondition) {
 		playerCondition = newCondition;
 	}
-	static int getMaxHP() {
+	public static int getMaxHP() {
 		return maxHP;
+	}
+	public static int getMaxMana() {
+		return maxMana;
+	}
+	public static int getMaxFood(){
+		return maxFood;
 	}
 }
