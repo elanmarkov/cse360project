@@ -11,13 +11,19 @@ public class Game {
 	Status playerOneStatus;
 	Status playerTwoStatus;
 	int totalTurns;
+	boolean first;
+	
+	/*
+	 * changed to string parameters
+	 */
+	Game(String playerOne, String playerTwo) {
 
-	Game(Player playerOne, Player playerTwo) {
 		totalTurns = 0;
-		this.playerOne = playerOne;
-		this.playerTwo = playerTwo;
+		this.playerOne = new Player(playerOne, 1);	// TODO provide playerID assignment logic
+		this.playerTwo = new Player(playerTwo, 2);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
+		first = true;
 	}
 	/* For reference for designing GUI
 	 pseudocode
@@ -47,11 +53,18 @@ public class Game {
 	 Winner on screen.
 	 
 	*/
-	Winner  PlayNextTurn(Move moveP1, Move moveP2) {
+	Winner  PlayNextTurn(Move newMove) {
 		Winner gameWinner = Winner.NONE;
 				
 		Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
-		gameWinner = nextTurn.playTurn(moveP1, moveP2);
+		
+		if(first){
+			gameWinner = nextTurn.playTurnPlayerOne(newMove);
+			first = false;
+		}else{
+			gameWinner = nextTurn.playTurnPlayerTwo(newMove);
+			first = true;
+		}
 		totalTurns++;
 		
 		if(gameWinner == Winner.PLAYER_ONE){
@@ -64,11 +77,12 @@ public class Game {
 			loserID = playerOne.getID();
 			playerTwo.getPlayerData().incrWinCount();
 		}
-		else {
-			throw new IllegalArgumentException("Game ended without a winner.");
-		}
+		
 		return gameWinner;
 		
+	}
+	boolean getFirst(){	// Changed by Jacob
+		return first;
 	}
 	Status getPlayerOneStatus() {
 		return playerOneStatus;
@@ -141,13 +155,15 @@ public class Game {
 class Turn {
 	Status statusP1;
 	Status statusP2;
+	Winner gameWinner;	// Changed by Jacob
 
 	Turn(Status statusP1, Status statusP2) {
 		this.statusP1 = statusP1;
 		this.statusP2 = statusP2;
+		gameWinner = Winner.NONE;	// Changed by Jacob
 	}
-	Winner playTurn(Move moveP1, Move moveP2) {
-		Winner gameWinner = Winner.NONE;
+	Winner playTurnPlayerOne(Move moveP1) {
+		//Winner gameWinner = Winner.NONE;	// Changed by Jacob
 		
 		if(!Turn.moveIsLegal(statusP1, moveP1)) {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");
@@ -182,9 +198,12 @@ class Turn {
 		
 		if(statusP2.getHitPts() == 0) {
 			// Return if player one has won before P2 gets to play
-			gameWinner = Winner.PLAYER_ONE; 
+			gameWinner = Winner.PLAYER_ONE;
 		}
-		
+		return Winner.NONE;
+	}
+	
+	Winner playTurnPlayerTwo(Move moveP2){	// Changed by Jacob: Added additional method Winner method
 		if(gameWinner == Winner.NONE) {
 			
 			if(!Turn.moveIsLegal(statusP2, moveP2)) {
@@ -220,6 +239,7 @@ class Turn {
 		}
 		return Winner.NONE;
 	}
+	
 	static boolean moveIsLegal(Status turnPlayer, Move nextMove) {
 		boolean legalMove = true;
 		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() == 0) {
@@ -261,15 +281,15 @@ class Turn {
 		turnPlayer.reduceFoodCount();
 	}
 	void freeze(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+		// Special attacks not yet implemented
 	}
 	void doubleAtk(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+		// Special attacks not yet implemented
 	}
 	void spAtk3(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+		// Special attacks not yet implemented
 	}
 	void spAtk4(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+		// Special attacks not yet implemented
 	}
 }
