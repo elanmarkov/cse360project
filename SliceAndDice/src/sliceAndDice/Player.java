@@ -11,12 +11,14 @@ public class Player {
 	String username;
 	int playerID;
 	Data playerData;
+	Player() {
+		playerID = -1;
+		username = "";
+		playerData = null;
+	}
 	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
-		playerData = new Data();
-	}
-	Player(){
 		playerData = new Data();
 	}
 	void setID(int playerID) {
@@ -30,6 +32,9 @@ public class Player {
 	}
 	void setUsername(String username) {
 		this.username = username;
+	}
+	void setPlayerData(Data PlayerData) {
+		this.playerData =  playerData;
 	}
 	Data getPlayerData() {
 		return playerData;
@@ -86,19 +91,7 @@ class Status {
 	void setCondition(Condition newCondition) {
 		playerCondition = newCondition;
 	}
-	public static int getMaxHP() {
+	static int getMaxHP() {
 		return maxHP;
 	}
-	
-	/*
-	 * Added by Jacob Loden
-	 */
-	public static int getMaxMana(){
-		return maxMana;
-	}
-	
-	public static int getMaxFood(){
-		return maxFood;
-	}
-
 }

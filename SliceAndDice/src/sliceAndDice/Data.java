@@ -140,7 +140,10 @@ public void incrNumSPAttacks() {
 	totalNumSPAttacks++;
 }
 public void updateTotalGameTime() {
+
 }
+
 public void update totalTurnTime() {
+
 }
 */

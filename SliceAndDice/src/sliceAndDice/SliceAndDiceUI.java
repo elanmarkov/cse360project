@@ -3,10 +3,13 @@ package sliceAndDice;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.EventListener;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +25,9 @@ public class SliceAndDiceUI {
 	private final int MAX_WIDTH = 1000;
 	private final int MAX_HEALTH = 100;
 	private final int MIN_HEALTH = 0;
-	private final int MAX_MANA = 100;
+	private final int MAX_MANA = 30;
 	private final int MIN_MANA = 0;
-	private final int MAX_FOOD = 100;
+	private final int MAX_FOOD = 5;
 	private final int MIN_FOOD = 0;
 	private static int player;
 	private String usernameOne;
@@ -40,6 +43,8 @@ public class SliceAndDiceUI {
 	public int plTwoHlth = 100;
 	public int plTwoMana = 100;
 	public int plTwoFood = 100;
+	
+	int debug = 0;
 	
 	Game game;
 	
@@ -74,6 +79,12 @@ public class SliceAndDiceUI {
 		
 		public static int getPlayer(){
 			return player;
+		}
+		
+		public void delayTime(){
+			try{
+				Thread.sleep(3000);
+			}catch(Exception e){}
 		}
 		
 /*
@@ -122,12 +133,12 @@ public class SliceAndDiceUI {
 				/*
 				 * Progress bar override default objects
 				 */
-				UIDefaults defaults1 = new UIDefaults();
-				UIDefaults defaults2 = new UIDefaults();
-				UIDefaults defaults3 = new UIDefaults();
-				UIDefaults defaults4 = new UIDefaults();
-				UIDefaults defaults5 = new UIDefaults();
-				UIDefaults defaults6 = new UIDefaults();
+				final UIDefaults defaults1 = new UIDefaults();
+				final UIDefaults defaults2 = new UIDefaults();
+				final UIDefaults defaults3 = new UIDefaults();
+				final UIDefaults defaults4 = new UIDefaults();
+				final UIDefaults defaults5 = new UIDefaults();
+				final UIDefaults defaults6 = new UIDefaults();
 
 /*
  * Mode select panel components
@@ -518,7 +529,7 @@ public class SliceAndDiceUI {
 				playerOneHealthRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneHealthRatio.setForeground(Color.red);
 				
-				JProgressBar plOneHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
+			final JProgressBar plOneHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
 					plOneHealthStatus.setOrientation(SwingConstants.HORIZONTAL);
 					defaults1.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					defaults1.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
@@ -538,7 +549,7 @@ public class SliceAndDiceUI {
 				playerOneManaRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneManaRatio.setForeground(Color.red);
 				
-				JProgressBar plOneManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
+			final JProgressBar plOneManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
 					plOneManaStatus.setOrientation(SwingConstants.HORIZONTAL);
 					defaults2.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					defaults2.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
@@ -557,7 +568,7 @@ public class SliceAndDiceUI {
 				playerOneFoodRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneFoodRatio.setForeground(Color.red);
 				
-				JProgressBar plOneFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
+			final JProgressBar plOneFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
 					plOneFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
 					defaults3.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					defaults3.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
@@ -601,7 +612,7 @@ public class SliceAndDiceUI {
 				playerTwoHealthRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoHealthRatio.setForeground(Color.red);
 				
-				JProgressBar plTwoHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
+			final JProgressBar plTwoHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
 					plTwoHealthStatus.setOrientation(SwingConstants.HORIZONTAL);
 					defaults4.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					defaults4.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
@@ -620,7 +631,7 @@ public class SliceAndDiceUI {
 				playerTwoManaRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoManaRatio.setForeground(Color.red);
 				
-				JProgressBar plTwoManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
+			final JProgressBar plTwoManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
 					plTwoManaStatus.setOrientation(SwingConstants.HORIZONTAL);
 					defaults5.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					defaults5.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
@@ -639,7 +650,7 @@ public class SliceAndDiceUI {
 				playerTwoFoodRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoFoodRatio.setForeground(Color.red);
 				
-				JProgressBar plTwoFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
+			final JProgressBar plTwoFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
 					plTwoFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
 					defaults6.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					defaults6.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
@@ -700,7 +711,12 @@ public class SliceAndDiceUI {
 			
 			final JPanel middleRightPanel = new JPanel(new BorderLayout(5,5));	// game animation will play here
 				middleRightPanel.setPreferredSize(new Dimension(100, 100));
+			final Icon playerOneAttack = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"));
+			final Icon playerTwoAttack = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"));
+			final Icon playerRest = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"));
 			
+			final JLabel playerOneAttackLabel = new JLabel(playerOneAttack);
+			final JLabel playerTwoAttackLabel = new JLabel(playerTwoAttack);	
 			/*
 			 * dice animation pane
 			 */
@@ -740,16 +756,19 @@ public class SliceAndDiceUI {
 				attackButton.setFont(smallLabelFont);
 				attackButton.setForeground(Color.red);
 				attackButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+				attackButton.setToolTipText("Attack your opponent");
 				
 			final JButton healButton = new JButton("Heal");
 				healButton.setFont(smallLabelFont);
 				healButton.setForeground(Color.red);
 				healButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+				healButton.setToolTipText("Eat food to heal your HP");
 				
 			final JButton spAttack = new JButton("Special");
 				spAttack.setFont(smallLabelFont);
 				spAttack.setForeground(Color.red);
 				spAttack.setAlignmentX(Component.LEFT_ALIGNMENT);
+				spAttack.setToolTipText("Use special attack powers");
 			
 				attackButtons.add(attackButton);
 				attackButtons.add(healButton);
@@ -955,10 +974,11 @@ public class SliceAndDiceUI {
 					newGamePanel.removeAll();
 					gameFrame.remove(newGamePanel);
 					
-					playerOneName.setText(usernameOne);
-					playerTwoName.setText(usernameTwo);
+//					playerOneName.setText(usernameOne);
+//					playerTwoName.setText(usernameTwo);
 					
 					// display the choose player dice roll winner user name
+					//System.out.println(player);
 					if(player > 0){
 						activePlayer.setText(usernameOne);
 						game = new Game(usernameOne, usernameTwo);	// pass user names to game
@@ -969,6 +989,10 @@ public class SliceAndDiceUI {
 						activePlayer.setText(usernameOne);
 						game = new Game(usernameOne, usernameTwo);	// pass user names to game
 					}
+						//added this to try and cope with user order problem
+						//swaps player identity
+						playerOneName.setText(usernameOne);
+						playerTwoName.setText(usernameTwo);
 					
 						playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 						playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
@@ -1181,39 +1205,87 @@ public class SliceAndDiceUI {
 			/*
 			 * game play button listeners
 			 */
+			// debug variable
 			attackButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+//					if(debug > 1){
+//						debug++;
+//					}
 					try{
 						winner = game.PlayNextTurn(Move.ATTACK);
+//						debug++;
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(gameFrame, e.getMessage());
 					}
 					
+//					if(winner.equals(Winner.NONE)){
+//						//middleGamePanel.removeAll();
+//						playerPane.removeAll();
+//						if(!game.getFirst()){
+//							middleRightPanel.add(playerOneAttackLabel, BorderLayout.CENTER);
+//						}else{
+//							middleRightPanel.add(playerTwoAttackLabel, BorderLayout.CENTER);
+//						}
+//						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
+//						//gamePlayPanel.add(playerPane);
+//						middleGamePanel.add(playerPane, BorderLayout.CENTER);
+//						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+//						gameFrame.setContentPane(gamePlayPanel);
+//						gameFrame.pack();
+//						playerPane.setDividerLocation(.20);
+//						gameFrame.validate();
+//					}
+					
+					/*
+					 * Logic Error:	If computer goes first, runs fine.  If user goes first, damage is assessed to the wrong player
+					 */
 					if(winner.equals(Winner.NONE)){
-						if(game.getFirst()){
-							activePlayer.setText(usernameTwo);
+						if(!game.getFirst()){
 							
 							playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
 							playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
 							playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
+							plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+							if(plTwoHealthStatus.getValue() < (MAX_HEALTH / 2)){
+								UIDefaults defaults = new UIDefaults();
+								defaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
+								plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  defaults);
+								//plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+							}else if(plTwoHealthStatus.getValue() < (MAX_HEALTH / 4)){
+								UIDefaults defaults = new UIDefaults();
+								defaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
+								plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  defaults);
+								//plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+							}else{
+								plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+							}
+							
+							plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
+							plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
+							
+							activePlayer.setText(usernameTwo);
 							
 							gameFrame.setContentPane(gamePlayPanel);
 							gameFrame.pack();
 							playerPane.setDividerLocation(.20);
 							gameFrame.validate();
-							return;
-						}else if(!game.getFirst()){
-							activePlayer.setText(usernameOne);
+						}else if(game.getFirst()){
 							
 							playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 							playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
 							playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
+							plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
+							plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
+							plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
+							
+							activePlayer.setText(usernameOne);
 							
 							gameFrame.setContentPane(gamePlayPanel);
 							gameFrame.pack();
 							playerPane.setDividerLocation(.20);
 							gameFrame.validate();
-							return;
 						}else{
 							JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong in Winner PlayNextTurn() method");
 						}
@@ -1222,8 +1294,22 @@ public class SliceAndDiceUI {
 					}else if(winner.equals(Winner.PLAYER_TWO)){
 						// TODO add player two winner stuff
 					}
+//					delayTime();
+//					middleRightPanel.removeAll();
+//					middleRightPanel.add(new JLabel(playerRest), BorderLayout.CENTER);
+//					gameFrame.validate();
 				}
 			});
+			
+//			middleRightPanel.addMouseMotionListener(new MouseMotionAdapter(){
+//				public void mouseMoved(MouseEvent me){
+//					if(playerOneAttackLabel.isVisible() || playerTwoAttackLabel.isVisible()){
+//						middleRightPanel.removeAll();
+//						middleRightPanel.add(new JLabel(playerRest), BorderLayout.CENTER);
+//						gameFrame.validate();
+//					}
+//				}
+//			});
 			
 			healButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
