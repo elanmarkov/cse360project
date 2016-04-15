@@ -133,12 +133,17 @@ public class SliceAndDiceUI {
 				/*
 				 * Progress bar override default objects
 				 */
-				final UIDefaults defaults1 = new UIDefaults();
-				final UIDefaults defaults2 = new UIDefaults();
-				final UIDefaults defaults3 = new UIDefaults();
-				final UIDefaults defaults4 = new UIDefaults();
-				final UIDefaults defaults5 = new UIDefaults();
-				final UIDefaults defaults6 = new UIDefaults();
+				final UIDefaults greenDefaults = new UIDefaults();
+					greenDefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
+					greenDefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
+				
+				final UIDefaults redDefaults = new UIDefaults();
+					redDefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
+					redDefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
+					
+				final UIDefaults orangeDefaults = new UIDefaults();
+					orangeDefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
+					orangeDefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
 
 /*
  * Mode select panel components
@@ -509,6 +514,10 @@ public class SliceAndDiceUI {
 				
 			final JPanel playerTwo = new JPanel(new GridLayout(5, 3, 5, 5));
 				playerTwo.setBorder(BorderFactory.createTitledBorder(""));
+				
+			final JLabel gameWinner = new JLabel();
+				gameWinner.setFont(largeLabelFont);
+				gameWinner.setForeground(Color.blue);
 			
 			/*
 			 * player one top status panel stuff
@@ -531,10 +540,8 @@ public class SliceAndDiceUI {
 				
 			final JProgressBar plOneHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
 					plOneHealthStatus.setOrientation(SwingConstants.HORIZONTAL);
-					defaults1.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
-					defaults1.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-					plOneHealthStatus.putClientProperty("Nimbus.Overrides",  defaults1);
+					plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					// following value will be reset by listener
 					plOneHealthStatus.setValue(plOneHlth);
 					
@@ -551,10 +558,8 @@ public class SliceAndDiceUI {
 				
 			final JProgressBar plOneManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
 					plOneManaStatus.setOrientation(SwingConstants.HORIZONTAL);
-					defaults2.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
-					defaults2.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					plOneManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-					plOneManaStatus.putClientProperty("Nimbus.Overrides",  defaults2);
+					plOneManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					// following value will be reset by listener
 					plOneManaStatus.setValue(plOneMana);
 					
@@ -570,10 +575,8 @@ public class SliceAndDiceUI {
 				
 			final JProgressBar plOneFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
 					plOneFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
-					defaults3.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
-					defaults3.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-					plOneFoodStatus.putClientProperty("Nimbus.Overrides",  defaults3);
+					plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					// following value will be reset by listener
 					plOneFoodStatus.setValue(plOneFood);
 				
@@ -614,10 +617,8 @@ public class SliceAndDiceUI {
 				
 			final JProgressBar plTwoHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
 					plTwoHealthStatus.setOrientation(SwingConstants.HORIZONTAL);
-					defaults4.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
-					defaults4.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-					plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  defaults4);
+					plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					// following value will be reset by listener
 					plTwoHealthStatus.setValue(plTwoHlth);
 					
@@ -633,10 +634,8 @@ public class SliceAndDiceUI {
 				
 			final JProgressBar plTwoManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
 					plTwoManaStatus.setOrientation(SwingConstants.HORIZONTAL);
-					defaults5.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
-					defaults5.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					plTwoManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-					plTwoManaStatus.putClientProperty("Nimbus.Overrides",  defaults5);
+					plTwoManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					// following value will be reset by listener
 					plTwoManaStatus.setValue(plTwoMana);
 					
@@ -652,10 +651,8 @@ public class SliceAndDiceUI {
 				
 			final JProgressBar plTwoFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
 					plTwoFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
-					defaults6.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
-					defaults6.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
 					plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-					plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  defaults6);
+					plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					// following value will be reset by listener
 					plTwoFoodStatus.setValue(plTwoFood);
 				/*
@@ -1216,8 +1213,8 @@ public class SliceAndDiceUI {
 						// either exit game or return to start page;  This is a fatal error!!
 						
 					}
-					
-					
+
+										
 					//add test for illegal move here, notify the user and return
 					
 					
@@ -1246,7 +1243,7 @@ public class SliceAndDiceUI {
 							playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
 							playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
 							plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
-							if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 2)){
+							if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 2) && plTwoHealthStatus.getValue() > (MAX_HEALTH / 4)){
 								UIDefaults onedefaults = new UIDefaults();
 								onedefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
 								onedefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(240, 174, 41)));
@@ -1261,9 +1258,17 @@ public class SliceAndDiceUI {
 								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  twodefaults);
 								//plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 							}else{
-								plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+								UIDefaults threedefaults = new UIDefaults();
+								threedefaults.put("ProgressBar[Enabled].foregroundPainter", new FillPainter(new Color(0, 204, 0)));
+								threedefaults.put("ProgressBar[Enabled+Finished].foregroundPainter", new FillPainter(new Color(255, 0, 0)));
+								plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+								plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  threedefaults);
+								//plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 							}
 							
+							/*
+							 * move these to their respective listeners
+							 */
 							plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
 							plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
 							
@@ -1279,6 +1284,17 @@ public class SliceAndDiceUI {
 							playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
 							playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
 							plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
+							if(plOneHealthStatus.getValue() <= (MAX_HEALTH / 2) && plOneHealthStatus.getValue() > (MAX_HEALTH / 4)){
+								plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+								plOneHealthStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+							}else if(plOneHealthStatus.getValue() <= (MAX_HEALTH / 4)){
+								plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+								plOneHealthStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+							}else{
+								plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+								plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+							}
+							
 							plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
 							plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
 							
@@ -1293,8 +1309,26 @@ public class SliceAndDiceUI {
 						}
 					}else if(winner.equals(Winner.PLAYER_ONE)){
 						// TODO add player one winner stuff
+						middleRightPanel.removeAll();
+						gameWinner.setText(game.playerOne.getUsername() + " has won!");
+						middleRightPanel.add(gameWinner, BorderLayout.CENTER);
+						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
+						middleGamePanel.add(playerPane, BorderLayout.CENTER);
+						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+						gameFrame.pack();
+						playerPane.setDividerLocation(.20);
+						gameFrame.validate();
 					}else if(winner.equals(Winner.PLAYER_TWO)){
 						// TODO add player two winner stuff
+						middleRightPanel.removeAll();
+						gameWinner.setText(game.playerTwo.getUsername() + " has won!");
+						middleRightPanel.add(gameWinner, BorderLayout.CENTER);
+						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
+						middleGamePanel.add(playerPane, BorderLayout.CENTER);
+						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+						gameFrame.pack();
+						playerPane.setDividerLocation(.20);
+						gameFrame.validate();
 					}
 //					delayTime();
 //					middleRightPanel.removeAll();
