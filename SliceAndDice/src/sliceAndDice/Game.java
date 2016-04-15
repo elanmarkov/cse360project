@@ -11,33 +11,29 @@ public class Game {
 	Status playerOneStatus;
 	Status playerTwoStatus;
 	int totalTurns;
-	boolean first;	// Added this; Keeps track of who's turn it is
+	boolean playerOneTurn;
+	Turn nextTurn;
 	
-	/*
-	 * Changed to string parameters
-	 * 
-	 * GUI will pass in user names only
-	 */
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		this.playerOne = new Player(playerOne, 1);	// TODO provide playerID assignment logic
-		this.playerTwo = new Player(playerTwo, 2);
+		this.playerOne = Scoreboard2.getPlayerByUsername(playerOne);
+		this.playerTwo = Scoreboard2.getPlayerByUsername(playerOne);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
-		first = true;
+		playerOneTurn = true;
 	}
 
-	Winner  PlayNextTurn(Move newMove) {	// Changed to accept one move
+	Winner  PlayNextTurn(Move newMove) {
 		Winner gameWinner = Winner.NONE;
 				
-		Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
+		nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 		
-		if(first){	// Determines who's move it is
+		if(playerOneTurn){	// Determines whose move it is
 			gameWinner = nextTurn.playTurnPlayerOne(newMove);
-			first = false;
+			playerOneTurn = false;
 		}else{
 			gameWinner = nextTurn.playTurnPlayerTwo(newMove);
-			first = true;
+			playerOneTurn = true;
 		}
 
 		totalTurns++;
@@ -57,11 +53,8 @@ public class Game {
 		
 	}
 	
-	/*
-	 * Lets GUI see who's turn it is
-	 */
-	boolean getFirst(){	// Changed by Jacob
-		return first;
+	boolean isPlayerOneTurn(){	// Changed by Jacob
+		return playerOneTurn;
 	}
 	Status getPlayerOneStatus() {
 		return playerOneStatus;
@@ -78,6 +71,9 @@ public class Game {
 	int getTotalTurns() {
 		return totalTurns;
 	}
+	int[] getLastRoll() {
+		return nextTurn.getLastRoll();
+	}
 	void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
 		playerOne.getPlayerData().updateHealthLost(playerOneStatus.getHitPts());
@@ -90,11 +86,34 @@ public class Game {
 	}
 	void updateMoveCount(Move playerOneMove, Move playerTwoMove) {
 		switch (playerOneMove) {
+		case NONE:
+			break;
 		case ATTACK:
 			playerOne.getPlayerData().incrNumAttacks();
 			break;
 		case FOOD:
 			playerOne.getPlayerData().incrNumMeals();
+			break;
+		case FREEZE:
+			break;
+		case DOUBLEATK:
+			break;
+		case SPATK3:
+			break;
+		case SPATK4:
+			break;
+		default:
+			throw new IllegalArgumentException("Error: Illegal move not caught.");	
+		}
+		
+		switch (playerTwoMove) {
+		case NONE:
+			break;
+		case ATTACK:
+			playerTwo.getPlayerData().incrNumAttacks();
+			break;
+		case FOOD:
+			playerTwo.getPlayerData().incrNumMeals();
 			break;
 		case FREEZE:
 			break;
@@ -113,49 +132,24 @@ public class Game {
 class Turn {
 	Status statusP1;
 	Status statusP2;
-	Winner gameWinner;	// Changed by Jacob
-	static int[] roll;
+	static int[] lastRoll;
 
 	Turn(Status statusP1, Status statusP2) {
 		this.statusP1 = statusP1;
 		this.statusP2 = statusP2;
-		gameWinner = Winner.NONE;	// Changed by Jacob
 	}
 	
 	Winner playTurnPlayerOne(Move moveP1) {
-		//Winner gameWinner = Winner.NONE;	// Changed by Jacob
-		int numRoll = 4;					// Added by Jacob
-		roll = DiceRoll.roll(numRoll);		// Added by Jacob; Gui needs to see the roll result
+		Winner gameWinner = Winner.NONE;	
 		
 		if(!Turn.moveIsLegal(statusP1, moveP1)) {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");
 		}
 		
-		switch(moveP1) {
-		case ATTACK:
-			attack(statusP1, statusP2, roll);	// Added this
-			break;
-		case FOOD:
-			food(statusP1);
-			break;
-		case FREEZE:
-			freeze(statusP1, statusP2);
-			// incrNumFreeze
-			break;
-		case DOUBLEATK:
-			doubleAtk(statusP1, statusP2);
-			// incrNumDoubleAttack
-			break;
-		case SPATK3:
-			spAtk3(statusP1, statusP2);
-			// incrNumSPATK3
-			break;
-		case SPATK4:
-			spAtk4(statusP1, statusP2);
-			// incrNumSPATK4
-			break;
-		default:
-			throw new IllegalArgumentException("Error: Illegal move not caught.");	
+		playNextTurn(moveP1, statusP1, statusP2);
+		
+		if(statusP1.getHitPts() == 0) {
+			gameWinner = Winner.PLAYER_TWO;
 		}
 		
 		if(statusP2.getHitPts() == 0) {
@@ -165,48 +159,47 @@ class Turn {
 		return gameWinner;
 	}
 	
-	Winner playTurnPlayerTwo(Move moveP2){	// Changed by Jacob: Added additional method Winner method
-		int numRoll = 4;					// Added by Jacob
-		roll = DiceRoll.roll(numRoll);		// Added by Jacob; Gui needs to see the roll result
+	Winner playTurnPlayerTwo(Move moveP2){	
+		Winner gameWinner = Winner.NONE;
 		
-		if(gameWinner == Winner.NONE) {
-			
-			if(!Turn.moveIsLegal(statusP2, moveP2)) {
+		if(!Turn.moveIsLegal(statusP2, moveP2)) {
 				throw new IllegalArgumentException("Error: Illegal move not caught.");
-			}
-			
-			switch(moveP2) {
-			case ATTACK:
-				attack(statusP2, statusP1, roll);
-				break;
-			case FOOD:
-				food(statusP2);
-				break;
-			case FREEZE:
-				freeze(statusP2, statusP1);
-				break;
-			case DOUBLEATK:
-				doubleAtk(statusP2, statusP1);
-				break;
-			case SPATK3:
-				spAtk3(statusP2, statusP1);
-				break;
-			case SPATK4:
-				spAtk4(statusP2, statusP1);
-				break;
-			default:
-				throw new IllegalArgumentException("Error: Illegal move not caught.");	
-			}
-			
-			if(statusP1.getHitPts() == 0) {
-				gameWinner = Winner.PLAYER_TWO;
-			}
 		}
+		
+		playNextTurn(moveP2, statusP2, statusP1);
+			
+		if(statusP1.getHitPts() == 0) {
+			gameWinner = Winner.PLAYER_TWO;
+		}
+
 		return gameWinner;
 	}
-	
-	static int[] getRoll(){
-		return roll;
+	void playNextTurn(Move nextMove, Status turnPlayer, Status otherPlayer) {
+		switch(nextMove) {
+		case ATTACK:
+			attack(turnPlayer, otherPlayer);
+			break;
+		case FOOD:
+			food(turnPlayer);
+			break;
+		case FREEZE:
+			freeze(turnPlayer, otherPlayer);
+			break;
+		case DOUBLEATK:
+			doubleAtk(turnPlayer, otherPlayer);
+			break;
+		case SPATK3:
+			spAtk3(turnPlayer, otherPlayer);
+			break;
+		case SPATK4:
+			spAtk4(turnPlayer, otherPlayer);
+			break;
+		default:
+			throw new IllegalArgumentException("Error: Illegal move not caught.");	
+		}
+	}
+	int[] getLastRoll(){
+		return lastRoll;
 	}
 
 	static boolean moveIsLegal(Status turnPlayer, Move nextMove) {
@@ -223,13 +216,13 @@ class Turn {
 	/*
 	 * Changed attack method to accept a dice roll
 	 */
-	void attack(Status turnPlayer, Status otherPlayer, int[] turnRoll) {
+	void attack(Status turnPlayer, Status otherPlayer) {
 		// Roll 4 dice, do damage equal to combined result.
-		int numRoll = turnRoll.length;
-		//int[] diceResult = DiceRoll.roll(numRoll);
+		int numRoll = 4;
+		lastRoll = DiceRoll.roll(numRoll);
 		int sumDamage = 0;
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
-			sumDamage += turnRoll[rollCount];
+			sumDamage += lastRoll[rollCount];
 		}
 		
 		int oppHP = otherPlayer.getHitPts();
@@ -239,7 +232,6 @@ class Turn {
 		else {
 			otherPlayer.setHitPts(oppHP - sumDamage);
 		}
-		turnPlayer.setLastRoll(turnRoll);
 	}
 	
 	void food(Status turnPlayer) {
