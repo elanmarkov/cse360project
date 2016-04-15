@@ -246,3 +246,4 @@ class Turn {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 }
+
