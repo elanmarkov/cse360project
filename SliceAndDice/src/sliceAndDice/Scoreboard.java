@@ -20,6 +20,10 @@ static ArrayList<Player> players;
 public Scoreboard() {
 players = new ArrayList<Player>();
 }
+	static public ArrayList<Player> getPlayerArrayList() {
+		return players;
+	}
+
 	static public Player getPlayerByID(int userID) {
 		for(int index = 0; index < players.size(); index++){
 			if(players.get(index).getID() == userID) {
