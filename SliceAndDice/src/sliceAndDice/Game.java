@@ -329,7 +329,7 @@ class Turn {
 		}
 		turnPlayer.reduceFoodCount();
 	}
-	
+	           
 	void freeze(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
