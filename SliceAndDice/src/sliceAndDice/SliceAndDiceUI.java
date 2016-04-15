@@ -48,6 +48,8 @@ public class SliceAndDiceUI {
 	
 	Game game;
 	
+	//Scoreboard gameBoard = new  Scoreboard();
+	
 	Winner winner = Winner.NONE;
 	
 		/**
@@ -93,6 +95,7 @@ public class SliceAndDiceUI {
 		public void showUI(){
 			
 			final ChooseFirst whichPlayer = new ChooseFirst();
+			//gameBoard.getPlayerDataFromFile();
 /*
  * Container frame
  */
