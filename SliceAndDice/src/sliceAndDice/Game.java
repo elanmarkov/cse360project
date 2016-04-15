@@ -13,8 +13,6 @@ public class Game {
 	int totalTurns;
 
 	Game(Player playerOne, Player playerTwo) {
-		//Determine who is first and second by dice roll
-		//TODO: Add GUI interface where needed
 		totalTurns = 0;
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
@@ -22,14 +20,40 @@ public class Game {
 		playerTwoStatus = new Status();
 	}
 	/* For reference for designing GUI
-	 * Functionality replaced by PlayNextTurn below
-	 * void PlayGame () {
+	 pseudocode
+	 game(playerOne, PlayerTwo) // player 1 goes first
+	 winner = NONE
+	 while no winner
+	 	legalmove = false
+	 	while not legalmove
+	 		prompt P1 for move
+	 		if Turn.isLegalMove(StatusP1, MoveP1)
+	 			legalmove = true
+	 		else
+	 			tell user move is illegal
+	 	legalmove = false
+	 	while not legalmove
+	 		prompt P2 for move
+	 		if Turn.isLegalMove(StatusP2, Move)
+	 			legalmove = true
+	 		else
+	 			tell user move is illegal
+	 	winner = PlayNextTurn(MoveP1, MoveP2)
+	 	rollP1 = StatusP1.getLastRoll()
+	 	Play out P1 move and update displayed status
+	 	if winner = NONE
+	 		rollP2 = StatusP2.getLastRoll()
+	 		Play out P2 move and update displayed status
+	 Winner on screen.
+	 
+	*/
+	Winner  PlayNextTurn(Move moveP1, Move moveP2) {
 		Winner gameWinner = Winner.NONE;
-		while(gameWinner == Winner.NONE) {
-			Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
-			gameWinner = nextTurn.playTurn();
-			totalTurns++;
-		}
+				
+		Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
+		gameWinner = nextTurn.playTurn(moveP1, moveP2);
+		totalTurns++;
+		
 		if(gameWinner == Winner.PLAYER_ONE){
 			winnerID = playerOne.getID();
 			loserID = playerTwo.getID();
@@ -43,43 +67,23 @@ public class Game {
 		else {
 			throw new IllegalArgumentException("Game ended without a winner.");
 		}
-		
-		
-	}*/
-	void PlayGame () {
-		Winner gameWinner = Winner.NONE;
-		while(gameWinner == Winner.NONE) {
-			Turn nextTurn = new Turn(playerOneStatus, playerTwoStatus);
-			gameWinner = nextTurn.playTurn();
-			totalTurns++;
-		}
-		if(gameWinner == Winner.PLAYER_ONE){
-			winnerID = playerOne.getID();
-			loserID = playerTwo.getID();
-			playerOne.getPlayerData().incrWinCount();
-		}
-		else if(gameWinner == Winner.PLAYER_TWO){
-			winnerID = playerTwo.getID();
-			loserID = playerOne.getID();
-			playerTwo.getPlayerData().incrWinCount();
-		}
-		else {
-			throw new IllegalArgumentException("Game ended without a winner.");
-		}
-		
+		return gameWinner;
 		
 	}
-	boolean validMoveP1(Move moveP1) {
-		return Turn.moveIsLegal(playerOneStatus, moveP1);
+	Status getPlayerOneStatus() {
+		return playerOneStatus;
 	}
-	boolean validMoveP2(Move moveP2) {
-		return Turn.moveIsLegal(playerOneStatus, moveP2);
+	Status getPlayerTwoStatus() {
+		return playerTwoStatus;
 	}
-	int getWinner() {
+	int getWinnerID() {
 		return winnerID;
 	}
-	int getLoser() {
+	int getLoserID() {
 		return loserID;
+	}
+	int getTotalTurns() {
+		return totalTurns;
 	}
 	void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
@@ -137,17 +141,15 @@ public class Game {
 class Turn {
 	Status statusP1;
 	Status statusP2;
-	Move moveP1;
-	Move moveP2;
 
 	Turn(Status statusP1, Status statusP2) {
 		this.statusP1 = statusP1;
 		this.statusP2 = statusP2;
 	}
-	Winner playTurn() {
+	Winner playTurn(Move moveP1, Move moveP2) {
 		Winner gameWinner = Winner.NONE;
 		
-		if(Turn.moveIsLegal(statusP1, moveP1) == false) {
+		if(!Turn.moveIsLegal(statusP1, moveP1)) {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");
 		}
 		
@@ -185,7 +187,7 @@ class Turn {
 		
 		if(gameWinner == Winner.NONE) {
 			
-			if(Turn.moveIsLegal(statusP2, moveP2) == false) {
+			if(!Turn.moveIsLegal(statusP2, moveP2)) {
 				throw new IllegalArgumentException("Error: Illegal move not caught.");
 			}
 			
@@ -244,6 +246,7 @@ class Turn {
 		else {
 			otherPlayer.setHitPts(oppHP - sumDamage);
 		}
+		//turnPlayer.setLastRoll(diceResult);
 	}
 	void food(Status turnPlayer) {
 		// Add 25 hp, do not overmax hp
@@ -258,15 +261,15 @@ class Turn {
 		turnPlayer.reduceFoodCount();
 	}
 	void freeze(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	void doubleAtk(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	void spAtk3(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	void spAtk4(Status turnPlayer, Status otherPlayer) {
-		// Special attacks not yet implemented
+		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 }
