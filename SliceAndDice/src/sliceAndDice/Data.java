@@ -32,6 +32,22 @@ public class Data {
 	// totalGameTime = 0;
 	// totalTurnTime = 0;
 	}
+	
+	public String toString() { // put this as a method in Data
+		String dataString = "";
+		dataString += score + "\n";
+		dataString += rank + "\n";
+		dataString += totalGameCount + "\n";
+		dataString += totalWinCount + "\n";
+		dataString += totalNumAttacks + "\n";
+		dataString += totalNumMeals + "\n";
+		dataString += totalHealthLost + "\n";
+		dataString += totalManaUsed + "\n";
+		dataString += totalFoodUsed;
+		
+		return dataString;
+	}
+	
 	void loadData(Data data) {
 	score = data.getScore();
 	rank = data.getRank();
