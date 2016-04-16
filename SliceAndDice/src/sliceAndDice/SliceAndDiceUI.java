@@ -8,20 +8,26 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Random;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 //enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
 
 public class SliceAndDiceUI {
 	private final int MAX_HEIGHT = 500;
+	private final int GAME_HEIGHT = 600;
 	private final int MAX_WIDTH = 1000;
 	private final int MAX_HEALTH = 100;
 	private final int MIN_HEALTH = 0;
@@ -47,6 +53,8 @@ public class SliceAndDiceUI {
 	int debug = 0;
 	
 	Game game;
+	
+	GetStats stats = new GetStats();
 	
 	//Scoreboard gameBoard = new  Scoreboard();
 	
@@ -874,7 +882,7 @@ public class SliceAndDiceUI {
 						return;
 					}
 					
-					usernameOne = newOnePlayerUserText.getText();
+					usernameOne = newOnePlayerUserText.getText().toLowerCase();
 					
 					// TODO add call to check for existing user profile prior to launching player select window
 					
@@ -974,6 +982,8 @@ public class SliceAndDiceUI {
 			 */
 			whichPlayer.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
+					gameFrame.setPreferredSize(new Dimension(MAX_WIDTH, GAME_HEIGHT));
+					gameFrame.setResizable(false);
 					newGamePanel.removeAll();
 					gameFrame.remove(newGamePanel);
 					
@@ -1007,7 +1017,7 @@ public class SliceAndDiceUI {
 						
 						gameFrame.setContentPane(gamePlayPanel);
 						gameFrame.pack();
-						playerPane.setDividerLocation(.20);
+						playerPane.setDividerLocation(.25);
 						gameFrame.validate();
 				}
 			});
@@ -1022,9 +1032,14 @@ public class SliceAndDiceUI {
 						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name for both players");
 						return;
 					}
-					
-					usernameOne = userName1Text.getText();
-					usernameTwo = userName2Text.getText();
+					if(userName1Text.getText().length() > 30 || userName2Text.getText().length() > 30){
+						JOptionPane.showMessageDialog(gameFrame, "Usernames must be less than 30 characters");
+					}
+					if(userName1Text.getText().equals(userName2Text.getText())){
+						JOptionPane.showMessageDialog(gameFrame, "Usernames cannot match");
+					}
+					usernameOne = userName1Text.getText().toLowerCase();
+					usernameTwo = userName2Text.getText().toLowerCase();
 					
 					// TODO add call to check for existing user profiles
 					
@@ -1139,13 +1154,33 @@ public class SliceAndDiceUI {
 				}
 			});
 			
+			/*
+			 * Statistics 
+			 */
 			statFind.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					// TODO add get user stats stuff
+					String user;
+					JTable statTable;
+					
 					if(singleUserStatText.getText().isEmpty()){
 						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name");
+						return;
 					}
-					JOptionPane.showMessageDialog(gameFrame, "Need back end control function for this");
+					user = singleUserStatText.getText().toLowerCase();
+					if(stats.findPlayer(user) < 0){
+						JOptionPane.showMessageDialog(gameFrame, "Username does not exits");
+						singleUserStatText.setText("");
+						return;
+					}
+					
+					statTable = new JTable(stats.getTableOneName(user));
+					statsPanel.removeAll();
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, new JScrollPane(statTable));
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
 				}
 			});
 			
@@ -1167,8 +1202,15 @@ public class SliceAndDiceUI {
 			
 			allUserStats.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					// TODO add get user stats stuff
-					JOptionPane.showMessageDialog(gameFrame, "Need back end control function for this");
+					JTable statTable;
+					statTable = new JTable(stats.getTableAllNames());
+					statsPanel.removeAll();
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, new JScrollPane(statTable));
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
 				}
 			});
 			
@@ -1187,8 +1229,17 @@ public class SliceAndDiceUI {
 			
 			abtGameButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					// TODO add game rules stuff
-					JOptionPane.showMessageDialog(gameFrame, "This is the button that will show the game details");
+					File aboutGame = new File("src/sliceAndDice/game_resources/about.txt");
+					if(Desktop.isDesktopSupported()){
+						try {
+							Desktop.getDesktop().edit(aboutGame);
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(gameFrame, "File Read Error: " + e.getMessage());
+							e.printStackTrace();
+						}
+					}else{
+						JOptionPane.showMessageDialog(gameFrame, "Desktop not supported");
+					}
 				}
 			});
 			
@@ -1270,7 +1321,7 @@ public class SliceAndDiceUI {
 							
 							gameFrame.setContentPane(gamePlayPanel);
 							gameFrame.pack();
-							playerPane.setDividerLocation(.20);
+							playerPane.setDividerLocation(.25);
 							gameFrame.validate();
 						}else if(game.isPlayerOneTurn()){
 							
@@ -1293,7 +1344,7 @@ public class SliceAndDiceUI {
 							
 							gameFrame.setContentPane(gamePlayPanel);
 							gameFrame.pack();
-							playerPane.setDividerLocation(.20);
+							playerPane.setDividerLocation(.25);
 							gameFrame.validate();
 						}else{
 							JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong in Winner PlayNextTurn() method");
@@ -1305,13 +1356,13 @@ public class SliceAndDiceUI {
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
 						middleRightPanel.removeAll();
-						gameWinner.setText(game.playerOne.getUsername() + " has won!");
+						gameWinner.setText(game.getPlayerOneUsername() + " has won!");
 						middleRightPanel.add(gameWinner, BorderLayout.CENTER);
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 						gameFrame.pack();
-						playerPane.setDividerLocation(.20);
+						playerPane.setDividerLocation(.25);
 						gameFrame.validate();
 					}else if(winner.equals(Winner.PLAYER_TWO)){
 						// TODO add player two winner stuff
@@ -1320,13 +1371,13 @@ public class SliceAndDiceUI {
 						//plTwoHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
 						
 						middleRightPanel.removeAll();
-						gameWinner.setText(game.playerTwo.getUsername() + " has won!");
+						gameWinner.setText(game.getPlayerTwoUsername() + " has won!");
 						middleRightPanel.add(gameWinner, BorderLayout.CENTER);
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 						gameFrame.pack();
-						playerPane.setDividerLocation(.20);
+						playerPane.setDividerLocation(.25);
 						gameFrame.validate();
 					}
 //					delayTime();
@@ -1403,7 +1454,7 @@ public class SliceAndDiceUI {
 							activePlayer.setText(usernameTwo);
 							gameFrame.setContentPane(gamePlayPanel);
 							gameFrame.pack();
-							playerPane.setDividerLocation(.20);
+							playerPane.setDividerLocation(.25);
 							gameFrame.validate();
 							
 						}else if(game.isPlayerOneTurn()){
@@ -1439,7 +1490,7 @@ public class SliceAndDiceUI {
 							activePlayer.setText(usernameOne);
 							gameFrame.setContentPane(gamePlayPanel);
 							gameFrame.pack();
-							playerPane.setDividerLocation(.20);
+							playerPane.setDividerLocation(.25);
 							gameFrame.validate();
 							
 						}else{
@@ -1551,6 +1602,127 @@ class FillPainter implements Painter<JComponent>{
 }
 
 /**
+ * Get player statistic class
+ * @author Jacob
+ *
+ */
+class GetStats{
+	
+	Scoreboard scoreboard;
+	ArrayList<Player> players;
+	Vector<String> colNames;
+	Vector<Vector> rowData;
+	Player findPlayerStats;
+	
+	/**
+	 * Constructor
+	 */
+	public GetStats(){
+		scoreboard = new Scoreboard();
+		try{
+			scoreboard.readDataIntoArrayListFromFile();
+		}catch(IOException e){
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		players = Scoreboard.getPlayerArrayList();
+		findPlayerStats = new Player();
+		colNames = new Vector<String>();
+		rowData = new Vector<Vector>();
+		
+		setColNames();
+	}
+	
+	/**
+	 * Find player stats by user name.  Returns -1 if not found.
+	 * @param username
+	 * @return found
+	 */
+	public int findPlayer(String username){
+		int found = -1;
+		Player tmp = Scoreboard.getPlayerByUsername(username);
+		if(tmp != null){
+			found = 0;
+		}
+		System.out.println(found);
+		return found;
+	}
+	
+	/**
+	 * Loads column name vector
+	 */
+	private void setColNames(){
+		colNames.add("Username");
+		colNames.add("Score");
+		colNames.add("Rank");
+		colNames.add("Total Games");
+		colNames.add("Total Wins");
+		colNames.add("Total Attacks");
+		colNames.add("Total Meals");
+		colNames.add("Total Health Lost");
+		colNames.add("Total Mana Used");
+		colNames.add("Total Food");
+	}
+	
+	/**
+	 * Create vector of single user stats based on user name
+	 * @param username
+	 */
+	private void getSinglePlayer(String username){
+		findPlayerStats = Scoreboard.getPlayerByUsername(username);
+		if(findPlayerStats != null){
+			Vector<String> foundPlayer = new Vector<String>();
+			foundPlayer.add(findPlayerStats.getUsername());
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().score));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().rank));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getGame()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getWin()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getAttack()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getMeal()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getHPLost()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getManaUsed()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getFoodUsed()));
+			rowData.add(foundPlayer);
+		}
+	}
+	
+	/**
+	 * Create TableModel for single user stats
+	 * @param username
+	 * @return singleUserStat
+	 */
+	public TableModel getTableOneName(String username){
+		getSinglePlayer(username);
+		TableModel singleUserStat = new DefaultTableModel(rowData, colNames);
+		return singleUserStat;
+	}
+	
+	/**
+	 * Create TableModel for all user stats
+	 * @return allUserStat
+	 */
+	public TableModel getTableAllNames(){
+		TableModel allUserStat;
+		
+		for(int playerLoop = 0; playerLoop < players.size(); playerLoop++){
+			Vector<String> getPlayerStats = new Vector<String>();
+				getPlayerStats.add(players.get(playerLoop).getUsername());
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().score));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().rank));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getGame()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getWin()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getAttack()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getMeal()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getHPLost()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getManaUsed()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getFoodUsed()));
+				rowData.add(getPlayerStats);
+		}
+			allUserStat = new DefaultTableModel(rowData, colNames);
+		return allUserStat;
+	}
+}
+
+/**
  * Player select class.  Determines who goes first when new game is started
  * @author Jacob
  *
@@ -1570,15 +1742,15 @@ class ChooseFirst extends JFrame{
 	
 	JPanel choosePlayerPane;
 	
-	/*
-	 * ChooseFirst constructor
-	 * 
+	/**
+	 * Constructor
 	 */
 	public ChooseFirst(){
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Slice And Dice");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
 		this.setPreferredSize(new Dimension(600, 450));
+		this.setResizable(false);
 	}
 	
 	/**
@@ -1611,8 +1783,8 @@ class ChooseFirst extends JFrame{
 		return randNum;
 	}
 	
-	/*
-	 * Pack and validate the frame
+	/**
+	 * Pack and validate frame
 	 */
 	private void packAndValidate(){
 		this.setContentPane(choosePlayerPane);
@@ -1620,8 +1792,8 @@ class ChooseFirst extends JFrame{
 		this.validate();
 	}
 	
-	/*
-	 * Pack and show the frame
+	/**
+	 * Pack and show frame
 	 */
 	private void packAndShow(){
 		this.setContentPane(choosePlayerPane);
@@ -1629,13 +1801,16 @@ class ChooseFirst extends JFrame{
 		this.setVisible(true);
 	}
 	
-	/*
+	/**
 	 * Dispose frame
 	 */
 	private void disposeFrame(){
 		this.dispose();
 	}
-
+	
+	/**
+	 * Show GUI
+	 */
 	public void showPlayerSelect(){
 			
 			Icon diceRoll1Icon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/dice_roll_1.gif"));
