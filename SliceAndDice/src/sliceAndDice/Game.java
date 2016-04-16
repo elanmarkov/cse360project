@@ -45,8 +45,10 @@ public class Game {
 	 */
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
-		this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
+		//this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
+		//this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
+		this.playerOne = new Player(playerOne, 1);
+		this.playerTwo = new Player(playerTwo, 2);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
@@ -296,7 +298,7 @@ class Turn {
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	void playNextTurn(Move nextMove, Status turnPlayer, Status otherPlayer) {
+	private void playNextTurn(Move nextMove, Status turnPlayer, Status otherPlayer) {
 		switch(nextMove) {
 		case ATTACK:
 			attack(turnPlayer, otherPlayer);
@@ -349,7 +351,7 @@ class Turn {
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	void attack(Status turnPlayer, Status otherPlayer) {
+	private void attack(Status turnPlayer, Status otherPlayer) {
 		// Roll 4 dice, do damage equal to combined result.
 		int numRoll = 4;
 		lastRoll = DiceRoll.roll(numRoll);
@@ -370,7 +372,7 @@ class Turn {
 	 * Food method. Heals a given amount of HP for the turn player.
 	 * @param turnPlayer Status of the turn player.
 	 */
-	void food(Status turnPlayer) {
+	private void food(Status turnPlayer) {
 		// Add 25 hp, do not overmax hp
 		int healValue = 25;
 		int currHP = turnPlayer.getHitPts();
@@ -387,7 +389,7 @@ class Turn {
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	void freeze(Status turnPlayer, Status otherPlayer) {
+	private void freeze(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	/**
@@ -395,7 +397,7 @@ class Turn {
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	void doubleAtk(Status turnPlayer, Status otherPlayer) {
+	private void doubleAtk(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	/**
@@ -403,7 +405,7 @@ class Turn {
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	void spAtk3(Status turnPlayer, Status otherPlayer) {
+	private void spAtk3(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 	/**
@@ -411,7 +413,7 @@ class Turn {
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	void spAtk4(Status turnPlayer, Status otherPlayer) {
+	private void spAtk4(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
 }
