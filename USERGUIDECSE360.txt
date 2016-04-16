@@ -20,7 +20,7 @@ ___________________________________________________________________
 
 5. Game Modes
 
-6. Stats
+6. Statistics
 
 ___________________________________________________________________
 			      1. Creators
@@ -48,7 +48,13 @@ ___________________________________________________________________
 
 3. All players begin the round with 5 healing foods
 
-4. Only 1 decision per turn(Attack, SP Attack, Eat)
+4. The first player to move is decided by a six-sided die roll - whoever rolls
+highest goes first.
+
+5. Each player takes turns performing one move until the game is over. Possible
+moves are described in the Gameplay section of this document.
+
+6. The game ends when one player's hit points are reduced to 0.
 
 ___________________________________________________________________
 			     3. Gameplay
@@ -58,45 +64,58 @@ Objective:The goal of Slice and Dice is to attack your enemy until their HP reac
 To achieve this you will need to use basic attacks and special attacks while 
 also healing yourself using food.
 
+Possible Moves:
 
-Attack: Roll a 6 sided dice to attack your enemy
-Cost:No Mana Cost
-Damage: 4 x Roll
+	Attack: Roll four 6-sided dice to attack your enemy
+	Cost:None
+	Damage: The sum of the four dice rolls is the damage for the turn.
 
-Special Attack: Roll dice to (choose first?) use a unique ability
-Cost:?
-Damage:?
+	Special Attack: Choose use a unique ability and pay a cost in mana to use it.
+	Cost: varies
+	Damage: Varies
 
-Eat: Consume 1 Food and heal 25 HP( food can not be eaten unless at 75hp or lower)
+	Eat: Consume 1 Food and heal 25 HP(will not heal over 100 hp if at 75hp or higher)
+	Cost: 1 Food
 
 ___________________________________________________________________
-			  4. Special Attacks
+			  4. Special Attacks (NOT YET IMPLEMENTED)
 ___________________________________________________________________
 
 Freeze: Enemy is Frozen for 1 turn ( a Frozen player can not use any attacks or eat)
-Cost: X Mana
+NOT YET IMPLEMENTED
 
 Double Attack: Roll two dice and attack your opponent twice in one turn
-Cost: X Mana
+NOT YET IMPLEMENTED
+
+Special Attack 3: Perform a third special ability.
+NOT YET IMPLEMENTED
+
+Special Attack 4: Perform a fourth special ability.
+NOT YET IMPLEMENTED
 
 ___________________________________________________________________
 			  5. Game Modes
 ___________________________________________________________________
 
-Single Player: Battle against a computer enemy
+Single Player: Battle against a computer enemy.
+NOT YET IMPLEMENTED
 
-Dual: Battle against a human enemy
+Dual: Fight between two human enemies.
 
 ___________________________________________________________________
-			 6. Stats
+			 6. Statistics
 ___________________________________________________________________
 
-View stats about your played games:
+Clicking the Player Stats icon on the main page of the game GUI will allow
+the user to view statistics about games previously played. Statistics can be
+viewed for a single player (search by username) or for all players of the current
+game.
 
-Number of wins
-Number of turns
-Food used
-Mana used
-HP lost
+Statistics tracked:
 
-
+	Number of wins
+	Number of games played
+	Average number of turns per game
+	Average food used
+	Average mana used
+	Average HP lost
