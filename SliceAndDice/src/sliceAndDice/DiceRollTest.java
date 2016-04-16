@@ -3,7 +3,7 @@ package sliceAndDice;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-<<<<<<< HEAD
+
 /**
  * Test class for the DiceRoll class.
  * Methods are static; no instances of
