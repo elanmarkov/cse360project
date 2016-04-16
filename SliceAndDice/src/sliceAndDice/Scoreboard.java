@@ -13,25 +13,27 @@ import java.lang.Integer;
 /**
  * Scoreboard2 reads and writes data to and from data.txt, loads ArrayList of Players with data, computes
  * scores for Players, and sorts by scores to determine ranks.
+ * @author Andrew Stanton, PIN: 817, CSE 360, Spring 2016
+ * @version 4/15/16
  */
 public class Scoreboard{
 static ArrayList<Player> players;
 
-/**
- * constructor creating new ArrayList of Players
- */
-public Scoreboard() {
-players = new ArrayList<Player>();
-}
 	/**
+	 * Constructor that creates a new ArrayList of Players.
+	 */
+	public Scoreboard() {
+	players = new ArrayList<Player>();
+	}
+	/**
+	 * Returns Scoreboard's ArrayList of Players.
 	 * @return ArrayList of Players
 	 */
 	static public ArrayList<Player> getPlayerArrayList() {
 		return players;
 	}
-	
 	/**
-	 * given ID, returns Player or null if not found
+	 * Given an ID, returns Player or null, if Id was not found.
 	 * @param userID ID of Player to get
 	 * @return Player with given ID or null
 	 */
@@ -44,7 +46,7 @@ players = new ArrayList<Player>();
 		return null;
 	}
 	/**
-	 * given Player username, returns Player or null if not found
+	 * Given Player username, returns Player or null if not found.
 	 * @param username username of Player to get
 	 * @return Player with given username or null
 	 */
@@ -56,9 +58,8 @@ players = new ArrayList<Player>();
 		}
 		return null;
 	}
-	
 	/**
-	 * given username, returns ID or -1 if Player not found
+	 * Given username, returns ID or -1 if Player not found.
 	 * @param username username of Player
 	 * @return ID or -1
 	 */
@@ -70,9 +71,8 @@ players = new ArrayList<Player>();
 		}
 		return -1;
 	}
-	
 	/**
-	 * given ID, returns username of Player with ID
+	 * Given ID, returns username of Player with ID.
 	 * @param userID ID of Player to get
 	 * @return username or empty String
 	 */
@@ -84,9 +84,8 @@ players = new ArrayList<Player>();
 		}
 		return "";
 	}
-	
 	/**
-	 * returns Player with data from data.txt
+	 * Returns Player with data from data.txt.
 	 * @param readPlayers Scanner used to read players
 	 * @return Player with information from data.txt
 	 */
@@ -94,9 +93,8 @@ players = new ArrayList<Player>();
 		Player newPlayer = new Player(readPlayers);			
 		return newPlayer;
 	}
-	
 	/**
-	 * fills ArrayList of Players with Players from file
+	 * Fills Scoreboard's ArrayList of Players with Players from file.
 	 * @throws IOException
 	 */
 	public void readDataIntoArrayListFromFile() throws IOException{
@@ -106,9 +104,8 @@ players = new ArrayList<Player>();
 			players.set(count, getPlayerDataFromFile(readPlayers));
 		}
 	}
-	
 	/**
-	 * resets a Player's data in the ArrayList
+	 * Resets a Player's data in Scoreboard's ArrayList.
 	 * @param userID ID of Player with data to be reset
 	 */
     public void resetPlayerDataInArrayList(int userID) {
@@ -126,17 +123,15 @@ players = new ArrayList<Player>();
     		}
     	}
     }
-    
     /**
-     * adds new Player to the ArrayList
+     * Adds a new Player to Scoreboard's ArrayList.
      * @param newPlayer Player to be added
      */
     public void addNewPlayerToArrayList(Player newPlayer) {
     	players.add(newPlayer);
     }
-    
     /**
-     * returns true if Player is in ArrayList and false if Player is not in ArrayList
+     * Returns true if Player is in Scoreboard's ArrayList and false if Player is not in Scoreboard's ArrayList.
      * @param userID ID of Player to be checked for
      * @return true or false
      */
@@ -148,9 +143,8 @@ players = new ArrayList<Player>();
     	}
     	return false;
     }
-    
     /**
-     * updates data of Player in ArrayList using the Player's updated data
+     * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
      * @param playerToUpdate Player with data to update
      */
     public void updatePlayerDataInArrayList(Player playerToUpdate) {
@@ -160,9 +154,8 @@ players = new ArrayList<Player>();
     		}
     	}
     }
-	
 /*
-prints out a player, but not longer needed
+prints out a Player, but not longer needed.
  */
 //    public String playerToString(Player player) {
 //        String dataString = "";
@@ -182,9 +175,8 @@ prints out a player, but not longer needed
 //        dataString = dataString + player.getPlayerData().getFoodUsed() + "\n";
 //      return dataString;
 //    }
-	
     /**
-     * toString for Scoreboard, prints out the ArrayList of Players with information on separate lines
+     * Returns Scoreboard's ArrayList of Players with information on separate lines.
      */
     public String toString() {
     	String playerArrayListString = "";
@@ -193,9 +185,8 @@ prints out a player, but not longer needed
     	}
     	return playerArrayListString;
     }
-    
 	/**
-	 * writes numberOfPlayers and ArrayList of Players to file
+	 * Writes numberOfPlayers and Scoreboard's ArrayList of Players to file.
 	 * @throws IOException
 	 */
 	public void sendPlayerDataToFile() throws IOException{
@@ -208,9 +199,8 @@ prints out a player, but not longer needed
         }
         playerWriter.close();
 	}
-     
     /**
-     * given numberOfWins and numberOfGames, returns win percentage
+     * Given numberOfWins and numberOfGames, returns win percentage.
      * @param numberOfWins number of times Player has won a battle
      * @param numberOfGames number of battles the Player has played
      * @return win percentage
@@ -218,9 +208,8 @@ prints out a player, but not longer needed
     public float winPercentage(int numberOfWins, int numberOfGames) {
     	return (numberOfWins / numberOfGames);
     }
-    
     /**
-     * given scores of two Players and the winner, returns the newly computed score for Player with oldScore1
+     * Given scores of two Players and the winner, returns the newly computed score for Player with oldScore1.
      * @param oldScore1 current score of player 1
      * @param oldScore2 current score of player 2
      * @param winner which player won
@@ -246,9 +235,8 @@ prints out a player, but not longer needed
     	//oldScore2 = oldScore2 + (kValue * (actualScore2 - expectedScore2));
     	return newScore1;
     }
-    
     /**
-     * bubble sorts the ArrayList of Players by score, allowing the rank to be determined by position in ArrayList
+     * Bubble sorts Scoreboard's ArrayList of Players by score, allowing the rank to be determined by position in the ArrayList.
      * @param players ArrayList of Players to sort
      */
     public void sortArrayListByScore() {
@@ -270,5 +258,4 @@ prints out a player, but not longer needed
     		}
     	}
     }
-    
 }
