@@ -23,6 +23,8 @@ enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
  * handles logic for the interaction between users and the UI.
  * Calls Turn to play individual turns, completes statistics
  * between turns.
+ * 
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  *
  */
 public class Game {
@@ -218,6 +220,7 @@ public class Game {
  * Evaluates legality for each move based on status of each player.
  * Performs and stores dice rolls for the previous move.
  *
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  */
 class Turn {
 	private Status statusP1;

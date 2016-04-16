@@ -24,6 +24,7 @@ enum Condition {NONE}
  * Player class. Stores identifying information (username and 
  * unique ID) along with statistical data (Data object) for each
  * player.
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  *
  */
 public class Player {
@@ -106,6 +107,8 @@ public class Player {
  * of a game. Contains static methods to pass maximum HP/MP/food.
  * Stores player's hitpoints (HP), mana points (MP), food, and 
  * condition (from special attacks).
+ * 
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  */
 class Status {
 	private int hitPt;
