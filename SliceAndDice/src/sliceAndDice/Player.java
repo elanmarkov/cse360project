@@ -27,9 +27,9 @@ enum Condition {NONE}
  *
  */
 public class Player {
-	String username;
-	int playerID;
-	Data playerData;
+	private String username;
+	private int playerID;
+	private Data playerData;
 	/**
 	 * Constructor for player class.
 	 * @param username player's(unique) username

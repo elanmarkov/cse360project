@@ -26,15 +26,15 @@ enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
  *
  */
 public class Game {
-	Player playerOne;
-	Player playerTwo;
-	int winnerID;
-	int loserID;
-	Status playerOneStatus;
-	Status playerTwoStatus;
-	int totalTurns;
-	boolean playerOneTurn;
-	Turn nextTurn;
+	private Player playerOne;
+	private Player playerTwo;
+	private int winnerID;
+	private int loserID;
+	private Status playerOneStatus;
+	private Status playerTwoStatus;
+	private int totalTurns;
+	private boolean playerOneTurn;
+	private Turn nextTurn;
 	
 	/**
 	 * Constructor for Game class from two usernames.
@@ -206,8 +206,8 @@ public class Game {
  *
  */
 class Turn {
-	Status statusP1;
-	Status statusP2;
+	private Status statusP1;
+	private Status statusP2;
 	static int[] lastRoll;
 
 	/**
