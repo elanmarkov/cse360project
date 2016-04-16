@@ -87,6 +87,19 @@ public class Player {
 	Data getPlayerData() {
 		return playerData;
 	}
+	/**
+	 * toString method for Player class.
+	 * Prints username and invokes the toString of Data
+	 * to print the statistics data.
+	 * Does not print ID - ID is unique to the current game
+	 * and not relevant to the user.
+	 * @return String representation of the current player. 
+	 */
+	public String toString() { 
+		String playerString = "";
+		playerString += username + "\n";
+		return playerString + playerData;
+	}
 }
 /**
  * Status class. Stores the player's current status in the middle
