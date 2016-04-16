@@ -40,6 +40,7 @@ public class GameTest {
 	
 	@Test
 	public void playerOneGoesFirst() {
+		// Check that player one gets the first turn.
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
@@ -48,6 +49,7 @@ public class GameTest {
 	
 	@Test
 	public void playerTwoGoesSecond() {
+		// Check that player two gets the second turn.
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
@@ -57,6 +59,7 @@ public class GameTest {
 	
 	@Test
 	public void getTotalTurnsTest() {
+		// Check that the turn counter is accurate.
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
@@ -73,6 +76,7 @@ public class GameTest {
 	
 	@Test
 	public void getLastRollTest() {
+		// Check that Game returns the last roll.
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
@@ -85,6 +89,8 @@ public class GameTest {
 	
 	@Test
 	public void gameHasWinner() {
+		// Check that a winner has been determined
+		// After a game must have ended.
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
@@ -105,6 +111,8 @@ public class GameTest {
 	
 	@Test
 	public void gameWinnerHasID() {
+		// Check that a winner has been recorded
+		// After a game must have ended.
 		Player player1 = new Player("test1", 1);
 		Player player2 = new Player("test2", 2);
 		Game game = new Game(player1, player2);	
@@ -126,6 +134,8 @@ public class GameTest {
 	
 	@Test
 	public void gameLoserHasID() {
+		// Check that a loser has been recorded
+		// After a game must have ended.
 		Player player1 = new Player("test1", 1);
 		Player player2 = new Player("test2", 2);
 		Game game = new Game(player1, player2);	
@@ -145,11 +155,32 @@ public class GameTest {
 		assertTrue(loserHasID);
 	}
 	
+	@Test
+	public void evaluateLegalityInGame() {
+		// Check that the Turn.nextMoveLegality method
+		// can be used properly by Game for a legal move.
+		Player player1 = new Player("test1", 1);
+		Player player2 = new Player("test2", 2);
+		Game game = new Game(player1, player2);	
+		
+		IllegalMove nextMove = game.nextMoveLegality(Move.ATTACK);
+		assertEquals(nextMove, IllegalMove.NONE);
+	}
+	
 	//Class Turn Test
-	/*
+	@Test
+	public void turnNotNull() {
+		// Check that the Turn constructor initializes.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		assertNotNull(turn);
+		
+	}
+	
 	@Test
 	public void playTurnPlayerOneTest() {
-		
+		// Check that player 1 can play a turn.
 		Status status1 = new Status();
 		Status status2 = new Status();
 		Turn turn = new Turn(status1, status2);
@@ -159,7 +190,7 @@ public class GameTest {
 	
 	@Test
 	public void playTurnPlayerTwoTest() {
-		
+		// Check that player 2 can play a turn.
 		Status status1 = new Status();
 		Status status2 = new Status();
 		Turn turn = new Turn(status1, status2);
@@ -167,54 +198,100 @@ public class GameTest {
 	}
 	
 	@Test
-	public void playNextTurnTest2() {
-		
-		Game game = new Game("playerOne", "playerTwo");
-		game.nextTurn.playNextTurn(Move.ATTACK, game.getPlayerOneStatus(), game.getPlayerTwoStatus());
-		assertTrue(turn.statusP1.getHitPts() > turn.statusP2.getHitPts());
-	}
-	
-	@Test
-	public void getLastRollTest2() {
-		
-	}
-
-	@Test
-	public void moveIsLegalTest() {
-		
-	}
-	@Test
-	public void attackTest() {
+	public void playerOneTakesDamage() {
+		// Check that player 1 takes damage from an attack.
 		Status status1 = new Status();
 		Status status2 = new Status();
 		Turn turn = new Turn(status1, status2);
-		turn.attack(turn.statusP1, turn.statusP2);
-		assertTrue(turn.statusP2.getHitPts() < turn.statusP1.getHitPts());
+		turn.playTurnPlayerTwo(Move.ATTACK);
+		
+		boolean damageTaken = false;
+		if(status1.getHitPts() < Status.getMaxHP()) {
+			damageTaken = true;
+		}
+		assertTrue(damageTaken);
 		
 	}
 	
 	@Test
-	public void foodTest() {
+	public void playerTwoTakesDamage() {
+		// Check that player 2 takes damage from an attack.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		turn.playTurnPlayerOne(Move.ATTACK);
+		
+		boolean damageTaken = false;
+		if(status2.getHitPts() < Status.getMaxHP()) {
+			damageTaken = true;
+		}
+		assertTrue(damageTaken);
 		
 	}
 	
 	@Test
-	public void freezeTest() {
+	public void playerOneHealsFromFood() {
+		// Check that player one heals the previous damage
+		// after eating food.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		turn.playTurnPlayerTwo(Move.ATTACK);
+		turn.playTurnPlayerOne(Move.FOOD);
+		
+		boolean damageHealed = false;
+		if(status1.getHitPts() == Status.getMaxHP()) {
+			damageHealed = true;
+		}
+		assertTrue(damageHealed);
 		
 	}
 	
 	@Test
-	public void doubleAttackTest() {
+	public void playerTwoHealsFromFood() {
+		// Check that player two heals the previous damage
+		// after eating food.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		turn.playTurnPlayerOne(Move.ATTACK);
+		turn.playTurnPlayerTwo(Move.FOOD);
+		
+		boolean damageHealed = false;
+		if(status2.getHitPts() == Status.getMaxHP()) {
+			damageHealed = true;
+		}
+		assertTrue(damageHealed);
 		
 	}
 	
 	@Test
-	public void spAtk3Test() {
+	public void allowsLegalMove() {
+		// Check that Turn allows a move that is legal.
+		Status status1 = new Status();
+		IllegalMove move = Turn.moveIsLegal(status1, Move.ATTACK);
 		
+		assertEquals(move, IllegalMove.NONE);
 	}
 	
 	@Test
-	public void spAtk4Test() {
+	public void disallowEatOverLimit() {
+		// Check that Turn prevents the user from eating beyond their food count.
+		Status status1 = new Status();
+		for(int count = 1; count <= Status.getMaxFood(); count++) {
+			status1.reduceFoodCount();
+		}
+		IllegalMove move = Turn.moveIsLegal(status1, Move.FOOD);
 		
-	}*/
+		assertEquals(move, IllegalMove.NOFOOD);
+	}
+	
+	@Test
+	public void disallowNotImplementedMove() {
+		// Check that Turn does not allow moves that are not yet implemented.
+		Status status1 = new Status();
+		IllegalMove move = Turn.moveIsLegal(status1, Move.SPATK4);
+		
+		assertEquals(move, IllegalMove.NOTIMPLEMENTED);
+	}
 }
