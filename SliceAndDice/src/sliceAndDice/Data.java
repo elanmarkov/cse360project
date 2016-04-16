@@ -1,6 +1,7 @@
 package sliceAndDice;
 
 import sliceAndDice.Data;
+import java.util.Scanner;
 
 public class Data {
 	double score;
@@ -33,6 +34,18 @@ public class Data {
 	// totalTurnTime = 0;
 	}
 	
+	Data(Scanner dataReader) {
+		score = dataReader.nextDouble();
+		rank = dataReader.nextInt();
+		totalGameCount = dataReader.nextInt();
+		totalWinCount = dataReader.nextInt();
+		totalNumAttacks = dataReader.nextInt();
+		totalNumMeals = dataReader.nextInt();
+		totalHealthLost = dataReader.nextInt();
+		totalManaUsed = dataReader.nextInt();
+		totalFoodUsed = dataReader.nextInt();
+	}
+	
 	public String toString() { // put this as a method in Data
 		String dataString = "";
 		dataString += score + "\n";
@@ -48,21 +61,21 @@ public class Data {
 		return dataString;
 	}
 	
-	void loadData(Data data) {
-	score = data.getScore();
-	rank = data.getRank();
-	totalGameCount = data.getGame();
-	totalWinCount = data.getWin();
-	//totalNumTurns = data.getTurn();
-	totalNumAttacks = data.getAttack();
-	totalNumMeals = data.getMeal();
-	// totalNumSPAttacks = data.getSPAttack();
-	totalHealthLost = data.getHPLost();
-	totalManaUsed = data.getManaUsed();
-	totalFoodUsed = data.getFoodUsed();
-	// totalGameTime = data.getGameTime();
-	// totalTurnTime = data.getTurnTime();
-	}
+//	void loadData(Data data) {
+//	score = data.getScore();
+//	rank = data.getRank();
+//	totalGameCount = data.getGame();
+//	totalWinCount = data.getWin();
+//	//totalNumTurns = data.getTurn();
+//	totalNumAttacks = data.getAttack();
+//	totalNumMeals = data.getMeal();
+//	// totalNumSPAttacks = data.getSPAttack();
+//	totalHealthLost = data.getHPLost();
+//	totalManaUsed = data.getManaUsed();
+//	totalFoodUsed = data.getFoodUsed();
+//	// totalGameTime = data.getGameTime();
+//	// totalTurnTime = data.getTurnTime();
+//	}
 	/* set methods */
 	void setScore(double score) {
 		this.score = score;
