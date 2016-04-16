@@ -29,7 +29,7 @@ static ArrayList<Player> players;
 	 * Returns Scoreboard's ArrayList of Players.
 	 * @return ArrayList of Players
 	 */
-	static public ArrayList<Player> getPlayerArrayList() {
+	public static ArrayList<Player> getPlayerArrayList() {
 		return players;
 	}
 	/**
@@ -37,52 +37,72 @@ static ArrayList<Player> players;
 	 * @param userID ID of Player to get
 	 * @return Player with given ID or null
 	 */
-	static public Player getPlayerByID(int userID) {
-		for(int index = 0; index < players.size(); index++){
+	public static Player getPlayerByID(int userID) {
+		boolean found = false;
+		int index = 0;
+		Player playerToFind = null;
+		while(index < players.size() && !found) {
 			if(players.get(index).getID() == userID) {
-				return players.get(index);
+				playerToFind = players.get(index);
+				found = true;
 			}
+			index++;
 		}
-		return null;
+		return playerToFind;
 	}
 	/**
 	 * Given Player username, returns Player or null if not found.
 	 * @param username username of Player to get
 	 * @return Player with given username or null
 	 */
-	static public Player getPlayerByUsername(String username) {
-		for(int index = 0; index < players.size(); index++){
-			if(players.get(index).equals(username)) {
-				return players.get(index);
+	public static Player getPlayerByUsername(String username) {
+		boolean found = false;
+		int index = 0;
+		Player playerToFind = null;
+		while(index < players.size() && !found) {
+			if(players.get(index).getUsername().equals(username) == true) {
+				playerToFind = players.get(index);
+				found = true;
 			}
+			index++;
 		}
-		return null;
+		return playerToFind;
 	}
 	/**
 	 * Given username, returns ID or -1 if Player not found.
 	 * @param username username of Player
 	 * @return ID or -1
 	 */
-	static public int getIDByUsername(String username) {
-		for(int index = 0; index < players.size(); index++) {
-			if(players.get(index).getUsername() == username) {
-				return players.get(index).getID();
+	public static int getIDByUsername(String username) {
+		boolean found = false;
+		int index = 0;
+		int playerID = -1;
+		while(index < players.size() && !found) {
+			if(players.get(index).getUsername().equals(username) == true) {
+				playerID = players.get(index).getID();
+				found = true;
 			}
+			index++;
 		}
-		return -1;
+		return playerID;
 	}
 	/**
 	 * Given ID, returns username of Player with ID.
 	 * @param userID ID of Player to get
 	 * @return username or empty String
 	 */
-	static public String getUsernameByID(int userID) {
-		for(int index = 0; index < players.size(); index++) {
+	public static String getUsernameByID(int userID) {
+		boolean found = false;
+		int index = 0;
+		String playerUsername = "";
+		while(index < players.size() && !found) {
 			if(players.get(index).getID() == userID) {
-				return players.get(index).getUsername();
+				playerUsername = players.get(index).getUsername();
+				found = true;
 			}
+			index++;
 		}
-		return "";
+		return playerUsername;
 	}
 	/**
 	 * Returns Player with data from data.txt.
@@ -137,12 +157,15 @@ static ArrayList<Player> players;
      * @return true or false
      */
     public boolean checkForPlayerInArrayList(int userID) {
-    	for(int index = 0; index < players.size(); index++) {
+    	boolean found = false;
+    	int index = 0;
+    	while(index < players.size() && !found) {
     		if(players.get(index).getID() == userID) {
-    			return true;
+    			found = true;
     		}
+    		index++;
     	}
-    	return false;
+    	return found;
     }
     /**
      * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
