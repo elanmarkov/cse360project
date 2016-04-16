@@ -1034,9 +1034,15 @@ public class SliceAndDiceUI {
 					}
 					if(userName1Text.getText().length() > 30 || userName2Text.getText().length() > 30){
 						JOptionPane.showMessageDialog(gameFrame, "Usernames must be less than 30 characters");
+						userName1Text.setText("");
+						userName2Text.setText("");
+						return;
 					}
 					if(userName1Text.getText().equals(userName2Text.getText())){
 						JOptionPane.showMessageDialog(gameFrame, "Usernames cannot match");
+						userName1Text.setText("");
+						userName2Text.setText("");
+						return;
 					}
 					usernameOne = userName1Text.getText().toLowerCase();
 					usernameTwo = userName2Text.getText().toLowerCase();
