@@ -14,7 +14,7 @@ package sliceAndDice;
  * Andrew Stanton
  *
  */
-import java.util.ArrayList;
+
 enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
 enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
 
