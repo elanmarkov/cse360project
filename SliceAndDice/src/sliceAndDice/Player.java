@@ -13,6 +13,8 @@ package sliceAndDice;
  * Andrew Stanton
  *
  */
+import java.util.Scanner;
+
 import sliceAndDice.Condition;
 import sliceAndDice.Move;
 import sliceAndDice.Status;
@@ -32,19 +34,31 @@ public class Player {
 	private int playerID;
 	private Data playerData;
 	/**
-	 * Constructor for player class.
-	 * @param username player's(unique) username
-	 * @param playerID unique ID for player
+	 * Default constructor for Player class.
 	 */
 	Player() {
 		username = "";
 		playerID = -1;
 		playerData = new Data();
 	}
+	/**
+	 * Constructor for Player class from username and ID.
+	 * @param username player's(unique) username
+	 * @param playerID unique ID for player
+	 */
 	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
 		playerData = new Data();
+	}
+	/**
+	 * Constructor for Player class from Scanner.
+	 * @param playerReader Scanner object from which ID and username is read.
+	 */
+	Player(Scanner playerReader) { 
+		playerID = playerReader.nextInt();
+		username = playerReader.next();
+		playerData = new Data(playerReader);
 	}
 	/**
 	 * Setter class for ID.
