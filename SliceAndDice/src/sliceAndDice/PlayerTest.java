@@ -3,7 +3,11 @@ package sliceAndDice;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/**
+ * JUnit tests for the Player class.
+ * @author Eisher Saroya
+ *
+ */
 public class PlayerTest {
 
 	@Test

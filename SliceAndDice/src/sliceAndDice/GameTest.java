@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * JUnit tests for the Game class.
+ * @author Eisher Saroya
+ *
+ */
 public class GameTest {
 
 	@Test
