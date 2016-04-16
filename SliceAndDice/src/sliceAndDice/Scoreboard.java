@@ -101,7 +101,7 @@ static ArrayList<Player> players;
 		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
 		int numberOfPlayers = readPlayers.nextInt();
 		for(int count = 0; count < numberOfPlayers; count++) {
-			players.set(count, getPlayerDataFromFile(readPlayers));
+			players.add(getPlayerDataFromFile(readPlayers));
 		}
 		readPlayers.close();
 	}

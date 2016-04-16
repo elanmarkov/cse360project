@@ -71,7 +71,7 @@ public class Data {
 		dataString += totalNumMeals + "\n";
 		dataString += totalHealthLost + "\n";
 		dataString += totalManaUsed + "\n";
-		dataString += totalFoodUsed;
+		dataString += totalFoodUsed + "\n";
 		
 		return dataString;
 	}

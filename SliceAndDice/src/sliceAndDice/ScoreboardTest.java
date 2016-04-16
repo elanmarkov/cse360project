@@ -20,13 +20,14 @@ public class ScoreboardTest extends Scoreboard{
 	 * Expected Result: Should print out user1 then 1000 (score) then 1 (rank) then 7 zeroes (rest of data)
 	 * 		Note: Should not print user IDs.
 	 */
-	@Test 
-	public void testGetPlayerDataFromFile1() throws IOException{
-		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
-		readPlayers.nextInt();
-		System.out.println(getPlayerDataFromFile(readPlayers).toString());
-		System.out.println("\n"); // to separate outputs
-	}
+//	@Test 
+//	public void testGetPlayerDataFromFile1() throws IOException{
+//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		readPlayers.nextInt();
+//		System.out.println(getPlayerDataFromFile(readPlayers).toString());
+//		System.out.println("\n"); // to separate outputs
+//		readPlayers.close();
+//	}
 	/*
 	 * Test: Load two players from file and print
 	 * Status: Passed
@@ -35,14 +36,15 @@ public class ScoreboardTest extends Scoreboard{
 	 * 		Then should print out user2 then 1000 (score) then 1 then 7 zeroes (rest of data)
 	 * 		Note: Should not print user IDs.
 	 */
-	@Test 
-	public void testGetPlayerDataFromFile2() throws IOException{
-		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
-		readPlayers.nextInt();
-		System.out.println(getPlayerDataFromFile(readPlayers).toString());
-		System.out.println(getPlayerDataFromFile(readPlayers).toString());
-		System.out.println("\n");
-	}
+//	@Test 
+//	public void testGetPlayerDataFromFile2() throws IOException{
+//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		readPlayers.nextInt();
+//		System.out.println(getPlayerDataFromFile(readPlayers).toString());
+//		System.out.println(getPlayerDataFromFile(readPlayers).toString());
+//		System.out.println("\n");
+//		readPlayers.close();
+//	}
 	/*
 	 * Test: Load three players from file with different stats and print
 	 * Status: Passed
@@ -52,16 +54,18 @@ public class ScoreboardTest extends Scoreboard{
 	 * of data having 2s, then user3 then 3333 then 3 then 7 pieces of data having 3s
 	 * 		Note: Should not print user IDs.
 	 */
-	@Test
-	public void testGetPlayerDataFromFile3() throws IOException{
-		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
-		readPlayers.nextInt();
-		System.out.println(getPlayerDataFromFile(readPlayers).toString());
-		System.out.println(getPlayerDataFromFile(readPlayers).toString());
-		System.out.println(getPlayerDataFromFile(readPlayers).toString());
-		System.out.println("\n");
-	}
+//	@Test
+//	public void testGetPlayerDataFromFile3() throws IOException{
+//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		readPlayers.nextInt();
+//		System.out.println(getPlayerDataFromFile(readPlayers).toString());
+//		System.out.println(getPlayerDataFromFile(readPlayers).toString());
+//		System.out.println(getPlayerDataFromFile(readPlayers).toString());
+//		System.out.println("\n");
+//		readPlayers.close();
+//	}
 	/*
+	 * Status: Passed
 	 * 
 	 */
 	@Test
@@ -71,15 +75,28 @@ public class ScoreboardTest extends Scoreboard{
 		System.out.println(board.toString());
 		System.out.println("\n");
 	}
-
+	/*
+	 * Status: Passed
+	 */
 	@Test
-	public void testResetPlayerDataInArrayList() {
-		fail("Not yet implemented");
+	public void testResetPlayerDataInArrayList() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.resetPlayerDataInArrayList(2);
+		System.out.println(board.toString());
+		System.out.println("\n");
 	}
-
+	/*
+	 * Status: Passed, because the constructor initializes username to empty String
+	 */
 	@Test
-	public void testAddNewPlayerToArrayList() {
-		fail("Not yet implemented");
+	public void testAddNewPlayerToArrayList() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		Player newPlayer = new Player();
+		board.addNewPlayerToArrayList(newPlayer);
+		System.out.println(board.toString());
+		System.out.println("\n");
 	}
 
 	@Test
@@ -110,10 +127,19 @@ public class ScoreboardTest extends Scoreboard{
 	}
 
 	@Test
-	public void testSortArrayListByScore() {
+	public void testSortArrayListByScore() throws IOException{
 		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
 		Scoreboard board = new Scoreboard();
 		board.getPlayerDataFromFile(readPlayers);
+		assertNotNull(board.getPlayerArrayList());
+	}
+	
+	@Test
+	public void testGetPlayerArrayList() throws IOException{
+		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+		Scoreboard board = new Scoreboard();
+		board.getPlayerDataFromFile(readPlayers);
+		assertNotNull(board.getPlayerArrayList());
 	}
 
 }
