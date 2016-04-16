@@ -195,8 +195,10 @@ prints out a Player, but not longer needed.
         BufferedWriter playerWriter = new BufferedWriter(writer);
         Integer numPlayers = players.size();
     	playerWriter.write(numPlayers.toString());
+    	playerWriter.write("\n");
         for(int count = 0; count < players.size(); count++) {
         	playerWriter.write((players.get(count).toString()));
+        	playerWriter.write("\n");
         }
         playerWriter.close();
 	}

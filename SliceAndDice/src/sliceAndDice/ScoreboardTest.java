@@ -78,40 +78,68 @@ public class ScoreboardTest extends Scoreboard{
 	/*
 	 * Status: Passed
 	 */
-	@Test
-	public void testResetPlayerDataInArrayList() throws IOException{
-		Scoreboard board = new Scoreboard();
-		board.readDataIntoArrayListFromFile();
-		board.resetPlayerDataInArrayList(2);
-		System.out.println(board.toString());
-		System.out.println("\n");
-	}
+//	@Test
+//	public void testResetPlayerDataInArrayList() throws IOException{
+//		Scoreboard board = new Scoreboard();
+//		board.readDataIntoArrayListFromFile();
+//		board.resetPlayerDataInArrayList(2);
+//		System.out.println(board.toString());
+//		System.out.println("\n");
+//	}
 	/*
 	 * Status: Passed, because the constructor initializes username to empty String
 	 */
+//	@Test
+//	public void testAddNewPlayerToArrayList() throws IOException{
+//		Scoreboard board = new Scoreboard();
+//		board.readDataIntoArrayListFromFile();
+//		Player newPlayer = new Player();
+//		board.addNewPlayerToArrayList(newPlayer);
+//		System.out.println(board.toString());
+//		System.out.println("\n");
+//	}
+	/*
+	 * Status: Passed - returned true because user3 is in ArrayList
+	 */
+//	@Test
+//	public void testCheckForPlayerInArrayList1() throws IOException{
+//		Scoreboard board = new Scoreboard();
+//		board.readDataIntoArrayListFromFile();
+//		System.out.print(board.checkForPlayerInArrayList(3));
+//		System.out.println("\n");
+//	}
+	/*
+	 * Status: Passed - returned false because no user has ID 4 in ArrayList
+	 */
+//	@Test
+//	public void testCheckForPlayerInArrayList2() throws IOException{
+//		Scoreboard board = new Scoreboard();
+//		board.readDataIntoArrayListFromFile();
+//		System.out.print(board.checkForPlayerInArrayList(4));
+//		System.out.println("\n");
+//	}
+	/*
+	 * Status: Passed - incremented the game count to 23 for user2
+	 */
 	@Test
-	public void testAddNewPlayerToArrayList() throws IOException{
+	public void testUpdatePlayerDataInArrayList() throws IOException{
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
-		Player newPlayer = new Player();
-		board.addNewPlayerToArrayList(newPlayer);
-		System.out.println(board.toString());
+		board.getPlayerByID(2).getPlayerData().incrGameCount();
+		board.updatePlayerDataInArrayList(board.getPlayerByID(2));
+		System.out.print(board.toString());
 		System.out.println("\n");
 	}
-
+	/*
+	 * Status: Passed - it outputted the data to outputData.txt file
+	 * Setup: change the method to write to outputData.txt
+	 * Note: it does not print the IDs, so it is correct
+	 */
 	@Test
-	public void testCheckForPlayerInArrayList() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testUpdatePlayerDataInArrayList() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSendPlayerDataToFile() {
-		fail("Not yet implemented");
+	public void testSendPlayerDataToFile() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.sendPlayerDataToFile();
 	}
 
 	@Test
