@@ -41,6 +41,7 @@ public class SliceAndDiceUI {
 	private String computer = "Evil AI Bot";
 	private JSplitPane splitPane;
 	private JSplitPane playerPane;
+	private JScrollPane scrollStats;
 	
 	public String tempUser = "";
 	public int plOneHlth = 100;
@@ -103,6 +104,7 @@ public class SliceAndDiceUI {
 		public void showUI(){
 			
 			final ChooseFirst whichPlayer = new ChooseFirst();
+			//boolean tableVisible = false;
 			//gameBoard.getPlayerDataFromFile();
 /*
  * Container frame
@@ -1179,9 +1181,13 @@ public class SliceAndDiceUI {
 						return;
 					}
 					
-					statTable = new JTable(stats.getTableOneName(user));
+					splitPane.removeAll();
 					statsPanel.removeAll();
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, new JScrollPane(statTable));
+					
+					statTable = new JTable(stats.getTableOneName(user));
+					scrollStats = new JScrollPane(statTable);
+					
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
 					statsPanel.add(splitPane, BorderLayout.CENTER);
 					gameFrame.setContentPane(statsPanel);
 					gameFrame.pack();
@@ -1195,7 +1201,9 @@ public class SliceAndDiceUI {
 					if(!singleUserStatText.getText().isEmpty()){
 						singleUserStatText.setText("");
 					}
-					statsPanel.removeAll();
+					splitPane.removeAll();
+					statsPanel.remove(splitPane);
+					
 					gameFrame.remove(statsPanel);
 					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, imagePanel);
 					statsPanel.add(splitPane, BorderLayout.CENTER);
@@ -1209,9 +1217,14 @@ public class SliceAndDiceUI {
 			allUserStats.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					JTable statTable;
+					
+					splitPane.removeAll();
+					statsPanel.remove(splitPane);
+
 					statTable = new JTable(stats.getTableAllNames());
-					statsPanel.removeAll();
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, new JScrollPane(statTable));
+					scrollStats = new JScrollPane(statTable);
+					
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
 					statsPanel.add(splitPane, BorderLayout.CENTER);
 					gameFrame.setContentPane(statsPanel);
 					gameFrame.pack();
@@ -1619,6 +1632,7 @@ class GetStats{
 	Vector<String> colNames;
 	Vector<Vector> rowData;
 	Player findPlayerStats;
+	boolean isVisible;
 	
 	/**
 	 * Constructor
@@ -1634,7 +1648,7 @@ class GetStats{
 		findPlayerStats = new Player();
 		colNames = new Vector<String>();
 		rowData = new Vector<Vector>();
-		
+		isVisible = false;
 		setColNames();
 	}
 	
@@ -1649,7 +1663,7 @@ class GetStats{
 		if(tmp != null){
 			found = 0;
 		}
-		System.out.println(found);
+//		System.out.println(found);
 		return found;
 	}
 	
@@ -1675,6 +1689,11 @@ class GetStats{
 	 */
 	private void getSinglePlayer(String username){
 		findPlayerStats = Scoreboard.getPlayerByUsername(username);
+		
+		if(isVisible){
+			rowData.clear();
+		}
+		
 		if(findPlayerStats != null){
 			Vector<String> foundPlayer = new Vector<String>();
 			foundPlayer.add(findPlayerStats.getUsername());
@@ -1688,6 +1707,7 @@ class GetStats{
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getManaUsed()));
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getFoodUsed()));
 			rowData.add(foundPlayer);
+			isVisible = true;
 		}
 	}
 	
@@ -1709,6 +1729,10 @@ class GetStats{
 	public TableModel getTableAllNames(){
 		TableModel allUserStat;
 		
+		if(isVisible){
+			rowData.clear();
+		}
+		
 		for(int playerLoop = 0; playerLoop < players.size(); playerLoop++){
 			Vector<String> getPlayerStats = new Vector<String>();
 				getPlayerStats.add(players.get(playerLoop).getUsername());
@@ -1723,7 +1747,10 @@ class GetStats{
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getFoodUsed()));
 				rowData.add(getPlayerStats);
 		}
-			allUserStat = new DefaultTableModel(rowData, colNames);
+		
+		isVisible = true;
+		allUserStat = new DefaultTableModel(rowData, colNames);
+		
 		return allUserStat;
 	}
 }
