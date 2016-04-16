@@ -52,7 +52,7 @@ static ArrayList<Player> players;
 	 */
 	static public Player getPlayerByUsername(String username) {
 		for(int index = 0; index < players.size(); index++){
-			if(players.get(index).getUsername() == username) {
+			if(players.get(index).equals(username)) {
 				return players.get(index);
 			}
 		}
