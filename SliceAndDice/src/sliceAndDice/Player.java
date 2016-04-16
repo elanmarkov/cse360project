@@ -13,6 +13,8 @@ package sliceAndDice;
  * Andrew Stanton
  *
  */
+import java.util.Scanner;
+
 import sliceAndDice.Condition;
 import sliceAndDice.Move;
 import sliceAndDice.Status;
@@ -24,26 +26,39 @@ enum Condition {NONE}
  * Player class. Stores identifying information (username and 
  * unique ID) along with statistical data (Data object) for each
  * player.
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  *
  */
 public class Player {
-	String username;
-	int playerID;
-	Data playerData;
+	private String username;
+	private int playerID;
+	private Data playerData;
 	/**
-	 * Constructor for player class.
-	 * @param username player's(unique) username
-	 * @param playerID unique ID for player
+	 * Default constructor for Player class.
 	 */
 	Player() {
 		username = "";
 		playerID = -1;
 		playerData = new Data();
 	}
+	/**
+	 * Constructor for Player class from username and ID.
+	 * @param username player's(unique) username
+	 * @param playerID unique ID for player
+	 */
 	Player(String username, int playerID) {
 		this.username = username;
 		this.playerID = playerID;
 		playerData = new Data();
+	}
+	/**
+	 * Constructor for Player class from Scanner.
+	 * @param playerReader Scanner object from which ID and username is read.
+	 */
+	Player(Scanner playerReader) { 
+		playerID = playerReader.nextInt();
+		username = playerReader.next();
+		playerData = new Data(playerReader);
 	}
 	/**
 	 * Setter class for ID.
@@ -87,12 +102,27 @@ public class Player {
 	Data getPlayerData() {
 		return playerData;
 	}
+	/**
+	 * toString method for Player class.
+	 * Prints username and invokes the toString of Data
+	 * to print the statistics data.
+	 * Does not print ID - ID is unique to the current game
+	 * and not relevant to the user.
+	 * @return String representation of the current player. 
+	 */
+	public String toString() { 
+		String playerString = "";
+		playerString += username + "\n";
+		return playerString + playerData;
+	}
 }
 /**
  * Status class. Stores the player's current status in the middle
  * of a game. Contains static methods to pass maximum HP/MP/food.
  * Stores player's hitpoints (HP), mana points (MP), food, and 
  * condition (from special attacks).
+ * 
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  */
 class Status {
 	private int hitPt;

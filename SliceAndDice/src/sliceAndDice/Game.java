@@ -23,18 +23,20 @@ enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
  * handles logic for the interaction between users and the UI.
  * Calls Turn to play individual turns, completes statistics
  * between turns.
+ * 
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  *
  */
 public class Game {
-	Player playerOne;
-	Player playerTwo;
-	int winnerID;
-	int loserID;
-	Status playerOneStatus;
-	Status playerTwoStatus;
-	int totalTurns;
-	boolean playerOneTurn;
-	Turn nextTurn;
+	private Player playerOne;
+	private Player playerTwo;
+	private int winnerID;
+	private int loserID;
+	private Status playerOneStatus;
+	private Status playerTwoStatus;
+	private int totalTurns;
+	private boolean playerOneTurn;
+	private Turn nextTurn;
 	
 	/**
 	 * Constructor for Game class from two usernames.
@@ -152,6 +154,20 @@ public class Game {
 		return totalTurns;
 	}
 	/**
+	 * Getter class for Player 1 username.
+	 * @return Player 1's username.
+	 */
+	String getPlayerOneUsername() {
+		return playerOne.getUsername();
+	}
+	/**
+	 * Getter class for Player 2 username.
+	 * @return Player 2's username.
+	 */
+	String getPlayerTwoUsername() {
+		return playerTwo.getUsername();
+	}
+	/**
 	 * Returns the last roll made in the current turn.
 	 * @return Array containing each individual roll for this game.
 	 */
@@ -204,10 +220,11 @@ public class Game {
  * Evaluates legality for each move based on status of each player.
  * Performs and stores dice rolls for the previous move.
  *
+ * @author Elan Markov, PIN 525, CSE 360, Spring 2016
  */
 class Turn {
-	Status statusP1;
-	Status statusP2;
+	private Status statusP1;
+	private Status statusP2;
 	static int[] lastRoll;
 
 	/**
@@ -221,7 +238,7 @@ class Turn {
 	}
 	
 	/**
-	 * Plays a move if it is player 1's turn.
+	 * Plays a move and evaluates win condition if it is player 1's turn.
 	 * @param moveP1 the most recent (legal) move of player 1.
 	 * @return Winner of the current game, or no winner.
 	 */
@@ -241,9 +258,9 @@ class Turn {
 		return gameWinner;
 	}
 	/**
-	 * 
-	 * @param moveP2
-	 * @return
+	 * Plays a move and evaluates win condition if it is player 2's turn.
+	 * @param moveP2 the most recent (legal) move of player 2.
+	 * @return Winner of the current game, or no winner yet.
 	 */
 	Winner playTurnPlayerTwo(Move moveP2){	
 		Winner gameWinner = Winner.NONE;
@@ -260,6 +277,12 @@ class Turn {
 
 		return gameWinner;
 	}
+	/**
+	 * Executes move by calling relevant function.
+	 * @param nextMove Move to be performed by turn player.
+	 * @param turnPlayer Status of turn player.
+	 * @param otherPlayer Status of off-turn player.
+	 */
 	void playNextTurn(Move nextMove, Status turnPlayer, Status otherPlayer) {
 		switch(nextMove) {
 		case ATTACK:
@@ -284,21 +307,35 @@ class Turn {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
 	}
+	/**
+	 * Returns the last value rolled by a player.
+	 * @return
+	 */
 	int[] getLastRoll(){
 		return lastRoll;
 	}
-
+	/**
+	 * Static class, evalates given a Status and Move whether or not that move is legal.
+	 * @param turnPlayer Status of the turn player.
+	 * @param nextMove Move to be evaluated.
+	 * @return Violation notification, or none if move is legal.
+	 */
 	static IllegalMove moveIsLegal(Status turnPlayer, Move nextMove) {
 		IllegalMove violation = IllegalMove.NONE;
-		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() == 0) {
+		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() <= 0) {
 			violation = IllegalMove.NOFOOD;
 		}
-		else if (nextMove != Move.ATTACK) {
+		else if (nextMove != Move.ATTACK && nextMove != Move.FOOD) { 
+			// Moves that have not yet been created
 			violation = IllegalMove.NOTIMPLEMENTED;
 		}
 		return violation;
 	}
-	
+	/**
+	 * Attack method. Performs basic attack based on dice roll value.
+	 * @param turnPlayer Status of turn player.
+	 * @param otherPlayer Status of off-turn player.
+	 */
 	void attack(Status turnPlayer, Status otherPlayer) {
 		// Roll 4 dice, do damage equal to combined result.
 		int numRoll = 4;
@@ -316,7 +353,10 @@ class Turn {
 			otherPlayer.setHitPts(oppHP - sumDamage);
 		}
 	}
-	
+	/**
+	 * Food method. Heals a given amount of HP for the turn player.
+	 * @param turnPlayer Status of the turn player.
+	 */
 	void food(Status turnPlayer) {
 		// Add 25 hp, do not overmax hp
 		int healValue = 25;
@@ -329,19 +369,35 @@ class Turn {
 		}
 		turnPlayer.reduceFoodCount();
 	}
-	           
+	/**
+	 * Special attack. Not yet implemented.
+	 * @param turnPlayer Status of turn player.
+	 * @param otherPlayer Status of off-turn player.
+	 */
 	void freeze(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
-	
+	/**
+	 * Special attack. Not yet implemented.
+	 * @param turnPlayer Status of turn player.
+	 * @param otherPlayer Status of off-turn player.
+	 */
 	void doubleAtk(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
-	
+	/**
+	 * Special attack. Not yet implemented.
+	 * @param turnPlayer Status of turn player.
+	 * @param otherPlayer Status of off-turn player.
+	 */
 	void spAtk3(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
-	
+	/**
+	 * Special attack. Not yet implemented.
+	 * @param turnPlayer Status of turn player.
+	 * @param otherPlayer Status of off-turn player.
+	 */
 	void spAtk4(Status turnPlayer, Status otherPlayer) {
 		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
 	}
