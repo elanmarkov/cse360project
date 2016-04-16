@@ -207,7 +207,9 @@ prints out a Player, but not longer needed.
      * @return win percentage
      */
     public float winPercentage(int numberOfWins, int numberOfGames) {
-    	return (numberOfWins / numberOfGames);
+    	float numWins = (float) numberOfWins;
+    	float numGames = (float) numberOfGames;
+    	return (numWins / numGames);
     }
     /**
      * Given scores of two Players and the winner, returns the newly computed score for Player with oldScore1.
