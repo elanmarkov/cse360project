@@ -7,84 +7,146 @@ import org.junit.Test;
 public class GameTest {
 
 	@Test
-	public void playNextTurnTest() {
-	
-		Game game = new Game("playerone", "playertwo");
-		game.PlayNextTurn(Move.ATTACK);
+	public void gameNotNull() {
+		// Ensure that a Game instance properly initializes
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
+		assertNotNull(game);
 		
-		assertTrue(game.playerOneStatus.get);
-		
-	}
-	
-	@Test
-	public void nextMoveLegalityTest() {
-		
-	}
+	} 
 	
 	@Test
-	public void isPlayerOneTurnTest() {
+	public void player1StatusNotNull() {
+		// Ensure that a Status instance properly initializes for player 1
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
 		
-		Game game = new Game("playerone", "playertwo");
-		assertEquals(game.isPlayerOneTurn(), game.playerOneTurn);
-	}
-	
-	@Test
-	public void getPlayerOneStatusTest() {
-		
-		Game game = new Game("playerone", "playertwo");
-		assertEquals(game.getPlayerOneStatus(), game.playerOneStatus);
-	}
-	
-	@Test
-	public void getPlayerTwoStatusTest() {
-		
-		Game game = new Game("playerone", "playertwo");
-		assertEquals(game.getPlayerTwoStatus(), game.playerTwoStatus);
-	}
-	
-	@Test
-	public void getWinnerIDTest() {
-		
-		Game game = new Game("Playerone", "playertwo");
-		game.winnerID = 5;
-		
-		assertEquals(game.getWinnerID(), 5);
-		
-	}
-	
-	@Test
-	public void getLoserIDTest() {
+		assertNotNull(game.getPlayerOneStatus());
 
-		Game game = new Game("Playerone", "playertwo");
-		game.loserID = 5;
+	}
+	
+	@Test
+	public void player2StatusNotNull() {
+		// Ensure that a Status instance properly initializes for player 2
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
 		
-		assertEquals(game.getLoserID(), 5);
+		assertNotNull(game.getPlayerTwoStatus());
+
+	}
+	
+	@Test
+	public void playerOneGoesFirst() {
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
+		assertEquals(game.isPlayerOneTurn(), true);
+	}
+	
+	@Test
+	public void playerTwoGoesSecond() {
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
+		game.PlayNextTurn(Move.ATTACK);
+		assertEquals(game.isPlayerOneTurn(), false);
 	}
 	
 	@Test
 	public void getTotalTurnsTest() {
-		Game game = new Game("playerone", "playertwo");
-		game.totalTurns = 7;
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
 		
-		assertEquals(game.getTotalTurns(), 7);
+		game.PlayNextTurn(Move.ATTACK);
+		game.PlayNextTurn(Move.ATTACK);
+		game.PlayNextTurn(Move.ATTACK);
+		game.PlayNextTurn(Move.ATTACK);
+		game.PlayNextTurn(Move.ATTACK);
+		game.PlayNextTurn(Move.ATTACK);
+		
+		assertEquals(game.getTotalTurns(), 6);
 	}
 	
 	@Test
 	public void getLastRollTest() {
-		Game game = new Game("playerone", "playertwo");
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
 		
+		game.PlayNextTurn(Move.ATTACK);
+		int[] roll = game.getLastRoll();
+		
+		assertEquals(roll.length, 4);
 	}
 	
 	@Test
-	public void updateMoveCountTest() {
-		Game game = new Game("playerone", "playertwo");
-		game.updateMoveCount(game.playerOne, Move.ATTACK );
-		assertEquals(game.playerOne.getPlayerData().totalNumAttacks, 1);
+	public void gameHasWinner() {
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Game game = new Game(player1, player2);	
+		boolean isWinner = false;
+		Winner result = Winner.NONE;
 		
+		int turnCount = 0;
+		while(!isWinner && turnCount < 40) {
+			result = game.PlayNextTurn(Move.ATTACK);
+			if(result != Winner.NONE) {
+				isWinner = true;
+			}
+			turnCount++;
+		}
+		
+		assertTrue(isWinner);
+	}
+	
+	@Test
+	public void gameWinnerHasID() {
+		Player player1 = new Player("test1", 1);
+		Player player2 = new Player("test2", 2);
+		Game game = new Game(player1, player2);	
+		boolean isWinner = false;
+		Winner result = Winner.NONE;
+		
+		int turnCount = 0;
+		while(!isWinner && turnCount < 40) {
+			result = game.PlayNextTurn(Move.ATTACK);
+			if(result != Winner.NONE) {
+				isWinner = true;
+			}
+			turnCount++;
+		}
+		
+		boolean winnerHasID = (game.getWinnerID() != -1);
+		assertTrue(winnerHasID);
+	}
+	
+	@Test
+	public void gameLoserHasID() {
+		Player player1 = new Player("test1", 1);
+		Player player2 = new Player("test2", 2);
+		Game game = new Game(player1, player2);	
+		boolean isWinner = false;
+		Winner result = Winner.NONE;
+		
+		int turnCount = 0;
+		while(!isWinner && turnCount < 40) {
+			result = game.PlayNextTurn(Move.ATTACK);
+			if(result != Winner.NONE) {
+				isWinner = true;
+			}
+			turnCount++;
+		}
+		
+		boolean loserHasID = (game.getWinnerID() != -1);
+		assertTrue(loserHasID);
 	}
 	
 	//Class Turn Test
-	
+	/*
 	@Test
 	public void playTurnPlayerOneTest() {
 		
@@ -154,5 +216,5 @@ public class GameTest {
 	@Test
 	public void spAtk4Test() {
 		
-	}
+	}*/
 }

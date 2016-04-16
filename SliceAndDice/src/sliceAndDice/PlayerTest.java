@@ -12,7 +12,7 @@ public class PlayerTest {
 		Player player1 = new Player("PlayerOne", 7);
 		
 		player1.setID(32);
-		assertEquals(player1.playerID, 32);
+		assertEquals(player1.getID(), 32);
 	}
 	
 	@Test
