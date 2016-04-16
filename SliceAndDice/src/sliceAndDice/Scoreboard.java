@@ -8,7 +8,9 @@ import sliceAndDice.Player;
 
 import java.lang.Integer;
 
-
+/* Sources:
+ * https://metinmediamath.wordpress.com/2013/11/27/how-to-calculate-the-elo-rating-including-example/
+ */
 
 /**
  * Scoreboard2 reads and writes data to and from data.txt, loads ArrayList of Players with data, computes
@@ -29,7 +31,7 @@ static ArrayList<Player> players;
 	 * Returns Scoreboard's ArrayList of Players.
 	 * @return ArrayList of Players
 	 */
-	static public ArrayList<Player> getPlayerArrayList() {
+	public static ArrayList<Player> getPlayerArrayList() {
 		return players;
 	}
 	/**
@@ -37,7 +39,7 @@ static ArrayList<Player> players;
 	 * @param userID ID of Player to get
 	 * @return Player with given ID or null
 	 */
-	static public Player getPlayerByID(int userID) {
+	public static Player getPlayerByID(int userID) {
 		for(int index = 0; index < players.size(); index++){
 			if(players.get(index).getID() == userID) {
 				return players.get(index);
@@ -50,9 +52,9 @@ static ArrayList<Player> players;
 	 * @param username username of Player to get
 	 * @return Player with given username or null
 	 */
-	static public Player getPlayerByUsername(String username) {
+	public static Player getPlayerByUsername(String username) {
 		for(int index = 0; index < players.size(); index++){
-			if(players.get(index).getUsername() == username) {
+			if(players.get(index).getUsername().equals(username) == true) {
 				return players.get(index);
 			}
 		}
@@ -191,7 +193,7 @@ prints out a Player, but not longer needed.
 	 * @throws IOException
 	 */
 	public void sendPlayerDataToFile() throws IOException{
-		FileWriter writer = new FileWriter("data.txt");
+		FileWriter writer = new FileWriter("outputData.txt");
         BufferedWriter playerWriter = new BufferedWriter(writer);
         Integer numPlayers = players.size();
     	playerWriter.write(numPlayers.toString());

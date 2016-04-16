@@ -13,6 +13,35 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 public class ScoreboardTest extends Scoreboard{
+	
+	@Test
+	public void testScoreboardConstructor1() {
+		Scoreboard board = new Scoreboard();
+		assertNotNull(board);
+	}
+	@Test
+	public void testGetPlayerDataFromFile() throws IOException{
+		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+		Scoreboard board = new Scoreboard();
+		board.getPlayerDataFromFile(readPlayers);
+		assertNotNull(board.getPlayerArrayList());
+	}
+	
+//	@Test
+//	public void testGetPlayerArrayList() throws IOException {
+//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		Scoreboard board = new Scoreboard();
+//		board.getPlayerDataFromFile(readPlayers);
+//		System.out.println(board.getPlayerArrayList().toString());	
+//	}
+	
+	@Test
+	public void testGetPlayerByUsername() throws IOException {
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(board.getPlayerByUsername("user1").toString());
+		//System.out.println(board.toString());
+	}
 	/*
 	 * Test: Load one player from file and print
 	 * Status: Passed
@@ -68,13 +97,13 @@ public class ScoreboardTest extends Scoreboard{
 	 * Status: Passed
 	 * 
 	 */
-	@Test
-	public void testReadDataIntoArrayListFromFile() throws IOException{
-		Scoreboard board = new Scoreboard();
-		board.readDataIntoArrayListFromFile();
-		System.out.println(board.toString());
-		System.out.println("\n");
-	}
+//	@Test
+//	public void testReadDataIntoArrayListFromFile() throws IOException{
+//		Scoreboard board = new Scoreboard();
+//		board.readDataIntoArrayListFromFile();
+//		System.out.println(board.toString());
+//		System.out.println("\n");
+//	}
 	/*
 	 * Status: Passed
 	 */
@@ -121,15 +150,15 @@ public class ScoreboardTest extends Scoreboard{
 	/*
 	 * Status: Passed - incremented the game count to 23 for user2
 	 */
-	@Test
-	public void testUpdatePlayerDataInArrayList() throws IOException{
-		Scoreboard board = new Scoreboard();
-		board.readDataIntoArrayListFromFile();
-		board.getPlayerByID(2).getPlayerData().incrGameCount();
-		board.updatePlayerDataInArrayList(board.getPlayerByID(2));
-		System.out.print(board.toString());
-		System.out.println("\n");
-	}
+//	@Test
+//	public void testUpdatePlayerDataInArrayList() throws IOException{
+//		Scoreboard board = new Scoreboard();
+//		board.readDataIntoArrayListFromFile();
+//		board.getPlayerByID(2).getPlayerData().incrGameCount();
+//		board.updatePlayerDataInArrayList(board.getPlayerByID(2));
+//		System.out.print(board.toString());
+//		System.out.println("\n");
+//	}
 	/*
 	 * Status: Passed - it outputted the data to outputData.txt file
 	 * Setup: change the method to write to outputData.txt
@@ -161,13 +190,4 @@ public class ScoreboardTest extends Scoreboard{
 		board.getPlayerDataFromFile(readPlayers);
 		assertNotNull(board.getPlayerArrayList());
 	}
-	
-	@Test
-	public void testGetPlayerArrayList() throws IOException{
-		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
-		Scoreboard board = new Scoreboard();
-		board.getPlayerDataFromFile(readPlayers);
-		assertNotNull(board.getPlayerArrayList());
-	}
-
 }
