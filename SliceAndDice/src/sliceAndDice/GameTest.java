@@ -10,9 +10,7 @@ public class GameTest {
 	public void playNextTurnTest() {
 	
 		Game game = new Game("playerone", "playertwo");
-		game.PlayNextTurn(Move.ATTACK);
-		
-		assertTrue(game.playerOneStatus.get);
+		assertEquals(game.PlayNextTurn(Move.ATTACK), Winner.NONE);
 		
 	}
 	
@@ -25,30 +23,26 @@ public class GameTest {
 	public void isPlayerOneTurnTest() {
 		
 		Game game = new Game("playerone", "playertwo");
-		assertEquals(game.isPlayerOneTurn(), game.playerOneTurn);
+		assertEquals(game.isPlayerOneTurn(), true);
 	}
 	
 	@Test
 	public void getPlayerOneStatusTest() {
 		
-		Game game = new Game("playerone", "playertwo");
-		assertEquals(game.getPlayerOneStatus(), game.playerOneStatus);
+		fail("cannot access private variables");
 	}
 	
 	@Test
 	public void getPlayerTwoStatusTest() {
 		
-		Game game = new Game("playerone", "playertwo");
-		assertEquals(game.getPlayerTwoStatus(), game.playerTwoStatus);
+		fail("cannot access private variables");
 	}
 	
 	@Test
 	public void getWinnerIDTest() {
 		
 		Game game = new Game("Playerone", "playertwo");
-		game.winnerID = 5;
-		
-		assertEquals(game.getWinnerID(), 5);
+		assertEquals(game.getWinnerID(), -1);
 		
 	}
 	
@@ -56,17 +50,14 @@ public class GameTest {
 	public void getLoserIDTest() {
 
 		Game game = new Game("Playerone", "playertwo");
-		game.loserID = 5;
-		
-		assertEquals(game.getLoserID(), 5);
+		assertEquals(game.getLoserID(), -1);
 	}
 	
 	@Test
 	public void getTotalTurnsTest() {
 		Game game = new Game("playerone", "playertwo");
-		game.totalTurns = 7;
+		assertEquals(game.getTotalTurns(), 0);
 		
-		assertEquals(game.getTotalTurns(), 7);
 	}
 	
 	@Test
@@ -78,8 +69,9 @@ public class GameTest {
 	@Test
 	public void updateMoveCountTest() {
 		Game game = new Game("playerone", "playertwo");
-		game.updateMoveCount(game.playerOne, Move.ATTACK );
-		assertEquals(game.playerOne.getPlayerData().totalNumAttacks, 1);
+		Player player1 = new Player();
+		game.updateMoveCount(player1, Move.ATTACK );
+		assertEquals(player1.getPlayerData().totalNumAttacks, 1);
 		
 	}
 	
@@ -106,10 +98,11 @@ public class GameTest {
 	
 	@Test
 	public void playNextTurnTest2() {
-		
-		Game game = new Game("playerOne", "playerTwo");
-		game.nextTurn.playNextTurn(Move.ATTACK, game.getPlayerOneStatus(), game.getPlayerTwoStatus());
-		assertTrue(turn.statusP1.getHitPts() > turn.statusP2.getHitPts());
+		Status status1 = new Status();
+		Status status2 = new Status();		
+		Turn turn = new Turn(status1, status2);
+		turn.playNextTurn(Move.ATTACK, status1, status2);
+		assertTrue(status1.getHitPts() > status2.getHitPts());
 	}
 	
 	@Test
@@ -120,39 +113,99 @@ public class GameTest {
 	@Test
 	public void moveIsLegalTest() {
 		
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		
+		assertEquals(turn.moveIsLegal(status1, Move.SPATK4), IllegalMove.NOTIMPLEMENTED);
 	}
 	@Test
 	public void attackTest() {
 		Status status1 = new Status();
 		Status status2 = new Status();
 		Turn turn = new Turn(status1, status2);
-		turn.attack(turn.statusP1, turn.statusP2);
-		assertTrue(turn.statusP2.getHitPts() < turn.statusP1.getHitPts());
+		turn.attack(status1, status2);
+		assertTrue(status2.getHitPts() < status1.getHitPts());
 		
 	}
 	
 	@Test
 	public void foodTest() {
-		
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		turn.food(status1);
+		assertEquals(status1.getFoodCount(), status1.getMaxFood() - 1);
 	}
 	
 	@Test
 	public void freezeTest() {
+
+		Status status1 = new Status();
+		Status status2 = new Status();		
+		Turn turn = new Turn(status1, status2);
+		boolean thrown = false;
 		
+		try{
+			turn.freeze(status1, status2);
+		}
+		catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		
+		assertTrue(thrown);
 	}
 	
 	@Test
-	public void doubleAttackTest() {
+	public void doubleAtkTest() {
 		
+		Status status1 = new Status();
+		Status status2 = new Status();		
+		Turn turn = new Turn(status1, status2);
+		boolean thrown = false;
+		
+		try{
+			turn.doubleAtk(status1, status2);
+		}
+		catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		
+		assertTrue(thrown);
 	}
 	
 	@Test
 	public void spAtk3Test() {
 		
+		Status status1 = new Status();
+		Status status2 = new Status();		
+		Turn turn = new Turn(status1, status2);
+		boolean thrown = false;
+		
+		try{
+			turn.spAtk3(status1, status2);
+		}
+		catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		
+		assertTrue(thrown);
 	}
 	
 	@Test
 	public void spAtk4Test() {
+		Status status1 = new Status();
+		Status status2 = new Status();		
+		Turn turn = new Turn(status1, status2);
+		boolean thrown = false;
 		
+		try{
+			turn.spAtk4(status1, status2);
+		}
+		catch(IllegalArgumentException e) {
+			thrown = true;
+		}
+		
+		assertTrue(thrown);
 	}
 }
