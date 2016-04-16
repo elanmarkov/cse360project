@@ -45,10 +45,23 @@ public class Game {
 	 */
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		//this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
-		//this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
-		this.playerOne = new Player(playerOne, 0);
-		this.playerTwo = new Player(playerTwo, 1);
+		this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
+		this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
+		playerOneStatus = new Status();
+		playerTwoStatus = new Status();
+		playerOneTurn = true;
+		winnerID = -1; // no winner yet
+		loserID = -1; // no winner yet
+	}
+	/**
+	 * Constructor for Game class from two Player objects.
+	 * @param playerOne Player that goes first
+	 * @param playerTwo Player that goes second
+	 */
+	Game(Player playerOne, Player playerTwo) {
+		totalTurns = 0;
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
@@ -177,7 +190,7 @@ public class Game {
 	/**
 	 * Updates the player statistics for each player at the end of the game.
 	 */
-	void updateStats() {
+	private void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
 		playerOne.getPlayerData().updateHealthLost(playerOneStatus.getHitPts());
 		playerOne.getPlayerData().updateManaUsed(playerOneStatus.getMana());
@@ -192,7 +205,7 @@ public class Game {
 	 * @param turnPlayer the Player who just made a move
 	 * @param turnPlayerMove the move made by the player
 	 */
-	void updateMoveCount(Player turnPlayer, Move turnPlayerMove) {
+	private void updateMoveCount(Player turnPlayer, Move turnPlayerMove) {
 		switch (turnPlayerMove) {
 		case ATTACK:
 			turnPlayer.getPlayerData().incrNumAttacks();
