@@ -107,10 +107,8 @@ public class GameTest {
 	@Test
 	public void playNextTurnTest2() {
 		
-		Status status1 = new Status();
-		Status status2 = new Status();
-		Turn turn = new Turn(status1, status2);
-		turn.playNextTurn(Move.ATTACK, status1, status2);
+		Game game = new Game("playerOne", "playerTwo");
+		game.nextTurn.playNextTurn(Move.ATTACK, game.getPlayerOneStatus(), game.getPlayerTwoStatus());
 		assertTrue(turn.statusP1.getHitPts() > turn.statusP2.getHitPts());
 	}
 	
@@ -123,7 +121,6 @@ public class GameTest {
 	public void moveIsLegalTest() {
 		
 	}
-	
 	@Test
 	public void attackTest() {
 		Status status1 = new Status();
