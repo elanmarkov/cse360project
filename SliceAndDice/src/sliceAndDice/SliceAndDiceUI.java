@@ -104,6 +104,7 @@ public class SliceAndDiceUI {
 		public void showUI(){
 			
 			final ChooseFirst whichPlayer = new ChooseFirst();
+			final StopRoll stop = new StopRoll();
 			//boolean tableVisible = false;
 			//gameBoard.getPlayerDataFromFile();
 /*
@@ -1198,9 +1199,10 @@ public class SliceAndDiceUI {
 			
 			singleStatExit.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					if(!singleUserStatText.getText().isEmpty()){
+					
+					if(!singleUserStatText.getText().isEmpty())
 						singleUserStatText.setText("");
-					}
+					
 					splitPane.removeAll();
 					statsPanel.remove(splitPane);
 					
@@ -1235,6 +1237,7 @@ public class SliceAndDiceUI {
 			
 			statsExit.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					
 					modePanel.removeAll();
 					gameFrame.remove(statsPanel);
 					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
@@ -1246,6 +1249,26 @@ public class SliceAndDiceUI {
 				}
 			});
 			
+			singleUserStats.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					if(!singleUserStatText.getText().isEmpty())
+						singleUserStatText.setText("");
+					
+					statsPanel.removeAll();
+					gameFrame.remove(statsPanel);
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelSingleUserButtons, imagePanel);
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			/*
+			 * About game
+			 */
 			abtGameButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					File aboutGame = new File("src/sliceAndDice/game_resources/about.txt");
@@ -1259,19 +1282,6 @@ public class SliceAndDiceUI {
 					}else{
 						JOptionPane.showMessageDialog(gameFrame, "Desktop not supported");
 					}
-				}
-			});
-			
-			singleUserStats.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					statsPanel.removeAll();
-					gameFrame.remove(statsPanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelSingleUserButtons, imagePanel);
-					statsPanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(statsPanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
 				}
 			});
 			
@@ -1318,6 +1328,13 @@ public class SliceAndDiceUI {
 //					}
 					
 					if(winner.equals(Winner.NONE)){
+						
+						SwingUtilities.invokeLater(new Runnable(){
+							public void run(){
+								stop.showStopRoll();
+							}
+						});
+						
 						if(!game.isPlayerOneTurn()){
 							
 							playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
@@ -1602,6 +1619,87 @@ public class SliceAndDiceUI {
 }
 
 /**
+ * Display button to stop in game dice roll
+ * @author Jacob
+ *
+ */
+@SuppressWarnings("serial")
+class StopRoll extends JFrame{
+	
+	private JButton stopButton;
+	private JPanel stopPanel;
+	private JPanel topPanel;
+	private JPanel bottomPanel;
+	
+	Font smallButtonFont = new Font("Trebuchet MS", Font.BOLD, 24);
+	Font labelFont = new Font("Trebuchet MS", Font.BOLD, 28);
+	
+	/**
+	 * Constructor
+	 */
+	public StopRoll(){
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setTitle("Slice And Dice");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
+		this.setPreferredSize(new Dimension(400, 200));
+		this.setResizable(false);
+		
+		stopPanel = new JPanel(new BorderLayout(5,5));
+		topPanel = new JPanel(new BorderLayout(5,5));
+		bottomPanel = new JPanel(new GridLayout(1,3,5,5));
+		
+		stopPanel.setBorder(BorderFactory.createTitledBorder(""));
+		stopButton = new JButton("Stop Roll");
+		stopButton.setToolTipText("Push to stop your roll of the dice");
+	}
+	
+	/**
+	 * Pack and show frame
+	 */
+	private void packAndShow(){
+		this.setContentPane(stopPanel);
+		this.pack();
+		this.setVisible(true);
+	}
+	
+	/**
+	 * Dispose frame
+	 */
+	private void disposeFrame(){
+		stopPanel.removeAll();
+		this.dispose();
+	}
+	
+	/**
+	 * Show frame
+	 */
+	public void showStopRoll(){
+		JLabel instruct = new JLabel("Push button to stop dice roll");
+			instruct.setFont(labelFont);
+			instruct.setForeground(Color.red);
+			//instruct.setAlignmentX(stopPanel.CENTER_ALIGNMENT);
+			
+			topPanel.add(instruct, BorderLayout.CENTER);
+			bottomPanel.add(new JPanel());
+			bottomPanel.add(stopButton);
+			bottomPanel.add(new JPanel());
+			
+		
+			stopPanel.add(topPanel, BorderLayout.CENTER);
+			stopPanel.add(bottomPanel, BorderLayout.SOUTH);
+			
+			packAndShow();
+			
+			stopButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					disposeFrame();
+				}
+			});
+	}
+	
+}
+
+/**
  * Custom painter class to fill progress bars with custom color
  * @author Jacob
  *
@@ -1612,7 +1710,10 @@ class FillPainter implements Painter<JComponent>{
 	public FillPainter(Color c){
 		color = c;
 	}
-
+	
+	/**
+	 * Paint method.  Gets custom color from Graphics2D class
+	 */
 	@Override
 	public void paint(Graphics2D g, JComponent object, int width, int height) {
 		g.setColor(color);
@@ -1765,6 +1866,7 @@ class ChooseFirst extends JFrame{
 	
 	private JLabel playerOne;
 	private JLabel playerTwo;
+	private JPanel choosePlayerPane;
 	Boolean winner = false;
 	
 	Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
@@ -1772,8 +1874,6 @@ class ChooseFirst extends JFrame{
 	Font verySmallLabelFont = new Font("Trebuchet MS", Font.BOLD, 10);
 	Font smallButtonFont = new Font("Trebuchet MS", Font.BOLD, 16);
 	Font largeLabelFont = new Font("Trubuchet MS", Font.BOLD, 24);
-	
-	JPanel choosePlayerPane;
 	
 	/**
 	 * Constructor
