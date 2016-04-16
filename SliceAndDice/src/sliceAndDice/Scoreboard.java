@@ -103,6 +103,7 @@ static ArrayList<Player> players;
 		for(int count = 0; count < numberOfPlayers; count++) {
 			players.set(count, getPlayerDataFromFile(readPlayers));
 		}
+		readPlayers.close();
 	}
 	/**
 	 * Resets a Player's data in Scoreboard's ArrayList.
