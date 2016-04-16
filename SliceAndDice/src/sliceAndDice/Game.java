@@ -152,6 +152,20 @@ public class Game {
 		return totalTurns;
 	}
 	/**
+	 * Getter class for Player 1 username.
+	 * @return Player 1's username.
+	 */
+	String getPlayerOneUsername() {
+		return playerOne.getUsername();
+	}
+	/**
+	 * Getter class for Player 2 username.
+	 * @return Player 2's username.
+	 */
+	String getPlayerTwoUsername() {
+		return playerTwo.getUsername();
+	}
+	/**
 	 * Returns the last roll made in the current turn.
 	 * @return Array containing each individual roll for this game.
 	 */
