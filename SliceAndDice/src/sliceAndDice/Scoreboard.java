@@ -8,6 +8,9 @@ import sliceAndDice.Player;
 
 import java.lang.Integer;
 
+/* Sources:
+ * https://metinmediamath.wordpress.com/2013/11/27/how-to-calculate-the-elo-rating-including-example/
+ */
 
 
 /**
@@ -29,7 +32,7 @@ static ArrayList<Player> players;
 	 * Returns Scoreboard's ArrayList of Players.
 	 * @return ArrayList of Players
 	 */
-	static public ArrayList<Player> getPlayerArrayList() {
+	public static ArrayList<Player> getPlayerArrayList() {
 		return players;
 	}
 	/**
@@ -37,52 +40,72 @@ static ArrayList<Player> players;
 	 * @param userID ID of Player to get
 	 * @return Player with given ID or null
 	 */
-	static public Player getPlayerByID(int userID) {
-		for(int index = 0; index < players.size(); index++){
+	public static Player getPlayerByID(int userID) {
+		boolean found = false;
+		int index = 0;
+		Player playerToFind = null;
+		while(index < players.size() && !found) {
 			if(players.get(index).getID() == userID) {
-				return players.get(index);
+				playerToFind = players.get(index);
+				found = true;
 			}
+			index++;
 		}
-		return null;
+		return playerToFind;
 	}
 	/**
 	 * Given Player username, returns Player or null if not found.
 	 * @param username username of Player to get
 	 * @return Player with given username or null
 	 */
-	static public Player getPlayerByUsername(String username) {
-		for(int index = 0; index < players.size(); index++){
-			if(players.get(index).equals(username)) {
-				return players.get(index);
+	public static Player getPlayerByUsername(String username) {
+		boolean found = false;
+		int index = 0;
+		Player playerToFind = null;
+		while(index < players.size() && !found) {
+			if(players.get(index).getUsername().equals(username) == true) {
+				playerToFind = players.get(index);
+				found = true;
 			}
+			index++;
 		}
-		return null;
+		return playerToFind;
 	}
 	/**
 	 * Given username, returns ID or -1 if Player not found.
 	 * @param username username of Player
 	 * @return ID or -1
 	 */
-	static public int getIDByUsername(String username) {
-		for(int index = 0; index < players.size(); index++) {
-			if(players.get(index).getUsername() == username) {
-				return players.get(index).getID();
+	public static int getIDByUsername(String username) {
+		boolean found = false;
+		int index = 0;
+		int playerID = -1;
+		while(index < players.size() && !found) {
+			if(players.get(index).getUsername().equals(username) == true) {
+				playerID = players.get(index).getID();
+				found = true;
 			}
+			index++;
 		}
-		return -1;
+		return playerID;
 	}
 	/**
 	 * Given ID, returns username of Player with ID.
 	 * @param userID ID of Player to get
 	 * @return username or empty String
 	 */
-	static public String getUsernameByID(int userID) {
-		for(int index = 0; index < players.size(); index++) {
+	public static String getUsernameByID(int userID) {
+		boolean found = false;
+		int index = 0;
+		String playerUsername = "";
+		while(index < players.size() && !found) {
 			if(players.get(index).getID() == userID) {
-				return players.get(index).getUsername();
+				playerUsername = players.get(index).getUsername();
+				found = true;
 			}
+			index++;
 		}
-		return "";
+		return playerUsername;
 	}
 	/**
 	 * Returns Player with data from data.txt.
@@ -132,17 +155,28 @@ static ArrayList<Player> players;
     	players.add(newPlayer);
     }
     /**
+     * Adds a new Player with given username and default ID to Scoreboard's ArrayList. 
+     * @param username username for new Player
+     */
+    public void addNewPlayerFromUsername(String username) {
+    	Player newPlayer = new Player(username, players.size() + 1);
+    	players.add(newPlayer);
+    }
+    /**
      * Returns true if Player is in Scoreboard's ArrayList and false if Player is not in Scoreboard's ArrayList.
      * @param userID ID of Player to be checked for
      * @return true or false
      */
     public boolean checkForPlayerInArrayList(int userID) {
-    	for(int index = 0; index < players.size(); index++) {
+    	boolean found = false;
+    	int index = 0;
+    	while(index < players.size() && !found) {
     		if(players.get(index).getID() == userID) {
-    			return true;
+    			found = true;
     		}
+    		index++;
     	}
-    	return false;
+    	return found;
     }
     /**
      * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
@@ -250,8 +284,8 @@ prints out a Player, but not longer needed.
     	Player tempPlayer;
     	while(!sorted) {
     		swapped = false;
-    		for(int index = 0; index < players.size(); index++) {
-    			if(players.get(index).getPlayerData().getScore() > players.get(index + 1).getPlayerData().getScore()) {
+    		for(int index = 0; index < players.size() - 1; index++) {
+    			if((players.get(index).getPlayerData().getScore()) > (players.get(index + 1).getPlayerData().getScore())) {
     				tempPlayer = players.get(index);
     				players.set(index, players.get(index + 1));
     				players.set(index + 1, tempPlayer);
