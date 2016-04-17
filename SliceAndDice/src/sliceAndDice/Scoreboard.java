@@ -155,6 +155,14 @@ static ArrayList<Player> players;
     	players.add(newPlayer);
     }
     /**
+     * Adds a new Player with given username and default ID to Scoreboard's ArrayList. 
+     * @param username username for new Player
+     */
+    public void addNewPlayerFromUsername(String username) {
+    	Player newPlayer = new Player(username, players.size() + 1);
+    	players.add(newPlayer);
+    }
+    /**
      * Returns true if Player is in Scoreboard's ArrayList and false if Player is not in Scoreboard's ArrayList.
      * @param userID ID of Player to be checked for
      * @return true or false

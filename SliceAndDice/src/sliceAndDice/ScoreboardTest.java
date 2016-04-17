@@ -190,4 +190,28 @@ public class ScoreboardTest extends Scoreboard{
 		board.getPlayerDataFromFile(readPlayers);
 		assertNotNull(board.getPlayerArrayList());
 	}
+	/*
+	 * Status: Passed
+	 */
+//	@Test
+//	public void testAddNewPlayerFromUsername1() {
+//		Scoreboard board = new Scoreboard();
+//		board.addNewPlayerFromUsername("user222");
+//		System.out.println(board.toString());
+//		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
+//	}
+	/*
+	 * Status:
+	 */
+	@Test
+	public void testAddNewPlayerFromUsername2() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user222");
+		board.addNewPlayerFromUsername("user333");
+		board.addNewPlayerFromUsername("user444");
+		System.out.println(board.toString());
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user333"));
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
+	}
 }
