@@ -3,15 +3,12 @@ package sliceAndDice;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -30,9 +27,8 @@ import javax.swing.table.TableModel;
  *
  */
 public class SliceAndDiceUI {
-	private final int MAX_HEIGHT = 500;
-	private final int GAME_HEIGHT = 600;
-	private final int MAX_WIDTH = 1000;
+	private final Dimension GAME_SIZE = new Dimension(1000, 600);
+	private final Dimension MENU_SIZE = new Dimension(1000, 450);
 	private final int MAX_HEALTH = 100;
 	private final int MIN_HEALTH = 0;
 	private final int MAX_MANA = 30;
@@ -46,23 +42,11 @@ public class SliceAndDiceUI {
 	private JSplitPane splitPane;
 	private JSplitPane playerPane;
 	private JScrollPane scrollStats;
-	
 	public String tempUser = "";
-	public int plOneHlth = 100;
-	public int plOneMana = 100;
-	public int plOneFood = 100;
-	public int plTwoHlth = 100;
-	public int plTwoMana = 100;
-	public int plTwoFood = 100;
-	
+	Boolean singlePlayer = true;
 	int debug = 0;
-	
 	Game game;
-	
 	GetStats stats = new GetStats();
-	
-	//Scoreboard gameBoard = new  Scoreboard();
-	
 	Winner winner = Winner.NONE;
 	Move move;
 		/**
@@ -116,8 +100,7 @@ public class SliceAndDiceUI {
 			
 			final ChooseFirst whichPlayer = new ChooseFirst();
 			final StopRoll stop = new StopRoll();
-			//boolean tableVisible = false;
-			//gameBoard.getPlayerDataFromFile();
+
 /*
  * Container frame
  */
@@ -134,7 +117,7 @@ public class SliceAndDiceUI {
 					});
 				gameFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
 				gameFrame.setLocationRelativeTo(null);
-				gameFrame.setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
+				gameFrame.setPreferredSize(MENU_SIZE);
 				
 				/*
 				 * Get image and add to panel
@@ -569,8 +552,6 @@ public class SliceAndDiceUI {
 					plOneHealthStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					// following value will be reset by listener
-					plOneHealthStatus.setValue(plOneHlth);
 					
 					
 			final JLabel playerOneMana = new JLabel("Mana:");
@@ -587,8 +568,6 @@ public class SliceAndDiceUI {
 					plOneManaStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plOneManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					// following value will be reset by listener
-					plOneManaStatus.setValue(plOneMana);
 					
 			final JLabel playerOneFood = new JLabel("Food:");
 				playerOneFood.setFont(smallLabelFont);
@@ -604,8 +583,6 @@ public class SliceAndDiceUI {
 					plOneFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					// following value will be reset by listener
-					plOneFoodStatus.setValue(plOneFood);
 				
 				/*
 				 * Add player one stuff to player one panel
@@ -646,8 +623,6 @@ public class SliceAndDiceUI {
 					plTwoHealthStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					// following value will be reset by listener
-					plTwoHealthStatus.setValue(plTwoHlth);
 					
 			final JLabel playerTwoMana = new JLabel("Mana:");
 				playerTwoMana.setFont(smallLabelFont);
@@ -663,8 +638,6 @@ public class SliceAndDiceUI {
 					plTwoManaStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plTwoManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					// following value will be reset by listener
-					plTwoManaStatus.setValue(plTwoMana);
 					
 			final JLabel playerTwoFood = new JLabel("Food:");
 				playerTwoFood.setFont(smallLabelFont);
@@ -680,8 +653,7 @@ public class SliceAndDiceUI {
 					plTwoFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					// following value will be reset by listener
-					plTwoFoodStatus.setValue(plTwoFood);
+					
 				/*
 				 * Add player two stuff to player two panel	
 				 */
@@ -753,7 +725,7 @@ public class SliceAndDiceUI {
 					die1.setPreferredSize(new Dimension(30,30));
 					die1.setBackground(Color.red);
 					
-					Icon dieOneIcon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_1_75px.png"));
+					Icon dieOneIcon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_1_85px.png"));
 					final JLabel dieOnePic = new JLabel(dieOneIcon);
 					
 					die1.add(dieOnePic, BorderLayout.CENTER);
@@ -761,15 +733,33 @@ public class SliceAndDiceUI {
 				final JPanel die2 = new JPanel(new BorderLayout(1, 1));
 					die2.setBorder(BorderFactory.createLoweredBevelBorder());
 					die2.setPreferredSize(new Dimension(30,30));
+					die2.setBackground(Color.red);
+					
+					Icon dieTwoIcon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_2_85px.png"));
+					final JLabel dieTwoPic = new JLabel(dieTwoIcon);
+					
+					die2.add(dieTwoPic, BorderLayout.CENTER);
 					
 				final JPanel die3 = new JPanel(new BorderLayout(1, 1));
 					die3.setBorder(BorderFactory.createLoweredBevelBorder());
 					die3.setPreferredSize(new Dimension(30,30));
+					die3.setBackground(Color.red);
+					
+					Icon dieThreeIcon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_3_85px.png"));
+					final JLabel dieThreePic = new JLabel(dieThreeIcon);
+					
+					die3.add(dieThreePic, BorderLayout.CENTER);
 					
 				final JPanel die4 = new JPanel(new BorderLayout(1, 1));
 					die4.setBorder(BorderFactory.createLoweredBevelBorder());
 					die4.setPreferredSize(new Dimension(30,30));
-			
+					die4.setBackground(Color.red);
+					
+					Icon dieFourIcon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_4_85px.png"));
+					final JLabel dieFourPic = new JLabel(dieFourIcon);
+					
+					die4.add(dieFourPic, BorderLayout.CENTER);
+				
 					diceAnimationPanel.add(die1);
 					diceAnimationPanel.add(die2);
 					diceAnimationPanel.add(die3);
@@ -814,8 +804,15 @@ public class SliceAndDiceUI {
 				bottomGamePanel.setBorder(BorderFactory.createTitledBorder(""));
 				
 			final JButton gameExit = new JButton("Exit");
+				gameExit.setToolTipText("Exit game");
 			
 			final JButton gameSave = new JButton("Save");
+				gameSave.setToolTipText("Save game stats");
+				
+			final JButton mainMenu = new JButton("Main Menu");
+				mainMenu.setToolTipText("Return to main menu");
+				
+				bottomGamePanel.add(mainMenu);
 				bottomGamePanel.add(gameSave);
 				bottomGamePanel.add(gameExit);
 
@@ -936,7 +933,10 @@ public class SliceAndDiceUI {
 			 */
 			useName.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					whichPlayer.setPlayerNames(usernameOne, usernameTwo);
+					if(!singlePlayer){
+						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
+					}
+					
 					/*
 					 * Launch player select frame in AWT event dispatch thread
 					 */
@@ -997,13 +997,28 @@ public class SliceAndDiceUI {
 			 */
 			stop.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
-					// TODO add logic
+					int[] rollResult = game.getLastRoll();
+					
+					die1.removeAll();
+					die2.removeAll();
+					die3.removeAll();
+					die4.removeAll();
+					
+					die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[0] + "_85px.png"))), BorderLayout.CENTER);
+					die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[1] + "_85px.png"))), BorderLayout.CENTER);
+					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[2] + "_85px.png"))), BorderLayout.CENTER);
+					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[3] + "_85px.png"))), BorderLayout.CENTER);
+					
 					switch(move){
 					case ATTACK:
 						if(winner.equals(Winner.NONE)){
 							
 							if(!game.isPlayerOneTurn()){
-
+								
 								plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 								activePlayer.setText(usernameTwo);
 
@@ -1017,6 +1032,7 @@ public class SliceAndDiceUI {
 							}
 							gameFrame.setContentPane(gamePlayPanel);
 						}else if(winner.equals(Winner.PLAYER_ONE)){
+							
 							plTwoHealthStatus.setValue(0);
 							playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 							
@@ -1026,7 +1042,9 @@ public class SliceAndDiceUI {
 							playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 							middleGamePanel.add(playerPane, BorderLayout.CENTER);
 							gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+							
 						}else if(winner.equals(Winner.PLAYER_TWO)){
+							
 							plOneHealthStatus.setValue(0);
 							playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 							
@@ -1036,6 +1054,7 @@ public class SliceAndDiceUI {
 							playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 							middleGamePanel.add(playerPane, BorderLayout.CENTER);
 							gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+							
 						}
 						break;
 					case FREEZE:
@@ -1052,16 +1071,15 @@ public class SliceAndDiceUI {
 						break;
 					default:
 						JOptionPane.showMessageDialog(gameFrame, "Something terrible has happened!");
+						return;
 					
 					}
 					
 					playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
 					playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
-					playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
 					
 					playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 					playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
-					playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
 					
 					if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 2) && plTwoHealthStatus.getValue() > (MAX_HEALTH / 5)){
 						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
@@ -1096,7 +1114,7 @@ public class SliceAndDiceUI {
 			 */
 			whichPlayer.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
-					gameFrame.setPreferredSize(new Dimension(MAX_WIDTH, GAME_HEIGHT));
+					gameFrame.setPreferredSize(GAME_SIZE);
 					gameFrame.setResizable(false);
 					newGamePanel.removeAll();
 					gameFrame.remove(newGamePanel);
@@ -1118,10 +1136,16 @@ public class SliceAndDiceUI {
 						playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 						playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
 						playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
+						plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
+						plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
+						plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
 						
 						playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
 						playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
 						playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
+						plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+						plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
+						plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
 						
 						gameFrame.setContentPane(gamePlayPanel);
 						gameFrame.pack();
@@ -1154,37 +1178,41 @@ public class SliceAndDiceUI {
 					}
 					usernameOne = userName1Text.getText().toLowerCase();
 					usernameTwo = userName2Text.getText().toLowerCase();
+					singlePlayer = false;
 					
 					// TODO add call to check for existing user profiles
 					
-//					if(game.findUser(usernameOne) > 0 && game.findUser(usernameTwo) > 0){
-//						newGamePanel.removeAll();
-//						gameFrame.remove(newGamePanel);
-//						foundPlayerOne.setText(usernameOne);
-//						foundPlayerTwo.setText(usernameTwo);
-//						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
-//						newGamePanel.add(splitPane);
-//						gameFrame.setContentPane(newGamePanel);
-//						gameFrame.pack();
-//						splitPane.setDividerLocation(.30);
-//						gameFrame.validate();
-//					}else if(game.findUser(usernameOne) > 0 && game.findUser(usernameTwo) == 0){
-//						foundPlayerOne.setText(usernameOne);
-//						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
-//						newGamePanel.add(splitPane);
-//						gameFrame.setContentPane(newGamePanel);
-//						gameFrame.pack();
-//						splitPane.setDividerLocation(.30);
-//						gameFrame.validate();
-//					}else if(game.findUser(usernameOne) == 0 && game.findUser(usernameTwo) > 0){
-//						foundPlayerTwo.setText(usernameTwo);
-//						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
-//						newGamePanel.add(splitPane);
-//						gameFrame.setContentPane(newGamePanel);
-//						gameFrame.pack();
-//						splitPane.setDividerLocation(.30);
-//						gameFrame.validate();
-//					}else{
+					if(stats.findPlayer(usernameOne) == 0 && stats.findPlayer(usernameTwo) == 0){
+						newGamePanel.removeAll();
+						gameFrame.remove(newGamePanel);
+						foundPlayerOne.setText(usernameOne);
+						foundPlayerTwo.setText(usernameTwo);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
+						newGamePanel.add(splitPane);
+						gameFrame.setContentPane(newGamePanel);
+						gameFrame.pack();
+						splitPane.setDividerLocation(.30);
+						gameFrame.validate();
+					}else if(stats.findPlayer(usernameOne) == 0 && stats.findPlayer(usernameTwo) < 0){
+						foundPlayerOne.setText(usernameOne);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
+						newGamePanel.add(splitPane);
+						gameFrame.setContentPane(newGamePanel);
+						gameFrame.pack();
+						splitPane.setDividerLocation(.30);
+						gameFrame.validate();
+					}else if(stats.findPlayer(usernameOne) < 0 && stats.findPlayer(usernameTwo) == 0){
+						foundPlayerTwo.setText(usernameTwo);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
+						newGamePanel.add(splitPane);
+						gameFrame.setContentPane(newGamePanel);
+						gameFrame.pack();
+						splitPane.setDividerLocation(.30);
+						gameFrame.validate();
+					}else{
+						
+						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
+						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
 						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
 						/*
 						 * Launch player select frame in AWT event dispatch thread
@@ -1194,7 +1222,7 @@ public class SliceAndDiceUI {
 								whichPlayer.showPlayerSelect();
 							}
 						});	
-//					}
+					}
 				}
 			});
 			
@@ -1370,7 +1398,18 @@ public class SliceAndDiceUI {
 						gameFrame.validate();
 					}
 
-										
+					die1.removeAll();
+					die2.removeAll();
+					die3.removeAll();
+					die4.removeAll();
+					
+					die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
+					die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
+					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
+					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
+					
+					gameFrame.validate();
+					
 					//add test for illegal move here, notify the user and return
 					
 					
@@ -1446,11 +1485,9 @@ public class SliceAndDiceUI {
 					}
 					
 					playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
-					playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
 					playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
 					
 					playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
-					playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
 					playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
 					
 					if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 2) && plTwoFoodStatus.getValue() > (MAX_FOOD / 5)){
@@ -1512,13 +1549,35 @@ public class SliceAndDiceUI {
 			});
 			
 			/*
-			 * game play exit/save button listeners
+			 * game play exit/save/main menu button listeners
 			 */
+			mainMenu.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					JOptionPane.showMessageDialog(gameFrame, "Function disabled");
+//					gameFrame.remove(gamePlayPanel);
+//					modePanel.removeAll();
+//					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
+//					modePanel.add(splitPane, BorderLayout.CENTER);
+//					gameFrame.setContentPane(modePanel);
+//					
+//					gameFrame.setPreferredSize(MENU_SIZE);
+//					gameFrame.pack();
+//					splitPane.setDividerLocation(.30);
+//					gameFrame.setLocationRelativeTo(null);
+//					gameFrame.validate();
+				}
+			});
 			gameSave.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					
-					JOptionPane.showMessageDialog(gameFrame, "This button will save game status");
-					
+					JOptionPane.showMessageDialog(gameFrame, "Function disabled");
+//					try{
+//						stats.scoreboard.sendPlayerDataToFile();
+//					}catch(IOException e){
+//						JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
+//					}
+//					JOptionPane.showMessageDialog(gameFrame, "Game saved!");
 				}
 			});
 			
@@ -1537,15 +1596,9 @@ public class SliceAndDiceUI {
 				modePanel.add(splitPane, BorderLayout.CENTER);
 				gameFrame.setContentPane(modePanel);
 				gameFrame.pack();
-				try{
-					gameFrame.setLocationByPlatform(true);
-				}catch(Throwable ignoreAndContinue){}
-				
-				/*
-				 * Display frame
-				 */
-				gameFrame.setVisible(true);
 				splitPane.setDividerLocation(.30);
+				gameFrame.setLocationRelativeTo(null);
+				gameFrame.setVisible(true);
 				
 		}
 		
@@ -1683,6 +1736,7 @@ class FillPainter implements Painter<JComponent>{
  * @author Jacob
  *
  */
+@SuppressWarnings("rawtypes")
 class GetStats{
 	
 	Scoreboard scoreboard;
@@ -1825,6 +1879,7 @@ class ChooseFirst extends JFrame{
 	private JLabel playerTwo;
 	private JPanel choosePlayerPane;
 	Boolean winner = false;
+	Boolean beenShown = false;
 	
 	Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
 	Font smallLabelFont = new Font("Trebuchet MS", Font.BOLD, 12);
@@ -1862,6 +1917,14 @@ class ChooseFirst extends JFrame{
 	}
 	
 	/**
+	 * Get container frame
+	 * @return this
+	 */
+	private JFrame getFrame(){
+		return this;
+	}
+	
+	/**
 	 * Generates random number between 1 and 6 inclusive
 	 * 
 	 * @return randNum
@@ -1890,6 +1953,7 @@ class ChooseFirst extends JFrame{
 		this.setContentPane(choosePlayerPane);
 		this.pack();
 		this.setVisible(true);
+		beenShown = true;
 	}
 	
 	/**
@@ -1903,6 +1967,10 @@ class ChooseFirst extends JFrame{
 	 * Show GUI
 	 */
 	public void showPlayerSelect(){
+		if(beenShown){
+			choosePlayerPane.removeAll();
+			
+		}
 			
 			Icon diceRoll1Icon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/dice_roll_1.gif"));
 			Icon diceRoll2Icon = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/dice_roll_1.gif"));
@@ -2063,6 +2131,10 @@ class ChooseFirst extends JFrame{
 			
 			cont.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					if(!winner){
+						JOptionPane.showMessageDialog(getFrame(), "You must press stop first!");
+						return;
+					}
 					disposeFrame();
 				}
 			});
