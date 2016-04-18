@@ -685,35 +685,43 @@ public class SliceAndDiceUI {
 			/*
 			 * Active player title pane
 			 */
+			final JPanel middlePlayerPanel = new JPanel(new BorderLayout(5,5));
 			final JPanel middlePlayerSel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			final JPanel winningPlayer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			
 				final JLabel activePlayer = new JLabel();
-					activePlayer.setFont(labelFont);
+					activePlayer.setFont(largeLabelFont);
 					activePlayer.setAlignmentX(Component.RIGHT_ALIGNMENT);
-					activePlayer.setForeground(Color.red);
+					activePlayer.setForeground(Color.BLUE);
 					
 				final JLabel yourMove = new JLabel(", your move!");
 					yourMove.setFont(labelFont);
 					yourMove.setAlignmentX(Component.RIGHT_ALIGNMENT);
 					yourMove.setForeground(Color.red);
 					
+				final JLabel gamePlayerWinner = new JLabel();
+					gamePlayerWinner.setFont(largeLabelFont);
+					gamePlayerWinner.setAlignmentX(Component.LEFT_ALIGNMENT);
+					gamePlayerWinner.setForeground(Color.BLUE);
+				final JLabel winnerLabel = new JLabel(" is the winner!");
+					winnerLabel.setFont(labelFont);
+					winnerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+					winnerLabel.setForeground(Color.red);
+				
+					
 					middlePlayerSel.add(activePlayer);
 					middlePlayerSel.add(yourMove);
+					
+					middlePlayerPanel.add(middlePlayerSel, BorderLayout.WEST);
+					middlePlayerPanel.add(winningPlayer, BorderLayout.EAST);
+
 					
 			final JPanel middleLeftPanel = new JPanel(new BorderLayout(5,5)); // attack button and dice animaiton pane
 			
 			final JPanel attackButtons = new JPanel(new GridLayout(3, 1, 2, 2));
 				attackButtons.setBorder(BorderFactory.createTitledBorder(""));
 			
-			final JPanel middleRightPanel = new JPanel(new BorderLayout(5,5));	// game animation will play here
-//				middleRightPanel.setPreferredSize(new Dimension(100, 100));
-			final Icon playerOneAttack = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"));
-			final Icon playerTwoAttack = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"));
-//			final Icon playerRest = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"));
-			
-//			final JLabel playerOneAttackLabel = new JLabel(playerOneAttack);
-//			final JLabel playerTwoAttackLabel = new JLabel(playerTwoAttack);	
-			
+			final JPanel middleRightPanel = new JPanel(new BorderLayout(5,5));	// game animation will play here			
 				middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
 			/*
 			 * dice animation pane
@@ -796,7 +804,7 @@ public class SliceAndDiceUI {
 				middleLeftPanel.add(diceAnimationPanel, BorderLayout.CENTER);
 				
 				playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel); // goes center of middleGamePanel	
-				middleGamePanel.add(middlePlayerSel, BorderLayout.NORTH);
+				middleGamePanel.add(middlePlayerPanel, BorderLayout.NORTH);
 				middleGamePanel.add(playerPane, BorderLayout.CENTER);
 			
 			/*
@@ -1039,9 +1047,13 @@ public class SliceAndDiceUI {
 							plTwoHealthStatus.setValue(0);
 							playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 							
-							middleRightPanel.removeAll();
-							gameWinner.setText(game.getPlayerOneUsername() + " has won!");
-							middleRightPanel.add(gameWinner, BorderLayout.CENTER);
+							gamePlayerWinner.setText(game.getPlayerOneUsername());
+							winningPlayer.add(gamePlayerWinner);
+							winningPlayer.add(winnerLabel);
+							
+							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))));
+							//gameWinner.setText(game.getPlayerOneUsername() + " has won!");
+							//middleRightPanel.add(gameWinner, BorderLayout.CENTER);
 							playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 							middleGamePanel.add(playerPane, BorderLayout.CENTER);
 							gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
@@ -1051,9 +1063,13 @@ public class SliceAndDiceUI {
 							plOneHealthStatus.setValue(0);
 							playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 							
-							middleRightPanel.removeAll();
-							gameWinner.setText(game.getPlayerTwoUsername() + " has won!");
-							middleRightPanel.add(gameWinner, BorderLayout.CENTER);
+							gamePlayerWinner.setText(game.getPlayerTwoUsername());
+							winningPlayer.add(gamePlayerWinner);
+							winningPlayer.add(winnerLabel);
+							
+							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))));
+							//gameWinner.setText(game.getPlayerTwoUsername() + " has won!");
+							//middleRightPanel.add(gameWinner, BorderLayout.CENTER);
 							playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 							middleGamePanel.add(playerPane, BorderLayout.CENTER);
 							gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
@@ -1167,8 +1183,8 @@ public class SliceAndDiceUI {
 						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name for both players");
 						return;
 					}
-					if(userName1Text.getText().length() > 30 || userName2Text.getText().length() > 30){
-						JOptionPane.showMessageDialog(gameFrame, "Usernames must be less than 30 characters");
+					if(userName1Text.getText().length() > 15 || userName2Text.getText().length() > 15){
+						JOptionPane.showMessageDialog(gameFrame, "Usernames must be less than 15 characters");
 						userName1Text.setText("");
 						userName2Text.setText("");
 						return;
