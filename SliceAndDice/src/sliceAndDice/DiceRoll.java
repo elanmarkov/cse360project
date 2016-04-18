@@ -18,6 +18,8 @@ package sliceAndDice;
  * a specified number of rolls.
  * Uses six-sided dice by default, can be configured to use any
  * number of sides.
+ * 
+ * @author Elan Markov
  *
  */
 final class DiceRoll {
