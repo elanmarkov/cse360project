@@ -706,13 +706,15 @@ public class SliceAndDiceUI {
 				attackButtons.setBorder(BorderFactory.createTitledBorder(""));
 			
 			final JPanel middleRightPanel = new JPanel(new BorderLayout(5,5));	// game animation will play here
-				middleRightPanel.setPreferredSize(new Dimension(100, 100));
+//				middleRightPanel.setPreferredSize(new Dimension(100, 100));
 			final Icon playerOneAttack = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"));
 			final Icon playerTwoAttack = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"));
-			final Icon playerRest = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"));
+//			final Icon playerRest = new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"));
 			
-			final JLabel playerOneAttackLabel = new JLabel(playerOneAttack);
-			final JLabel playerTwoAttackLabel = new JLabel(playerTwoAttack);	
+//			final JLabel playerOneAttackLabel = new JLabel(playerOneAttack);
+//			final JLabel playerTwoAttackLabel = new JLabel(playerTwoAttack);	
+			
+				middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
 			/*
 			 * dice animation pane
 			 */
@@ -1408,6 +1410,14 @@ public class SliceAndDiceUI {
 					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
 					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
 					
+					middleRightPanel.removeAll();
+					
+					if(!game.isPlayerOneTurn()){
+						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
+					}else{
+						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"))), BorderLayout.CENTER);
+					}
+					
 					gameFrame.validate();
 					
 					//add test for illegal move here, notify the user and return
@@ -1456,17 +1466,21 @@ public class SliceAndDiceUI {
 						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
 						modePanel.add(splitPane);
 						gameFrame.setContentPane(modePanel);
+						return;
 					}
 					
+					middleRightPanel.removeAll();
+					
 					if(winner.equals(Winner.NONE)){
+						middleRightPanel.removeAll();
 						if(!game.isPlayerOneTurn()){
-							
+							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP1.gif"))), BorderLayout.CENTER);
 							plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
 							plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());								
 							activePlayer.setText(usernameTwo);
 							
 						}else if(game.isPlayerOneTurn()){
-							
+							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP2.gif"))), BorderLayout.CENTER);
 							plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 							plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());								
 							activePlayer.setText(usernameOne);
@@ -1572,7 +1586,6 @@ public class SliceAndDiceUI {
 							new SliceAndDiceUI().showUI();
 						}
 					});
-					
 				gameFrame.dispose();
 				}
 			});
