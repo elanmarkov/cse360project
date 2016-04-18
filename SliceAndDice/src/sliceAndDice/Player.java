@@ -115,7 +115,13 @@ public class Player {
 		playerString += username + "\n";
 		return playerString + playerData;
 	}
-
+	/**
+	 * Method for getting next move. Used for inheritance by Robot class,
+	 * when called within player it will throw an exception.
+	 * @param ownStatus Turn player's status
+	 * @param oppStatus Opponent's status
+	 * @return Exception
+	 */
 	Move getNextMove(Status ownStatus, Status oppStatus) {
 		throw new IllegalArgumentException("Error: Player should select move from GUI");
 	}

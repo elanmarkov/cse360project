@@ -134,7 +134,7 @@ public class Game {
 		
 	}
 	/**
-	 * Plays the next move, if the player is a computer (will return exception if not)
+	 * Plays the next move, if the player is a computer (will return exception if not).
 	 * @return The winner of the game (player 1, player 2, or none yet).
 	 */
 	Winner  PlayNextTurn() {
