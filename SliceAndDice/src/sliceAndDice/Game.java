@@ -70,7 +70,30 @@ public class Game {
 		winnerID = -1; // no winner yet
 		loserID = -1; // no winner yet
 	}
-	
+	/**
+	 * Constructor for Game class from one username, where the opponent
+	 * is the computer.
+	 * @param humanPlayer The username of the human player.
+	 * @param humanGoesFirst Whether or not the human player won the dice roll.
+	 */
+	Game(String humanPlayer, boolean humanGoesFirst) {
+		totalTurns = 0;
+		if(humanGoesFirst) {
+			//this.playerOne = Scoreboard.getPlayerByUsername(humanPlayer);
+			this.playerOne = new Player(humanPlayer, 1);
+			this.playerTwo = new Robot();
+		}
+		else {
+			//this.playerTwo = Scoreboard.getPlayerByUsername(humanPlayer);
+			this.playerOne = new Robot();
+			this.playerTwo = new Player(humanPlayer, 1);
+		}
+		playerOneStatus = new Status();
+		playerTwoStatus = new Status();
+		playerOneTurn = true;
+		winnerID = -1; // no winner yet
+		loserID = -1; // no winner yet
+	}
 	/**
 	 * Plays the next (half-) turn of the game.
 	 * @param nextMove The move to be performed by the next player, must be legal.
@@ -89,6 +112,45 @@ public class Game {
 			gameWinner = nextTurn.playTurnPlayerTwo(nextMove);
 			playerOneTurn = true;
 			updateMoveCount(playerTwo, nextMove);
+		}
+
+		totalTurns++;
+		
+		//Evaluate the game winner.
+		if(gameWinner == Winner.PLAYER_ONE){
+			winnerID = playerOne.getID();
+			loserID = playerTwo.getID();
+			playerOne.getPlayerData().incrWinCount();
+			updateStats();
+		}
+		else if(gameWinner == Winner.PLAYER_TWO){
+			winnerID = playerTwo.getID();
+			loserID = playerOne.getID();
+			playerTwo.getPlayerData().incrWinCount();
+			updateStats();
+		}
+		
+		return gameWinner;
+		
+	}
+	/**
+	 * Plays the next move, if the player is a computer (will return exception if not)
+	 * @return The winner of the game (player 1, player 2, or none yet).
+	 */
+	Winner  PlayNextTurn() {
+		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
+		Move nextComputerMove = playerOne.getNextMove(playerOneStatus, playerTwoStatus);
+		if(playerOneTurn){	// Different turn based on whose move it is
+			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
+			
+			gameWinner = nextTurn.playTurnPlayerOne(nextComputerMove);
+			playerOneTurn = false;
+			updateMoveCount(playerOne, nextComputerMove);
+		}
+		else{
+			gameWinner = nextTurn.playTurnPlayerTwo(nextComputerMove);
+			playerOneTurn = true;
+			updateMoveCount(playerTwo, nextComputerMove);
 		}
 
 		totalTurns++;

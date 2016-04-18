@@ -115,6 +115,10 @@ public class Player {
 		playerString += username + "\n";
 		return playerString + playerData;
 	}
+
+	Move getNextMove(Status ownStatus, Status oppStatus) {
+		throw new IllegalArgumentException("Error: Player should select move from GUI");
+	}
 }
 /**
  * Status class. Stores the player's current status in the middle
