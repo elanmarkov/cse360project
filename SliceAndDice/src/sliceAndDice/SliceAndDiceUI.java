@@ -1001,6 +1001,7 @@ public class SliceAndDiceUI {
 				public void windowClosed(WindowEvent we){
 					int[] rollResult = game.getLastRoll();
 					
+					middleRightPanel.removeAll();
 					die1.removeAll();
 					die2.removeAll();
 					die3.removeAll();
@@ -1020,12 +1021,12 @@ public class SliceAndDiceUI {
 						if(winner.equals(Winner.NONE)){
 							
 							if(!game.isPlayerOneTurn()){
-								
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
 								plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 								activePlayer.setText(usernameTwo);
 
 							}else if(game.isPlayerOneTurn()){
-								
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"))), BorderLayout.CENTER);
 								plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
 								activePlayer.setText(usernameOne);
 								
@@ -1412,11 +1413,13 @@ public class SliceAndDiceUI {
 					
 					middleRightPanel.removeAll();
 					
-					if(!game.isPlayerOneTurn()){
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
-					}else{
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"))), BorderLayout.CENTER);
-					}
+					middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
+					
+//					if(!game.isPlayerOneTurn()){
+//						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
+//					}else{
+//						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"))), BorderLayout.CENTER);
+//					}
 					
 					gameFrame.validate();
 					
