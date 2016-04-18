@@ -1554,18 +1554,26 @@ public class SliceAndDiceUI {
 			mainMenu.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					
-					JOptionPane.showMessageDialog(gameFrame, "Function disabled");
-//					gameFrame.remove(gamePlayPanel);
-//					modePanel.removeAll();
-//					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
-//					modePanel.add(splitPane, BorderLayout.CENTER);
-//					gameFrame.setContentPane(modePanel);
-//					
-//					gameFrame.setPreferredSize(MENU_SIZE);
-//					gameFrame.pack();
-//					splitPane.setDividerLocation(.30);
-//					gameFrame.setLocationRelativeTo(null);
-//					gameFrame.validate();
+					final String lafClassName = getLookAndFeelClassName("Nimbus");
+					
+					SwingUtilities.invokeLater(new Runnable(){	// launch UI in AWT event-dispatching thread
+						public void run(){
+							try{
+								UIManager.setLookAndFeel(lafClassName);
+							}catch(ClassNotFoundException ex){
+								Logger.getLogger(SliceAndDiceUI.class.getName()).log(Level.SEVERE, null, ex);
+							}catch(InstantiationException ex){
+								Logger.getLogger(SliceAndDiceUI.class.getName()).log(Level.SEVERE, null, ex);
+							}catch(IllegalAccessException ex){
+								Logger.getLogger(SliceAndDiceUI.class.getName()).log(Level.SEVERE, null, ex);
+							}catch(UnsupportedLookAndFeelException ex){
+								Logger.getLogger(SliceAndDiceUI.class.getName()).log(Level.SEVERE, null, ex);
+							}
+							new SliceAndDiceUI().showUI();
+						}
+					});
+					
+				gameFrame.dispose();
 				}
 			});
 			gameSave.addActionListener(new ActionListener(){
