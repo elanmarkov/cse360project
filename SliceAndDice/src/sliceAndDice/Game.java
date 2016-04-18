@@ -45,10 +45,10 @@ public class Game {
 	 */
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
-		this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
-		//this.playerOne = new Player(playerOne, 1);
-		//this.playerTwo = new Player(playerTwo, 2);
+		//this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
+		//this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
+		this.playerOne = new Player(playerOne, 1);
+		this.playerTwo = new Player(playerTwo, 2);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
