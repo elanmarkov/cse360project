@@ -174,12 +174,6 @@ public class SliceAndDiceUI {
 					newGameButton.setForeground(Color.red);
 					newGameButton.setToolTipText("Start new game");
 					
-//				final JButton loadGameButton = new JButton("Load Game");
-//					loadGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//					loadGameButton.setFont(bigButtonFont);
-//					loadGameButton.setForeground(Color.red);
-//					loadGameButton.setToolTipText("Continue previous game");
-					
 				final JButton playerStatusButton = new JButton("Player Stats");
 					playerStatusButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 					playerStatusButton.setFont(bigButtonFont);
@@ -375,52 +369,6 @@ public class SliceAndDiceUI {
 					newGamePlayersExist.add(notifyTextThree);
 					newGamePlayersExist.add(notifyPlayerButtons);
 
-///*
-// * Load game panel components
-// */
-//			
-//			/*
-//			 * Create load game panels
-//			 */
-//			final JPanel loadGamePanel = new JPanel(new BorderLayout(5,5));
-//				loadGamePanel.setBorder(BorderFactory.createTitledBorder(null, "Load Game", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
-//				
-//			final JPanel loadGameOptionsPanel = new JPanel(new GridLayout(8, 2, 2, 5));
-//			
-//			/*
-//			 * Load game buttons
-//			 */
-//			final JLabel loadUserName = new JLabel("Enter Username:");
-//				loadUserName.setAlignmentX(Component.LEFT_ALIGNMENT);
-//				loadUserName.setFont(labelFont);
-//				loadUserName.setForeground(Color.red);
-//				
-//			final JTextField loadUserNameText = new JTextField();
-//				loadUserNameText.setAlignmentX(Component.RIGHT_ALIGNMENT);
-//				
-//			final JButton loadUserNameFind = new JButton("Find");
-//				loadUserNameFind.setAlignmentX(Component.CENTER_ALIGNMENT);
-//				loadUserNameFind.setFont(smallButtonFont);
-//				loadUserNameFind.setForeground(Color.red);
-//				loadUserNameFind.setToolTipText("Find saved game");
-//				
-//			final JButton loadUserExit = new JButton("Back");
-//				loadUserExit.setAlignmentX(Component.CENTER_ALIGNMENT);
-//				loadUserExit.setFont(smallButtonFont);
-//				loadUserExit.setForeground(Color.red);
-//				loadUserExit.setToolTipText("Go back to previous menu");
-//				
-//				/*
-//				 * add buttons to panel
-//				 */
-//				loadGameOptionsPanel.add(loadUserName);
-//				loadGameOptionsPanel.add(loadUserNameText);
-//				for(int i = 2; i<14; i++){
-//					loadGameOptionsPanel.add(new JPanel());
-//				}
-//				loadGameOptionsPanel.add(loadUserExit);
-//				loadGameOptionsPanel.add(loadUserNameFind);
-
 /*
  * Player stats panel components
  */
@@ -496,13 +444,6 @@ public class SliceAndDiceUI {
 				}
 				statPanelSingleUserButtons.add(singleStatExit);
 				statPanelSingleUserButtons.add(statFind);
-				
-/*
- * about game panel components
- * 
- * Probably going to open a text file when button is pressed, but heres the space just in case
- */
-	
 				
 /*
  * Gameplay panel
@@ -1028,14 +969,14 @@ public class SliceAndDiceUI {
 					case ATTACK:
 						if(winner.equals(Winner.NONE)){
 							
+							plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+							plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
 							if(!game.isPlayerOneTurn()){
 								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
-								plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 								activePlayer.setText(usernameTwo);
 
 							}else if(game.isPlayerOneTurn()){
 								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"))), BorderLayout.CENTER);
-								plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
 								activePlayer.setText(usernameOne);
 								
 							}else{
@@ -1428,37 +1369,10 @@ public class SliceAndDiceUI {
 					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
 					
 					middleRightPanel.removeAll();
-					
 					middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
-					
-//					if(!game.isPlayerOneTurn()){
-//						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
-//					}else{
-//						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP2.gif"))), BorderLayout.CENTER);
-//					}
-					
+					gameFrame.pack();
 					gameFrame.validate();
-					
-					//add test for illegal move here, notify the user and return
-					
-					
-//					if(winner.equals(Winner.NONE)){
-//						//middleGamePanel.removeAll();
-//						playerPane.removeAll();
-//						if(!game.getFirst()){
-//							middleRightPanel.add(playerOneAttackLabel, BorderLayout.CENTER);
-//						}else{
-//							middleRightPanel.add(playerTwoAttackLabel, BorderLayout.CENTER);
-//						}
-//						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
-//						//gamePlayPanel.add(playerPane);
-//						middleGamePanel.add(playerPane, BorderLayout.CENTER);
-//						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
-//						gameFrame.setContentPane(gamePlayPanel);
-//						gameFrame.pack();
-//						playerPane.setDividerLocation(.20);
-//						gameFrame.validate();
-//					}
+
 					SwingUtilities.invokeLater(new Runnable(){
 						public void run(){
 							stop.showStopRoll();
