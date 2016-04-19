@@ -485,9 +485,9 @@ public class SliceAndDiceUI {
 			 * player one top status panel stuff
 			 */
 			final JLabel playerOneName = new JLabel();	// to be set in listener
-				playerOneName.setFont(labelFont);
+				playerOneName.setFont(largeLabelFont);
 				playerOneName.setAlignmentX(Component.LEFT_ALIGNMENT);
-				playerOneName.setForeground(Color.red);
+				playerOneName.setForeground(Color.blue);
 				
 				
 			JLabel playerOneHealth = new JLabel("Health:");
@@ -607,9 +607,9 @@ public class SliceAndDiceUI {
 			 * Player two top status panel stuff
 			 */
 			final JLabel playerTwoName = new JLabel();	// to be set in listener
-				playerTwoName.setFont(labelFont);
+				playerTwoName.setFont(largeLabelFont);
 				playerTwoName.setAlignmentX(Component.LEFT_ALIGNMENT);
-				playerTwoName.setForeground(Color.red);
+				playerTwoName.setForeground(Color.blue);
 				
 			JLabel playerTwoHealth = new JLabel("Health:");
 				playerTwoHealth.setFont(smallLabelFont);
