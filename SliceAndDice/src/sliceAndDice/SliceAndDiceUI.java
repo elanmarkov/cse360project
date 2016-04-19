@@ -49,6 +49,7 @@ public class SliceAndDiceUI {
 	GetStats stats = new GetStats();
 	Winner winner = Winner.NONE;
 	Move move;
+	ChooseAttack chooseAtk = new ChooseAttack();
 		/**
 		 * Gets String of installed LAF based on selection String passed as parameter
 		 * 
@@ -1611,10 +1612,44 @@ public class SliceAndDiceUI {
 				}
 			});
 			
+			chooseAtk.addWindowListener(new WindowAdapter(){
+				public void windowClosed(WindowEvent we){
+
+					move = chooseAtk.getMove();
+					
+					if(move == null){
+						JOptionPane.showMessageDialog(gameFrame, "You have not selected a move. Try again");
+						return;
+					}
+					
+					try{
+						winner = game.PlayNextTurn(move);
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+						e.printStackTrace();
+						modePanel.removeAll();
+						gameFrame.remove(gamePlayPanel);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
+						modePanel.add(splitPane);
+						gameFrame.setContentPane(modePanel);
+						return;
+					}
+				}
+			});
+			
 			spAttack.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					
 					// TODO add special power attack stuff
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run(){
+							if(!game.isPlayerOneTurn()){
+								chooseAtk.showChooseMove(game.getPlayerOneStatus().getMana());
+							}else{
+								chooseAtk.showChooseMove(game.getPlayerTwoStatus().getMana());
+							}
+						}
+					});
 				}
 			});
 			
@@ -1946,7 +1981,7 @@ class GetStats{
 
 /**
  * Choose special attack frame
- * @author Jacob
+ * @author Jacob Loden
  *
  */
 
@@ -1954,15 +1989,220 @@ class GetStats{
 //TODO finish the choose attack class
 @SuppressWarnings("serial")
 class ChooseAttack extends JFrame{
-	private final int WIDTH = 400;
-	private final int HEIGHT = 300;
+	private final int WIDTH = 500;
+	private final int HEIGHT = 500;
 	
+	private int manaAmt;
+	
+	JPanel choosePanel = new JPanel(new BorderLayout(5,5));
+	JPanel topChoosePanel = new JPanel(new BorderLayout(5,5));
+	JPanel bottomChoosePanel = new JPanel(new GridLayout(5,2,2,10));
+	
+	JLabel chooseAtk = new JLabel("Choose Your Attack!");
+	
+	JButton freezeButton = new JButton("Freeze");
+	JButton dblAtk = new JButton("Double");
+	JButton poisonButton = new JButton("Poison");
+	JButton auraButton = new JButton("Aura");
+	JButton chargeButton = new JButton("Charge");
+	
+	JLabel freezeLabel = new JLabel("Freeze Attack: ");
+	JLabel dblAtkLabel = new JLabel("Double Attack: ");
+	JLabel poisonLabel = new JLabel("Poison Attack: ");
+	JLabel auraLabel = new JLabel("Cast Aura: ");
+	JLabel chargeLabel = new JLabel("Charge Attack: ");
+	
+	Font largeLabelFont = new Font("Trubuchet MS", Font.BOLD, 24);
+	Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
+	Font buttonFont = new Font("Trebuchet MS", Font.BOLD, 16);
+	
+	Move move;
+	
+	/**
+	 * Constructor
+	 */
 	public ChooseAttack(){
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setResizable(false);
 		this.setTitle("Slice And Dice");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
+		setFontsAndColors();
+		addComponents();
+		manaAmt = 0;
+		move = null;
+	}
+	
+	/**
+	 * Sets the chosen move
+	 * @param chosenMove
+	 */
+	private void setMove(Move chosenMove){
+		move = chosenMove;
+	}
+	
+	/**
+	 * Returns the chosen move
+	 * @return chosen move
+	 */
+	public Move getMove(){
+		return move;
+	}
+	
+	/**
+	 * Add the components to parent container
+	 */
+	private void addComponents(){
+		topChoosePanel.add(chooseAtk, BorderLayout.CENTER);
+		
+		bottomChoosePanel.add(freezeLabel);
+		bottomChoosePanel.add(freezeButton);
+		bottomChoosePanel.add(dblAtkLabel);
+		bottomChoosePanel.add(dblAtk);
+		bottomChoosePanel.add(poisonLabel);
+		bottomChoosePanel.add(poisonButton);
+		bottomChoosePanel.add(auraLabel);
+		bottomChoosePanel.add(auraButton);
+		bottomChoosePanel.add(chargeLabel);
+		bottomChoosePanel.add(chargeButton);
+		
+		choosePanel.add(topChoosePanel, BorderLayout.NORTH);
+		choosePanel.add(bottomChoosePanel, BorderLayout.CENTER);
+		
+		this.add(choosePanel);
+	}
+	
+	/**
+	 * Set component fonts
+	 */
+	private void setFontsAndColors(){
+		
+		bottomChoosePanel.setBorder(BorderFactory.createTitledBorder(""));
+		topChoosePanel.setBorder(BorderFactory.createTitledBorder(""));
+		
+		chooseAtk.setFont(largeLabelFont);
+		chooseAtk.setForeground(Color.red);
+		
+		freezeButton.setFont(buttonFont);
+		freezeButton.setForeground(Color.red);
+		freezeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		dblAtk.setFont(buttonFont);
+		dblAtk.setForeground(Color.red);
+		dblAtk.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		poisonButton.setFont(buttonFont);
+		poisonButton.setForeground(Color.red);
+		poisonButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		auraButton.setFont(buttonFont);
+		auraButton.setForeground(Color.red);
+		auraButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		chargeButton.setFont(buttonFont);
+		chargeButton.setForeground(Color.red);
+		chargeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		freezeLabel.setFont(labelFont);
+		freezeLabel.setForeground(Color.red);
+		dblAtkLabel.setFont(labelFont);
+		dblAtkLabel.setForeground(Color.red);
+		poisonLabel.setFont(labelFont);
+		poisonLabel.setForeground(Color.red);
+		auraLabel.setFont(labelFont);
+		auraLabel.setForeground(Color.red);
+		chargeLabel.setFont(labelFont);
+		chargeLabel.setForeground(Color.red);
+	}
+	
+	/**
+	 * Pack and show frame
+	 */
+	private void packAndShow(){
+		this.pack();
+		this.setVisible(true);
+	}
+	
+	/**
+	 * Pack and validate frame
+	 */
+	private void packAndValidate(){
+		this.pack();
+		this.validate();
+	}
+	
+	/**
+	 * Dispose frame
+	 */
+	private void disposeFrame(){
+		this.dispose();
+	}
+	
+	/**
+	 * Get parent class
+	 */
+	private JFrame getParentClass(){
+		return this;
+	}
+	
+	/**
+	 * Show the choose move frame
+	 * @param mana
+	 */
+	public void showChooseMove(int mana){
+		manaAmt = mana;
+		packAndShow();
+		
+		freezeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 5){
+					setMove(Move.FREEZE);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		dblAtk.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 9){
+					setMove(Move.DOUBLEATK);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		poisonButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 7){
+					setMove(Move.POISON);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		auraButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 9){
+					setMove(Move.AURA);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		chargeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				setMove(Move.CHARGE);
+				disposeFrame();
+			}
+		});
 	}
 }
 
