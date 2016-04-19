@@ -291,12 +291,4 @@ public class GameTest {
 		assertEquals(move, IllegalMove.NOFOOD);
 	}
 	
-	@Test
-	public void disallowNotImplementedMove() {
-		// Check that Turn does not allow moves that are not yet implemented.
-		Status status1 = new Status();
-		IllegalMove move = Turn.moveIsLegal(status1, Move.SPATK4);
-		
-		assertEquals(move, IllegalMove.NOTIMPLEMENTED);
-	}
 }

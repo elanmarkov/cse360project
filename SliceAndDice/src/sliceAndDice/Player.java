@@ -19,8 +19,8 @@ import sliceAndDice.Condition;
 import sliceAndDice.Move;
 import sliceAndDice.Status;
 
-enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, SPATK3, SPATK4};
-enum Condition {NONE}
+enum Move {ATTACK, FOOD, FREEZE, DOUBLEATK, POISON, AURA, CHARGE};
+enum Condition {NONE, FROZEN, POISON1, POISON2, POISON3, POISON4, POISON5, AURA1, AURA2}
 
 /**
  * Player class. Stores identifying information (username and 
@@ -61,42 +61,42 @@ public class Player {
 		playerData = new Data(playerReader);
 	}
 	/**
-	 * Setter class for ID.
+	 * Setter method for ID.
 	 * @param playerID ID value; corresponds to player location in storage, integer.
 	 */
 	void setID(int playerID) {
 		this.playerID = playerID;
 	}
 	/**
-	 * Setter class for player's username.
+	 * Setter method for player's username.
 	 * @param username Player's username, String.
 	 */
 	void setUsername(String username) {
 		this.username = username;
 	}
 	/**
-	 * Setter class for player Data statistics.
+	 * Setter method for player Data statistics.
 	 * @param playerData Data to be assigned to this player.
 	 */
 	void setPlayerData(Data playerData) {
 		this.playerData =  playerData;
 	}
 	/**
-	 * Getter class for ID.
+	 * Getter method for ID.
 	 * @return User's unique ID, integer.
 	 */
 	int getID() {
 		return playerID;
 	}
 		/**
-	 * Getter class for player's username.
+	 * Getter method for player's username.
 	 * @return Player's username, String.
 	 */
 	String getUsername() {
 		return username;
 	}
 	/**
-	 * Getter class for user's data statistics.
+	 * Getter method for user's data statistics.
 	 * @return Data object containing statistics.
 	 */
 	Data getPlayerData() {
@@ -141,6 +141,8 @@ class Status {
 	private final static int maxHP = 100;
 	private final static int maxMana = 30;
 	private final static int maxFood = 5;
+	private int atk;
+	private int def;
 	private Condition playerCondition;
 	/**
 	 * Default constructor for status. 
@@ -151,6 +153,8 @@ class Status {
 		hitPt = maxHP;
 		mana = maxMana;
 		food = maxFood;
+		atk = 0;
+		def = 0;
 		playerCondition = Condition.NONE;
 	}
 	/**
@@ -164,46 +168,74 @@ class Status {
 		playerCondition = oldStatus.getCondition();
 	}
 	/**
-	 * Getter class for hitpoints.
+	 * Getter method for hitpoints.
 	 * @return Current hitpoints.
 	 */
 	int getHitPts() {
 		return hitPt;
 	}
 	/**
-	 * Getter class for mana.
+	 * Getter method for mana.
 	 * @return Current mana.
 	 */
 	int getMana() {
 		return mana;
 	}
 	/**
-	 * Getter class for food.
+	 * Getter method for food.
 	 * @return Current food count.
 	 */
 	int getFoodCount() {
 		return food;
 	}
 	/**
-	 * Getter class for condition.
+	 * Getter method for attack booster.
+	 * @return Current attack booster.
+	 */
+	int getAtk() {
+		return atk;
+	}
+	/**
+	 * Getter method for defense booster.
+	 * @return Current defense booster.
+	 */
+	int getDef() {
+		return def;
+	}
+	/**
+	 * Getter method for condition.
 	 * @return Current condition.
 	 */
 	Condition getCondition() {
 		return playerCondition;
 	}
 	/**
-	 * Setter class for hitpoints.
+	 * Setter method for hitpoints.
 	 * @param newHP New hitpoints for the player.
 	 */
 	void setHitPts(int newHP) {
 		hitPt = newHP;
 	}
 	/**
-	 * Setter class for mana.
+	 * Setter method for mana.
 	 * @param newMana New mana for the player.
 	 */
 	void setMana(int newMana) {
 		mana = newMana;
+	}
+	/**
+	 * Method for reducing mana by a given amount.
+	 * @param reduceCount Reduce mana by this value.
+	 */
+	void reduceMana(int reduceCount) {
+		mana -= reduceCount;
+	}
+	/**
+	 * Method for increasing mana by a given amount.
+	 * @param increaseCount Increase mana by this value.
+	 */
+	void increaseMana(int increaseCount) {
+		mana += increaseCount;
 	}
 	/**
 	 * Reduces the player's food count (ate food).
@@ -212,7 +244,21 @@ class Status {
 		food--;
 	}
 	/**
-	 * Setter class for player condition.
+	 * Setter method for attack booster.
+	 * @param atk New attack booster.
+	 */
+	void setAtk(int atk) {
+		this.atk = atk;
+	}
+	/**
+	 * Setter method for defense booster.
+	 * @param def New defense booster.
+	 */
+	void setDef(int def) {
+		this.def = def;
+	}
+	/**
+	 * Setter method for player condition.
 	 * @param newCondition Condition to be assigned for the player.
 	 */
 	void setCondition(Condition newCondition) {

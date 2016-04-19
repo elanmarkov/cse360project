@@ -50,7 +50,7 @@ public class Robot extends Player {
 		return Move.ATTACK;
 	}
 	/**
-	 * Getter class for user's data statistics.
+	 * Getter method for user's data statistics.
 	 * @return Data object containing statistics for all games by computer (static Data).
 	 */
 	Data getPlayerData() {

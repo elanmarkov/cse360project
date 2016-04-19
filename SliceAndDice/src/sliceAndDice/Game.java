@@ -196,14 +196,14 @@ public class Game {
 		return playerOneTurn;
 	}
 	/**
-	 * Getter class for player 1's status data.
+	 * Getter method for player 1's status data.
 	 * @return Player 1's Status object for this game.
 	 */
 	Status getPlayerOneStatus() {
 		return playerOneStatus;
 	}
 	/**
-	 * Getter class for player 2's status data.
+	 * Getter method for player 2's status data.
 	 * @return Player 2's Status object for this game.
 	 */
 	Status getPlayerTwoStatus() {
@@ -231,14 +231,14 @@ public class Game {
 		return totalTurns;
 	}
 	/**
-	 * Getter class for Player 1 username.
+	 * Getter method for Player 1 username.
 	 * @return Player 1's username.
 	 */
 	String getPlayerOneUsername() {
 		return playerOne.getUsername();
 	}
 	/**
-	 * Getter class for Player 2 username.
+	 * Getter method for Player 2 username.
 	 * @return Player 2's username.
 	 */
 	String getPlayerTwoUsername() {
@@ -281,9 +281,11 @@ public class Game {
 			break;
 		case DOUBLEATK:
 			break;
-		case SPATK3:
+		case POISON:
 			break;
-		case SPATK4:
+		case AURA:
+			break;
+		case CHARGE:
 			break;
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
@@ -303,7 +305,11 @@ class Turn {
 	private Status statusP1;
 	private Status statusP2;
 	static int[] lastRoll;
-
+	private final int manaFreeze = 6;
+	private final int manaDouble = 10;
+	private final int manaPoison = 8;
+	private final int manaAura = 10;
+	private final int manaCharge = 0;
 	/**
 	 * Constructor for the Turn class.
 	 * @param statusP1 Status object for a player.
@@ -374,11 +380,14 @@ class Turn {
 		case DOUBLEATK:
 			doubleAtk(turnPlayer, otherPlayer);
 			break;
-		case SPATK3:
-			spAtk3(turnPlayer, otherPlayer);
+		case POISON:
+			poison(turnPlayer, otherPlayer);
 			break;
-		case SPATK4:
-			spAtk4(turnPlayer, otherPlayer);
+		case AURA:
+			aura(turnPlayer);
+			break;
+		case CHARGE:
+			charge(turnPlayer);
 			break;
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
@@ -392,7 +401,7 @@ class Turn {
 		return lastRoll;
 	}
 	/**
-	 * Static class, evalates given a Status and Move whether or not that move is legal.
+	 * Static method, evalates given a Status and Move whether or not that move is legal.
 	 * @param turnPlayer Status of the turn player.
 	 * @param nextMove Move to be evaluated.
 	 * @return Violation notification, or none if move is legal.
@@ -447,36 +456,126 @@ class Turn {
 		turnPlayer.reduceFoodCount();
 	}
 	/**
-	 * Special attack. Not yet implemented.
+	 * Freeze attack. Damages opponent and has a chance of freezing.
+	 * Mana cost associated with this attack.
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
 	private void freeze(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+		// Roll 4 dice. Freeze if first two dice sum to 7 or more.
+		// Do damage equal to sum of second two dice.
+		int numRoll = 4;
+		lastRoll = DiceRoll.roll(numRoll);
+		int sumFreeze = lastRoll[0] + lastRoll[1];
+		int sumDamage = 0;
+		for(int rollCount = 2; rollCount < numRoll; rollCount++) {
+			sumDamage += lastRoll[rollCount];
+		}				
+		int oppHP = otherPlayer.getHitPts();
+		if(oppHP <= sumDamage) {
+			otherPlayer.setHitPts(0);
+		}
+		else {
+			otherPlayer.setHitPts(oppHP - sumDamage);
+		}
+		if(sumFreeze > 6) {
+			if(otherPlayer.getCondition() != Condition.AURA1 
+					&& otherPlayer.getCondition() != Condition.AURA2) {
+				otherPlayer.setCondition(Condition.FROZEN);
+			}
+		}
+		turnPlayer.reduceMana(manaFreeze);
 	}
 	/**
-	 * Special attack. Not yet implemented.
+	 * Double attack. Attacks twice in one turn.
+	 * Mana cost associated with this attack.
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
 	private void doubleAtk(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+		// Roll 8 dice, do damage equal to combined result.
+		int numRoll = 8;
+		lastRoll = DiceRoll.roll(numRoll);
+		int sumDamage = 0;
+		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
+			sumDamage += lastRoll[rollCount];
+		}
+				
+		int oppHP = otherPlayer.getHitPts();
+		if(oppHP <= sumDamage) {
+			otherPlayer.setHitPts(0);
+		}
+		else {
+			otherPlayer.setHitPts(oppHP - sumDamage);
+		}
+		turnPlayer.reduceMana(manaDouble);
 	}
 	/**
 	 * Special attack. Not yet implemented.
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	private void spAtk3(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+	private void poison(Status turnPlayer, Status otherPlayer) {
+		// Roll 4 dice. Poison if first two dice sum to 7 or more.
+		// Do damage equal to sum of second two dice.
+		int numRoll = 4;
+		lastRoll = DiceRoll.roll(numRoll);
+		int sumPoison = lastRoll[0] + lastRoll[1];
+		int sumDamage = 0;
+		for(int rollCount = 2; rollCount < numRoll; rollCount++) {
+			sumDamage += lastRoll[rollCount];
+		}				
+		int oppHP = otherPlayer.getHitPts();
+		if(oppHP <= sumDamage) {
+			otherPlayer.setHitPts(0);
+		}
+		else {
+			otherPlayer.setHitPts(oppHP - sumDamage);
+		}
+		if(sumPoison > 6) {
+			if(otherPlayer.getCondition() != Condition.AURA1 
+					&& otherPlayer.getCondition() != Condition.AURA2) {
+				otherPlayer.setCondition(Condition.POISON1);
+			}
+		}
+		turnPlayer.reduceMana(manaPoison);
 	}
 	/**
-	 * Special attack. Not yet implemented.
+	 * Special attack. Cures condition and gives status boosters.
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
 	 */
-	private void spAtk4(Status turnPlayer, Status otherPlayer) {
-		throw new IllegalArgumentException("Error: Special attacks not yet implemented.");
+	private void aura(Status turnPlayer) {
+		// Roll 4 dice.
+		// Change current condition to Aura if first die is 4 or more.
+		// Add second die as attack booster.
+		// Add third die as defense booster.
+		// No mana cost if fourth die is 4 or more.
+		int numRoll = 4;
+		lastRoll = DiceRoll.roll(numRoll);
+		if(lastRoll[0] > 3) {
+			turnPlayer.setCondition(Condition.AURA1);
+		}
+		turnPlayer.setAtk(lastRoll[1]);
+		turnPlayer.setDef(lastRoll[2]);
+		if(lastRoll[3] < 4) {
+			turnPlayer.reduceMana(manaAura);
+		}
+	}
+	/**
+	 * Special attack. Increases current mana.
+	 * @param turnPlayer Status of turn player.
+	 */
+	private void charge(Status turnPlayer) {
+		// Roll 4 dice. Increase mana by 50% of sum of roll, rounding up.
+		int numRoll = 4;
+		lastRoll = DiceRoll.roll(numRoll);
+		int sumBoost = 0;
+		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
+			sumBoost += lastRoll[rollCount];
+		}
+		sumBoost = (int) ((double)(sumBoost + 0.5) / 2);
+		turnPlayer.increaseMana(sumBoost);
 	}
 }
 
