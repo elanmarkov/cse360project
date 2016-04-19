@@ -7,12 +7,12 @@ package sliceAndDice;
  *
  */
 public class Robot extends Player {
-	static Data computerData;
-	final static String[] title = {"Count", "Viscount", "Lord", "Duke", "Archsage",
+	private static Data computerData;
+	private final static String[] title = {"Count", "Viscount", "Lord", "Duke", "Archsage",
 			"Baron", "Earl", "Cardinal"};
-	final String[] name = {"Richard", "James", "Athos", "John", "Reginald",
+	private final static String[] name = {"Richard", "James", "Athos", "John", "Reginald",
 			"Achilles", "Darius", "Julius"};
-	final String[] suffix = {"the Mighty", "the Wise", "the Valiant", 
+	private final static String[] suffix = {"the Mighty", "the Wise", "the Valiant", 
 			"the Wretched", "the Blighted", "the Lionheart", "the Great",
 			"the Pretender"};
 	/**
