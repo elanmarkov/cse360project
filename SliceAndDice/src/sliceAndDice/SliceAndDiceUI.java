@@ -118,6 +118,7 @@ public class SliceAndDiceUI {
 				gameFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
 				gameFrame.setLocationRelativeTo(null);
 				gameFrame.setPreferredSize(MENU_SIZE);
+				gameFrame.setResizable(false);
 				
 				/*
 				 * Get image and add to panel
@@ -163,7 +164,7 @@ public class SliceAndDiceUI {
 			final JPanel modePanel = new JPanel(new BorderLayout(5, 5));
 				modePanel.setBorder(BorderFactory.createTitledBorder(null, "Select Mode", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
 			
-			final JPanel modePanelButtons = new JPanel(new GridLayout(4, 1, 2, 5));
+			final JPanel modePanelButtons = new JPanel(new GridLayout(3, 1, 2, 5));
 			
 				/*
 				 * Mode select buttons
@@ -190,10 +191,8 @@ public class SliceAndDiceUI {
 				 * Add buttons to panel
 				 */
 				modePanelButtons.add(newGameButton);
-//				modePanelButtons.add(loadGameButton);
 				modePanelButtons.add(playerStatusButton);
 				modePanelButtons.add(abtGameButton);
-				modePanelButtons.add(new JPanel());
 
 /*
  * New game panel components
@@ -456,14 +455,26 @@ public class SliceAndDiceUI {
 			/*
 			 * Top panels
 			 */
-			final JPanel topGamePanel = new JPanel(new BorderLayout(5, 5));
-				topGamePanel.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel topGamePanel = new JPanel(new BorderLayout(5, 5));
+				//topGamePanel.setBorder(BorderFactory.createTitledBorder(""));
 				
-			final JPanel playerOne = new JPanel(new GridLayout(5, 3, 5, 5));
-				playerOne.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel topRightPanel = new JPanel(new BorderLayout(5, 5));
+				topRightPanel.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel topLeftPanel = new JPanel(new BorderLayout(5, 5));
+				topLeftPanel.setBorder(BorderFactory.createTitledBorder(""));
+
 				
-			final JPanel playerTwo = new JPanel(new GridLayout(5, 3, 5, 5));
-				playerTwo.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel playerOneNameAndStatus = new JPanel(new BorderLayout(5, 5));
+			
+			final JPanel playerOneCondition = new JPanel(new BorderLayout(5, 5));	//holds condition icon
+				playerOneCondition.setBorder(BorderFactory.createTitledBorder(""));
+				playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))), BorderLayout.CENTER);
+			
+			JPanel playerTwoNameAndStatus = new JPanel(new BorderLayout(5, 5));
+				
+			final JPanel playerTwoCondition = new JPanel(new BorderLayout(5, 5));	//holds condition icon
+				playerTwoCondition.setBorder(BorderFactory.createTitledBorder(""));
+				playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))), BorderLayout.CENTER);
 				
 			final JLabel gameWinner = new JLabel();
 				gameWinner.setFont(largeLabelFont);
@@ -479,14 +490,14 @@ public class SliceAndDiceUI {
 				playerOneName.setForeground(Color.red);
 				
 				
-			final JLabel playerOneHealth = new JLabel("Health:");
+			JLabel playerOneHealth = new JLabel("Health:");
 				playerOneHealth.setFont(smallLabelFont);
 				playerOneHealth.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneHealth.setForeground(Color.red);
 				
 			final JLabel playerOneHealthRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerOneHealthRatio.setFont(verySmallLabelFont);
-				playerOneHealthRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerOneHealthRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneHealthRatio.setForeground(Color.red);
 				
 			final JProgressBar plOneHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
@@ -495,14 +506,14 @@ public class SliceAndDiceUI {
 					plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
 					
-			final JLabel playerOneMana = new JLabel("Mana:");
+			JLabel playerOneMana = new JLabel("Mana:");
 				playerOneMana.setFont(smallLabelFont);
 				playerOneMana.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneMana.setForeground(Color.red);
 				
 			final JLabel playerOneManaRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerOneManaRatio.setFont(verySmallLabelFont);
-				playerOneManaRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerOneManaRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneManaRatio.setForeground(Color.red);
 				
 			final JProgressBar plOneManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
@@ -510,37 +521,87 @@ public class SliceAndDiceUI {
 					plOneManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
-			final JLabel playerOneFood = new JLabel("Food:");
+			JLabel playerOneFood = new JLabel("Food:");
 				playerOneFood.setFont(smallLabelFont);
 				playerOneFood.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneFood.setForeground(Color.red);
 				
 			final JLabel playerOneFoodRatio = new JLabel();// status ratio label, to be set in listener.
 				playerOneFoodRatio.setFont(verySmallLabelFont);
-				playerOneFoodRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerOneFoodRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneFoodRatio.setForeground(Color.red);
 				
 			final JProgressBar plOneFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
 					plOneFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+					
+			JPanel plOneStats = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				plOneStats.setPreferredSize(new Dimension(460, 70));
+			JPanel plOneStatusIndicators = new JPanel(new GridLayout(3,1,5,7));
+				plOneStatusIndicators.add(playerOneHealthRatio);
+				plOneStatusIndicators.add(playerOneManaRatio);
+				plOneStatusIndicators.add(playerOneFoodRatio);
+				plOneStatusIndicators.setPreferredSize(new Dimension(50,50));
+			JPanel plOneStatusBars = new JPanel(new GridLayout(3,1,2,2));
+				plOneStatusBars.add(plOneHealthStatus);
+				plOneStatusBars.add(plOneManaStatus);
+				plOneStatusBars.add(plOneFoodStatus);
+			JPanel plOneIndicators = new JPanel(new GridLayout(3,2,5,5));
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(playerOneHealth);
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(playerOneMana);
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(playerOneFood);
+					
+					/*
+					 * player one additions
+					 */
+				JPanel plOneSpclPanel = new JPanel(new GridLayout(3,2,2,2));
+					JLabel playerOneATK = new JLabel("ATK:");
+						playerOneATK.setFont(smallLabelFont);
+						playerOneATK.setForeground(Color.blue);
+						playerOneATK.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerOneDEF = new JLabel("DEF:");
+						playerOneDEF.setFont(smallLabelFont);
+						playerOneDEF.setForeground(Color.blue);
+						playerOneDEF.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerOneCOND = new JLabel("COND:");
+						playerOneCOND.setFont(smallLabelFont);
+						playerOneCOND.setForeground(Color.blue);
+						playerOneCOND.setAlignmentX(Component.LEFT_ALIGNMENT);
+					final JLabel playerOneATKValue = new JLabel(" ");
+						playerOneATKValue.setFont(smallLabelFont);
+						playerOneATKValue.setForeground(Color.blue);
+						playerOneATKValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerOneDEFValue = new JLabel(" ");
+						playerOneDEFValue.setFont(smallLabelFont);
+						playerOneDEFValue.setForeground(Color.blue);
+						playerOneDEFValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerOneCONDValue = new JLabel(" ");
+						playerOneCONDValue.setFont(smallLabelFont);
+						playerOneCONDValue.setForeground(Color.blue);
+						playerOneCONDValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					
+						plOneSpclPanel.add(playerOneATK);
+						plOneSpclPanel.add(playerOneATKValue);
+						plOneSpclPanel.add(playerOneDEF);
+						plOneSpclPanel.add(playerOneDEFValue);
+						plOneSpclPanel.add(playerOneCOND);
+						plOneSpclPanel.add(playerOneCONDValue);
+					
 				
 				/*
 				 * Add player one stuff to player one panel
 				 */
-				playerOne.add(playerOneName);
-				for(int i = 1; i<3; i++){
-					playerOne.add(new JPanel());
-				}
-				playerOne.add(playerOneHealth);
-				playerOne.add(plOneHealthStatus);
-				playerOne.add(playerOneHealthRatio);
-				playerOne.add(playerOneMana);
-				playerOne.add(plOneManaStatus);
-				playerOne.add(playerOneManaRatio);
-				playerOne.add(playerOneFood);
-				playerOne.add(plOneFoodStatus);
-				playerOne.add(playerOneFoodRatio);
+				playerOneNameAndStatus.add(playerOneName, BorderLayout.WEST);
+				playerOneNameAndStatus.add(playerOneCondition, BorderLayout.EAST);
+				
+				plOneStats.add(plOneSpclPanel);
+				plOneStats.add(plOneIndicators);
+				plOneStats.add(plOneStatusBars);
+				plOneStats.add(plOneStatusIndicators);
 			
 			/*
 			 * Player two top status panel stuff
@@ -550,14 +611,14 @@ public class SliceAndDiceUI {
 				playerTwoName.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoName.setForeground(Color.red);
 				
-			final JLabel playerTwoHealth = new JLabel("Health:");
+			JLabel playerTwoHealth = new JLabel("Health:");
 				playerTwoHealth.setFont(smallLabelFont);
 				playerTwoHealth.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoHealth.setForeground(Color.red);
 				
 			final JLabel playerTwoHealthRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerTwoHealthRatio.setFont(verySmallLabelFont);
-				playerTwoHealthRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerTwoHealthRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoHealthRatio.setForeground(Color.red);
 				
 			final JProgressBar plTwoHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
@@ -565,14 +626,14 @@ public class SliceAndDiceUI {
 					plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
-			final JLabel playerTwoMana = new JLabel("Mana:");
+			JLabel playerTwoMana = new JLabel("Mana:");
 				playerTwoMana.setFont(smallLabelFont);
 				playerTwoMana.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoMana.setForeground(Color.red);
 				
 			final JLabel playerTwoManaRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerTwoManaRatio.setFont(verySmallLabelFont);
-				playerTwoManaRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerTwoManaRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoManaRatio.setForeground(Color.red);
 				
 			final JProgressBar plTwoManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
@@ -580,14 +641,14 @@ public class SliceAndDiceUI {
 					plTwoManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
-			final JLabel playerTwoFood = new JLabel("Food:");
+			JLabel playerTwoFood = new JLabel("Food:");
 				playerTwoFood.setFont(smallLabelFont);
 				playerTwoFood.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoFood.setForeground(Color.red);
 				
 			final JLabel playerTwoFoodRatio = new JLabel();// status ratio label, to be set in listener.
 				playerTwoFoodRatio.setFont(verySmallLabelFont);
-				playerTwoFoodRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerTwoFoodRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoFoodRatio.setForeground(Color.red);
 				
 			final JProgressBar plTwoFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
@@ -595,28 +656,85 @@ public class SliceAndDiceUI {
 					plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
+			JPanel plTwoStats = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				plTwoStats.setPreferredSize(new Dimension(460, 70));
+			JPanel plTwoStatusIndicators = new JPanel(new GridLayout(3,1,5,7));
+				plTwoStatusIndicators.add(playerTwoHealthRatio);
+				plTwoStatusIndicators.add(playerTwoManaRatio);
+				plTwoStatusIndicators.add(playerTwoFoodRatio);
+				plTwoStatusIndicators.setPreferredSize(new Dimension(50,50));
+			JPanel plTwoStatusBars = new JPanel(new GridLayout(3,1,2,2));
+				plTwoStatusBars.add(plTwoHealthStatus);
+				plTwoStatusBars.add(plTwoManaStatus);
+				plTwoStatusBars.add(plTwoFoodStatus);
+			JPanel plTwoIndicators = new JPanel(new GridLayout(3,2,5,5));
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(playerTwoHealth);
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(playerTwoMana);
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(playerTwoFood);
+					
+					/*
+					 * player two additions
+					 */
+				JPanel plTwoSpclPanel = new JPanel(new GridLayout(3,2,2,2));
+					JLabel playerTwoATK = new JLabel("ATK:");
+						playerTwoATK.setFont(smallLabelFont);
+						playerTwoATK.setForeground(Color.blue);
+						playerTwoATK.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerTwoDEF = new JLabel("DEF:");
+						playerTwoDEF.setFont(smallLabelFont);
+						playerTwoDEF.setForeground(Color.blue);
+						playerTwoDEF.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerTwoCOND = new JLabel("COND:");
+						playerTwoCOND.setFont(smallLabelFont);
+						playerTwoCOND.setForeground(Color.blue);
+						playerTwoCOND.setAlignmentX(Component.LEFT_ALIGNMENT);
+					final JLabel playerTwoATKValue = new JLabel(" ");
+						playerTwoATKValue.setFont(smallLabelFont);
+						playerTwoATKValue.setForeground(Color.blue);
+						playerTwoATKValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerTwoDEFValue = new JLabel(" ");
+						playerTwoDEFValue.setFont(smallLabelFont);
+						playerTwoDEFValue.setForeground(Color.blue);
+						playerTwoDEFValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerTwoCONDValue = new JLabel(" ");
+						playerTwoCONDValue.setFont(smallLabelFont);
+						playerTwoCONDValue.setForeground(Color.blue);
+						playerTwoCONDValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+						
+						plTwoSpclPanel.add(playerTwoATK);
+						plTwoSpclPanel.add(playerTwoATKValue);
+						plTwoSpclPanel.add(playerTwoDEF);
+						plTwoSpclPanel.add(playerTwoDEFValue);
+						plTwoSpclPanel.add(playerTwoCOND);
+						plTwoSpclPanel.add(playerTwoCONDValue);
+					
+					
 				/*
 				 * Add player two stuff to player two panel	
 				 */
-				playerTwo.add(playerTwoName);
-				for(int i = 1; i<3; i++){
-					playerTwo.add(new JPanel());
-				}
-				playerTwo.add(playerTwoHealth);
-				playerTwo.add(plTwoHealthStatus);
-				playerTwo.add(playerTwoHealthRatio);
-				playerTwo.add(playerTwoMana);
-				playerTwo.add(plTwoManaStatus);
-				playerTwo.add(playerTwoManaRatio);
-				playerTwo.add(playerTwoFood);
-				playerTwo.add(plTwoFoodStatus);
-				playerTwo.add(playerTwoFoodRatio);
+				
+				plTwoStats.add(plTwoSpclPanel);
+				plTwoStats.add(plTwoIndicators);
+				plTwoStats.add(plTwoStatusBars);
+				plTwoStats.add(plTwoStatusIndicators);
+				
+				playerTwoNameAndStatus.add(playerTwoName, BorderLayout.WEST);
+				playerTwoNameAndStatus.add(playerTwoCondition, BorderLayout.EAST);
 				
 				/*
 				 * Add player panels to top panel
 				 */
-				topGamePanel.add(playerOne, BorderLayout.WEST);
-				topGamePanel.add(playerTwo, BorderLayout.EAST);
+				topLeftPanel.add(playerOneNameAndStatus, BorderLayout.NORTH);
+				topLeftPanel.add(plOneStats, BorderLayout.SOUTH);
+				
+				topRightPanel.add(playerTwoNameAndStatus, BorderLayout.NORTH);
+				topRightPanel.add(plTwoStats, BorderLayout.SOUTH);
+				
+				topGamePanel.add(topLeftPanel, BorderLayout.WEST);
+				topGamePanel.add(topRightPanel, BorderLayout.EAST);
 			
 			/*
 			 * Middle panels
@@ -627,6 +745,8 @@ public class SliceAndDiceUI {
 			 * Active player title pane
 			 */
 			final JPanel middlePlayerPanel = new JPanel(new BorderLayout(5,5));
+				//middlePlayerPanel.setBorder(BorderFactory.createTitledBorder(""));
+				
 			final JPanel middlePlayerSel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			final JPanel winningPlayer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			
@@ -1023,10 +1143,13 @@ public class SliceAndDiceUI {
 					case DOUBLEATK:
 						
 						break;
-					case SPATK3:
+					case POISON:
 						
 						break;
-					case SPATK4:
+					case AURA:
+						
+						break;
+					case CHARGE:
 						
 						break;
 					default:
@@ -1818,6 +1941,28 @@ class GetStats{
 		allUserStat = new DefaultTableModel(rowData, colNames);
 		
 		return allUserStat;
+	}
+}
+
+/**
+ * Choose special attack frame
+ * @author Jacob
+ *
+ */
+
+
+//TODO finish the choose attack class
+@SuppressWarnings("serial")
+class ChooseAttack extends JFrame{
+	private final int WIDTH = 400;
+	private final int HEIGHT = 300;
+	
+	public ChooseAttack(){
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setResizable(false);
+		this.setTitle("Slice And Dice");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
 	}
 }
 
