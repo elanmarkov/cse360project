@@ -16,7 +16,7 @@ package sliceAndDice;
  */
 
 enum Winner {NONE, PLAYER_ONE, PLAYER_TWO};
-enum IllegalMove {NONE, NOFOOD, NOMANA, NOTIMPLEMENTED};
+enum IllegalMove {NONE, NOFOOD, NOMANA};
 
 /**
  * Game class. Runs an instance of a game played by the UI and
@@ -334,14 +334,19 @@ public class Game {
 			turnPlayer.getPlayerData().incrNumMeals();
 			break;
 		case FREEZE:
+			turnPlayer.getPlayerData().incrNumAttacks();
 			break;
 		case DOUBLEATK:
+			turnPlayer.getPlayerData().incrNumAttacks();
 			break;
 		case POISON:
+			turnPlayer.getPlayerData().incrNumAttacks();
 			break;
 		case AURA:
+			turnPlayer.getPlayerData().incrNumAttacks();
 			break;
 		case CHARGE:
+			turnPlayer.getPlayerData().incrNumAttacks();
 			break;
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
@@ -361,11 +366,11 @@ class Turn {
 	private Status statusP1;
 	private Status statusP2;
 	static int[] lastRoll;
-	private final int manaFreeze = 6;
-	private final int manaDouble = 10;
-	private final int manaPoison = 8;
-	private final int manaAura = 10;
-	private final int manaCharge = 0;
+	private final static int manaFreeze = 6;
+	private final static int manaDouble = 10;
+	private final static int manaPoison = 8;
+	private final static int manaAura = 10;
+	private final static int manaCharge = 0;
 	/**
 	 * Constructor for the Turn class.
 	 * @param statusP1 Status object for a player.
@@ -464,12 +469,26 @@ class Turn {
 	 */
 	static IllegalMove moveIsLegal(Status turnPlayer, Move nextMove) {
 		IllegalMove violation = IllegalMove.NONE;
+		if(turnPlayer.getCondition() == Condition.FROZEN) {
+			throw new IllegalArgumentException("Error: Frozen players should not have a turn");
+		}
 		if(nextMove == Move.FOOD && turnPlayer.getFoodCount() <= 0) {
 			violation = IllegalMove.NOFOOD;
 		}
-		else if (nextMove != Move.ATTACK && nextMove != Move.FOOD) { 
-			// Moves that have not yet been created
-			violation = IllegalMove.NOTIMPLEMENTED;
+		else if (nextMove == Move.FREEZE && turnPlayer.getMana() < manaFreeze) { 
+			violation = IllegalMove.NOMANA;
+		}
+		else if (nextMove == Move.DOUBLEATK && turnPlayer.getMana() < manaDouble) { 
+			violation = IllegalMove.NOMANA;
+		}
+		else if (nextMove == Move.POISON && turnPlayer.getMana() < manaPoison) { 
+			violation = IllegalMove.NOMANA;
+		}
+		else if (nextMove == Move.AURA && turnPlayer.getMana() < manaAura) { 
+			violation = IllegalMove.NOMANA;
+		}
+		else if (nextMove == Move.CHARGE && turnPlayer.getMana() < manaCharge) { 
+			violation = IllegalMove.NOMANA;
 		}
 		return violation;
 	}

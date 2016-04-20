@@ -49,6 +49,7 @@ public class SliceAndDiceUI {
 	GetStats stats = new GetStats();
 	Winner winner = Winner.NONE;
 	Move move;
+	ChooseAttack chooseAtk = new ChooseAttack();
 		/**
 		 * Gets String of installed LAF based on selection String passed as parameter
 		 * 
@@ -118,6 +119,7 @@ public class SliceAndDiceUI {
 				gameFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
 				gameFrame.setLocationRelativeTo(null);
 				gameFrame.setPreferredSize(MENU_SIZE);
+				gameFrame.setResizable(false);
 				
 				/*
 				 * Get image and add to panel
@@ -163,7 +165,7 @@ public class SliceAndDiceUI {
 			final JPanel modePanel = new JPanel(new BorderLayout(5, 5));
 				modePanel.setBorder(BorderFactory.createTitledBorder(null, "Select Mode", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
 			
-			final JPanel modePanelButtons = new JPanel(new GridLayout(4, 1, 2, 5));
+			final JPanel modePanelButtons = new JPanel(new GridLayout(3, 1, 2, 5));
 			
 				/*
 				 * Mode select buttons
@@ -190,10 +192,8 @@ public class SliceAndDiceUI {
 				 * Add buttons to panel
 				 */
 				modePanelButtons.add(newGameButton);
-//				modePanelButtons.add(loadGameButton);
 				modePanelButtons.add(playerStatusButton);
 				modePanelButtons.add(abtGameButton);
-				modePanelButtons.add(new JPanel());
 
 /*
  * New game panel components
@@ -456,14 +456,26 @@ public class SliceAndDiceUI {
 			/*
 			 * Top panels
 			 */
-			final JPanel topGamePanel = new JPanel(new BorderLayout(5, 5));
-				topGamePanel.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel topGamePanel = new JPanel(new BorderLayout(5, 5));
+				//topGamePanel.setBorder(BorderFactory.createTitledBorder(""));
 				
-			final JPanel playerOne = new JPanel(new GridLayout(5, 3, 5, 5));
-				playerOne.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel topRightPanel = new JPanel(new BorderLayout(5, 5));
+				topRightPanel.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel topLeftPanel = new JPanel(new BorderLayout(5, 5));
+				topLeftPanel.setBorder(BorderFactory.createTitledBorder(""));
+
 				
-			final JPanel playerTwo = new JPanel(new GridLayout(5, 3, 5, 5));
-				playerTwo.setBorder(BorderFactory.createTitledBorder(""));
+			JPanel playerOneNameAndStatus = new JPanel(new BorderLayout(5, 5));
+			
+			final JPanel playerOneCondition = new JPanel(new BorderLayout(5, 5));	//holds condition icon
+				playerOneCondition.setBorder(BorderFactory.createTitledBorder(""));
+				playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))), BorderLayout.CENTER);
+			
+			JPanel playerTwoNameAndStatus = new JPanel(new BorderLayout(5, 5));
+				
+			final JPanel playerTwoCondition = new JPanel(new BorderLayout(5, 5));	//holds condition icon
+				playerTwoCondition.setBorder(BorderFactory.createTitledBorder(""));
+				playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))), BorderLayout.CENTER);
 				
 			final JLabel gameWinner = new JLabel();
 				gameWinner.setFont(largeLabelFont);
@@ -474,19 +486,19 @@ public class SliceAndDiceUI {
 			 * player one top status panel stuff
 			 */
 			final JLabel playerOneName = new JLabel();	// to be set in listener
-				playerOneName.setFont(labelFont);
+				playerOneName.setFont(largeLabelFont);
 				playerOneName.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneName.setForeground(Color.red);
 				
 				
-			final JLabel playerOneHealth = new JLabel("Health:");
+			JLabel playerOneHealth = new JLabel("Health:");
 				playerOneHealth.setFont(smallLabelFont);
 				playerOneHealth.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneHealth.setForeground(Color.red);
 				
 			final JLabel playerOneHealthRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerOneHealthRatio.setFont(verySmallLabelFont);
-				playerOneHealthRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerOneHealthRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneHealthRatio.setForeground(Color.red);
 				
 			final JProgressBar plOneHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
@@ -495,14 +507,14 @@ public class SliceAndDiceUI {
 					plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
 					
-			final JLabel playerOneMana = new JLabel("Mana:");
+			JLabel playerOneMana = new JLabel("Mana:");
 				playerOneMana.setFont(smallLabelFont);
 				playerOneMana.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneMana.setForeground(Color.red);
 				
 			final JLabel playerOneManaRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerOneManaRatio.setFont(verySmallLabelFont);
-				playerOneManaRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerOneManaRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneManaRatio.setForeground(Color.red);
 				
 			final JProgressBar plOneManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
@@ -510,54 +522,107 @@ public class SliceAndDiceUI {
 					plOneManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
-			final JLabel playerOneFood = new JLabel("Food:");
+			JLabel playerOneFood = new JLabel("Food:");
 				playerOneFood.setFont(smallLabelFont);
 				playerOneFood.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerOneFood.setForeground(Color.red);
 				
 			final JLabel playerOneFoodRatio = new JLabel();// status ratio label, to be set in listener.
 				playerOneFoodRatio.setFont(verySmallLabelFont);
-				playerOneFoodRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerOneFoodRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerOneFoodRatio.setForeground(Color.red);
 				
 			final JProgressBar plOneFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
 					plOneFoodStatus.setOrientation(SwingConstants.HORIZONTAL);
 					plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+					
+			JPanel plOneStats = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				plOneStats.setPreferredSize(new Dimension(460, 60));
+			JPanel plOneStatusIndicators = new JPanel(new GridLayout(3,1,5,7));
+				plOneStatusIndicators.add(playerOneHealthRatio);
+				plOneStatusIndicators.add(playerOneManaRatio);
+				plOneStatusIndicators.add(playerOneFoodRatio);
+				plOneStatusIndicators.setPreferredSize(new Dimension(50,50));
+			JPanel plOneStatusBars = new JPanel(new GridLayout(3,1,2,2));
+				plOneStatusBars.add(plOneHealthStatus);
+				plOneStatusBars.add(plOneManaStatus);
+				plOneStatusBars.add(plOneFoodStatus);
+			JPanel plOneIndicators = new JPanel(new GridLayout(3,3,5,5));
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(playerOneHealth);
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(playerOneMana);
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(playerOneFood);
+					
+					/*
+					 * player one additions
+					 */
+				JPanel plOneSpclPanel = new JPanel(new GridLayout(3,2,2,2));
+					JLabel playerOneATK = new JLabel("ATK:");
+						playerOneATK.setFont(smallLabelFont);
+						playerOneATK.setForeground(Color.blue);
+						playerOneATK.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerOneDEF = new JLabel("DEF:");
+						playerOneDEF.setFont(smallLabelFont);
+						playerOneDEF.setForeground(Color.blue);
+						playerOneDEF.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerOneCOND = new JLabel("COND:");
+						playerOneCOND.setFont(smallLabelFont);
+						playerOneCOND.setForeground(Color.blue);
+						playerOneCOND.setAlignmentX(Component.LEFT_ALIGNMENT);
+					final JLabel playerOneATKValue = new JLabel(" ");
+						playerOneATKValue.setFont(smallLabelFont);
+						playerOneATKValue.setForeground(Color.blue);
+						playerOneATKValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerOneDEFValue = new JLabel(" ");
+						playerOneDEFValue.setFont(smallLabelFont);
+						playerOneDEFValue.setForeground(Color.blue);
+						playerOneDEFValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerOneCONDValue = new JLabel(" ");
+						playerOneCONDValue.setFont(smallLabelFont);
+						playerOneCONDValue.setForeground(Color.blue);
+						playerOneCONDValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					
+						plOneSpclPanel.add(playerOneATK);
+						plOneSpclPanel.add(playerOneATKValue);
+						plOneSpclPanel.add(playerOneDEF);
+						plOneSpclPanel.add(playerOneDEFValue);
+						plOneSpclPanel.add(playerOneCOND);
+						plOneSpclPanel.add(playerOneCONDValue);
+					
 				
 				/*
 				 * Add player one stuff to player one panel
 				 */
-				playerOne.add(playerOneName);
-				for(int i = 1; i<3; i++){
-					playerOne.add(new JPanel());
-				}
-				playerOne.add(playerOneHealth);
-				playerOne.add(plOneHealthStatus);
-				playerOne.add(playerOneHealthRatio);
-				playerOne.add(playerOneMana);
-				playerOne.add(plOneManaStatus);
-				playerOne.add(playerOneManaRatio);
-				playerOne.add(playerOneFood);
-				playerOne.add(plOneFoodStatus);
-				playerOne.add(playerOneFoodRatio);
+				playerOneNameAndStatus.add(playerOneName, BorderLayout.WEST);
+				playerOneNameAndStatus.add(playerOneCondition, BorderLayout.EAST);
+				
+				plOneStats.add(plOneSpclPanel);
+				plOneStats.add(plOneIndicators);
+				plOneStats.add(plOneStatusBars);
+				plOneStats.add(plOneStatusIndicators);
 			
 			/*
 			 * Player two top status panel stuff
 			 */
 			final JLabel playerTwoName = new JLabel();	// to be set in listener
-				playerTwoName.setFont(labelFont);
+				playerTwoName.setFont(largeLabelFont);
 				playerTwoName.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoName.setForeground(Color.red);
 				
-			final JLabel playerTwoHealth = new JLabel("Health:");
+			JLabel playerTwoHealth = new JLabel("Health:");
 				playerTwoHealth.setFont(smallLabelFont);
 				playerTwoHealth.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoHealth.setForeground(Color.red);
 				
 			final JLabel playerTwoHealthRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerTwoHealthRatio.setFont(verySmallLabelFont);
-				playerTwoHealthRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerTwoHealthRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoHealthRatio.setForeground(Color.red);
 				
 			final JProgressBar plTwoHealthStatus = new JProgressBar(MIN_HEALTH, MAX_HEALTH);
@@ -565,14 +630,14 @@ public class SliceAndDiceUI {
 					plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
-			final JLabel playerTwoMana = new JLabel("Mana:");
+			JLabel playerTwoMana = new JLabel("Mana:");
 				playerTwoMana.setFont(smallLabelFont);
 				playerTwoMana.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoMana.setForeground(Color.red);
 				
 			final JLabel playerTwoManaRatio = new JLabel();	// status ratio label, to be set in listener.
 				playerTwoManaRatio.setFont(verySmallLabelFont);
-				playerTwoManaRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerTwoManaRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoManaRatio.setForeground(Color.red);
 				
 			final JProgressBar plTwoManaStatus = new JProgressBar(MIN_MANA, MAX_MANA);
@@ -580,14 +645,14 @@ public class SliceAndDiceUI {
 					plTwoManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
-			final JLabel playerTwoFood = new JLabel("Food:");
+			JLabel playerTwoFood = new JLabel("Food:");
 				playerTwoFood.setFont(smallLabelFont);
 				playerTwoFood.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				playerTwoFood.setForeground(Color.red);
 				
 			final JLabel playerTwoFoodRatio = new JLabel();// status ratio label, to be set in listener.
 				playerTwoFoodRatio.setFont(verySmallLabelFont);
-				playerTwoFoodRatio.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				playerTwoFoodRatio.setAlignmentX(Component.LEFT_ALIGNMENT);
 				playerTwoFoodRatio.setForeground(Color.red);
 				
 			final JProgressBar plTwoFoodStatus = new JProgressBar(MIN_FOOD, MAX_FOOD);
@@ -595,28 +660,88 @@ public class SliceAndDiceUI {
 					plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 					plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
+			JPanel plTwoStats = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				plTwoStats.setPreferredSize(new Dimension(460, 60));
+			JPanel plTwoStatusIndicators = new JPanel(new GridLayout(3,1,5,7));
+				plTwoStatusIndicators.add(playerTwoHealthRatio);
+				plTwoStatusIndicators.add(playerTwoManaRatio);
+				plTwoStatusIndicators.add(playerTwoFoodRatio);
+				plTwoStatusIndicators.setPreferredSize(new Dimension(50,50));
+			JPanel plTwoStatusBars = new JPanel(new GridLayout(3,1,2,2));
+				plTwoStatusBars.add(plTwoHealthStatus);
+				plTwoStatusBars.add(plTwoManaStatus);
+				plTwoStatusBars.add(plTwoFoodStatus);
+			JPanel plTwoIndicators = new JPanel(new GridLayout(3,3,5,5));
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(playerTwoHealth);
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(playerTwoMana);
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(playerTwoFood);
+					
+					/*
+					 * player two additions
+					 */
+				JPanel plTwoSpclPanel = new JPanel(new GridLayout(3,2,2,2));
+					JLabel playerTwoATK = new JLabel("ATK:");
+						playerTwoATK.setFont(smallLabelFont);
+						playerTwoATK.setForeground(Color.blue);
+						playerTwoATK.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerTwoDEF = new JLabel("DEF:");
+						playerTwoDEF.setFont(smallLabelFont);
+						playerTwoDEF.setForeground(Color.blue);
+						playerTwoDEF.setAlignmentX(Component.LEFT_ALIGNMENT);
+					JLabel playerTwoCOND = new JLabel("COND:");
+						playerTwoCOND.setFont(smallLabelFont);
+						playerTwoCOND.setForeground(Color.blue);
+						playerTwoCOND.setAlignmentX(Component.LEFT_ALIGNMENT);
+					final JLabel playerTwoATKValue = new JLabel(" ");
+						playerTwoATKValue.setFont(smallLabelFont);
+						playerTwoATKValue.setForeground(Color.blue);
+						playerTwoATKValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerTwoDEFValue = new JLabel(" ");
+						playerTwoDEFValue.setFont(smallLabelFont);
+						playerTwoDEFValue.setForeground(Color.blue);
+						playerTwoDEFValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+					final JLabel playerTwoCONDValue = new JLabel(" ");
+						playerTwoCONDValue.setFont(smallLabelFont);
+						playerTwoCONDValue.setForeground(Color.blue);
+						playerTwoCONDValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
+						
+						plTwoSpclPanel.add(playerTwoATK);
+						plTwoSpclPanel.add(playerTwoATKValue);
+						plTwoSpclPanel.add(playerTwoDEF);
+						plTwoSpclPanel.add(playerTwoDEFValue);
+						plTwoSpclPanel.add(playerTwoCOND);
+						plTwoSpclPanel.add(playerTwoCONDValue);
+					
+					
 				/*
 				 * Add player two stuff to player two panel	
 				 */
-				playerTwo.add(playerTwoName);
-				for(int i = 1; i<3; i++){
-					playerTwo.add(new JPanel());
-				}
-				playerTwo.add(playerTwoHealth);
-				playerTwo.add(plTwoHealthStatus);
-				playerTwo.add(playerTwoHealthRatio);
-				playerTwo.add(playerTwoMana);
-				playerTwo.add(plTwoManaStatus);
-				playerTwo.add(playerTwoManaRatio);
-				playerTwo.add(playerTwoFood);
-				playerTwo.add(plTwoFoodStatus);
-				playerTwo.add(playerTwoFoodRatio);
+				
+				plTwoStats.add(plTwoSpclPanel);
+				plTwoStats.add(plTwoIndicators);
+				plTwoStats.add(plTwoStatusBars);
+				plTwoStats.add(plTwoStatusIndicators);
+				
+				playerTwoNameAndStatus.add(playerTwoName, BorderLayout.WEST);
+				playerTwoNameAndStatus.add(playerTwoCondition, BorderLayout.EAST);
 				
 				/*
 				 * Add player panels to top panel
 				 */
-				topGamePanel.add(playerOne, BorderLayout.WEST);
-				topGamePanel.add(playerTwo, BorderLayout.EAST);
+				topLeftPanel.add(playerOneNameAndStatus, BorderLayout.NORTH);
+				topLeftPanel.add(plOneStats, BorderLayout.SOUTH);
+				
+				topRightPanel.add(playerTwoNameAndStatus, BorderLayout.NORTH);
+				topRightPanel.add(plTwoStats, BorderLayout.SOUTH);
+				
+				topGamePanel.add(topLeftPanel, BorderLayout.WEST);
+				topGamePanel.add(topRightPanel, BorderLayout.EAST);
 			
 			/*
 			 * Middle panels
@@ -627,6 +752,8 @@ public class SliceAndDiceUI {
 			 * Active player title pane
 			 */
 			final JPanel middlePlayerPanel = new JPanel(new BorderLayout(5,5));
+				//middlePlayerPanel.setBorder(BorderFactory.createTitledBorder(""));
+				
 			final JPanel middlePlayerSel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			final JPanel winningPlayer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			
@@ -668,11 +795,11 @@ public class SliceAndDiceUI {
 			 * dice animation pane
 			 */
 			final JPanel diceAnimationPanel = new JPanel(new GridLayout(2, 2, 1, 1)); // add to middle left panel. panel to play dice animation
-				diceAnimationPanel.setBorder(BorderFactory.createEtchedBorder());
+				//diceAnimationPanel.setBorder(BorderFactory.createTitledBorder(""));
 				diceAnimationPanel.setPreferredSize(diceAnimationPanel.getPreferredSize());
 				
 				final JPanel die1 = new JPanel(new BorderLayout(1, 1));
-					die1.setBorder(BorderFactory.createLoweredBevelBorder());
+					die1.setBorder(BorderFactory.createTitledBorder(""));
 					die1.setPreferredSize(new Dimension(30,30));
 					die1.setBackground(Color.red);
 					
@@ -682,7 +809,7 @@ public class SliceAndDiceUI {
 					die1.add(dieOnePic, BorderLayout.CENTER);
 					
 				final JPanel die2 = new JPanel(new BorderLayout(1, 1));
-					die2.setBorder(BorderFactory.createLoweredBevelBorder());
+					die2.setBorder(BorderFactory.createTitledBorder(""));
 					die2.setPreferredSize(new Dimension(30,30));
 					die2.setBackground(Color.red);
 					
@@ -692,7 +819,7 @@ public class SliceAndDiceUI {
 					die2.add(dieTwoPic, BorderLayout.CENTER);
 					
 				final JPanel die3 = new JPanel(new BorderLayout(1, 1));
-					die3.setBorder(BorderFactory.createLoweredBevelBorder());
+					die3.setBorder(BorderFactory.createTitledBorder(""));
 					die3.setPreferredSize(new Dimension(30,30));
 					die3.setBackground(Color.red);
 					
@@ -702,7 +829,7 @@ public class SliceAndDiceUI {
 					die3.add(dieThreePic, BorderLayout.CENTER);
 					
 				final JPanel die4 = new JPanel(new BorderLayout(1, 1));
-					die4.setBorder(BorderFactory.createLoweredBevelBorder());
+					die4.setBorder(BorderFactory.createTitledBorder(""));
 					die4.setPreferredSize(new Dimension(30,30));
 					die4.setBackground(Color.red);
 					
@@ -1023,10 +1150,13 @@ public class SliceAndDiceUI {
 					case DOUBLEATK:
 						
 						break;
-					case SPATK3:
+					case POISON:
 						
 						break;
-					case SPATK4:
+					case AURA:
+						
+						break;
+					case CHARGE:
 						
 						break;
 					default:
@@ -1488,10 +1618,70 @@ public class SliceAndDiceUI {
 				}
 			});
 			
+			chooseAtk.addWindowListener(new WindowAdapter(){
+				public void windowClosed(WindowEvent we){
+
+					move = chooseAtk.getMove();
+					
+					if(move == null){
+						JOptionPane.showMessageDialog(gameFrame, "You have not selected a move. Try again");
+						return;
+					}
+					
+					try{
+						winner = game.PlayNextTurn(move);
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+						e.printStackTrace();
+						modePanel.removeAll();
+						gameFrame.remove(gamePlayPanel);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
+						modePanel.add(splitPane);
+						gameFrame.setContentPane(modePanel);
+						return;
+					}
+					
+					if(move.equals(Move.FREEZE)){
+						die1.setBackground(Color.blue);
+						die2.setBackground(Color.blue);
+					}
+					
+					die1.removeAll();
+					die2.removeAll();
+					die3.removeAll();
+					die4.removeAll();
+					
+					die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
+					die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
+					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
+					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
+					
+					middleRightPanel.removeAll();
+					middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
+					gameFrame.pack();
+					gameFrame.validate();
+					
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run(){
+							stop.showStopRoll();
+						}
+					});
+				}
+			});
+			
 			spAttack.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					
 					// TODO add special power attack stuff
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run(){
+							if(!game.isPlayerOneTurn()){
+								chooseAtk.showChooseMove(game.getPlayerOneStatus().getMana());
+							}else{
+								chooseAtk.showChooseMove(game.getPlayerTwoStatus().getMana());
+							}
+						}
+					});
 				}
 			});
 			
@@ -1818,6 +2008,233 @@ class GetStats{
 		allUserStat = new DefaultTableModel(rowData, colNames);
 		
 		return allUserStat;
+	}
+}
+
+/**
+ * Choose special attack frame
+ * @author Jacob Loden
+ *
+ */
+
+
+//TODO finish the choose attack class
+@SuppressWarnings("serial")
+class ChooseAttack extends JFrame{
+	private final int WIDTH = 500;
+	private final int HEIGHT = 500;
+	
+	private int manaAmt;
+	
+	JPanel choosePanel = new JPanel(new BorderLayout(5,5));
+	JPanel topChoosePanel = new JPanel(new BorderLayout(5,5));
+	JPanel bottomChoosePanel = new JPanel(new GridLayout(5,2,2,10));
+	
+	JLabel chooseAtk = new JLabel("Choose Your Attack!");
+	
+	JButton freezeButton = new JButton("Freeze");
+	JButton dblAtk = new JButton("Double");
+	JButton poisonButton = new JButton("Poison");
+	JButton auraButton = new JButton("Aura");
+	JButton chargeButton = new JButton("Charge");
+	
+	JLabel freezeLabel = new JLabel("Freeze Attack: ");
+	JLabel dblAtkLabel = new JLabel("Double Attack: ");
+	JLabel poisonLabel = new JLabel("Poison Attack: ");
+	JLabel auraLabel = new JLabel("Cast Aura: ");
+	JLabel chargeLabel = new JLabel("Charge Attack: ");
+	
+	Font largeLabelFont = new Font("Trubuchet MS", Font.BOLD, 24);
+	Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
+	Font buttonFont = new Font("Trebuchet MS", Font.BOLD, 16);
+	
+	Move move;
+	
+	/**
+	 * Constructor
+	 */
+	public ChooseAttack(){
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setResizable(false);
+		this.setTitle("Slice And Dice");
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
+		setFontsAndColors();
+		addComponents();
+		manaAmt = 0;
+		move = null;
+	}
+	
+	/**
+	 * Sets the chosen move
+	 * @param chosenMove
+	 */
+	private void setMove(Move chosenMove){
+		move = chosenMove;
+	}
+	
+	/**
+	 * Returns the chosen move
+	 * @return chosen move
+	 */
+	public Move getMove(){
+		return move;
+	}
+	
+	/**
+	 * Add the components to parent container
+	 */
+	private void addComponents(){
+		topChoosePanel.add(chooseAtk, BorderLayout.CENTER);
+		
+		bottomChoosePanel.add(freezeLabel);
+		bottomChoosePanel.add(freezeButton);
+		bottomChoosePanel.add(dblAtkLabel);
+		bottomChoosePanel.add(dblAtk);
+		bottomChoosePanel.add(poisonLabel);
+		bottomChoosePanel.add(poisonButton);
+		bottomChoosePanel.add(auraLabel);
+		bottomChoosePanel.add(auraButton);
+		bottomChoosePanel.add(chargeLabel);
+		bottomChoosePanel.add(chargeButton);
+		
+		choosePanel.add(topChoosePanel, BorderLayout.NORTH);
+		choosePanel.add(bottomChoosePanel, BorderLayout.CENTER);
+		
+		this.add(choosePanel);
+	}
+	
+	/**
+	 * Set component fonts
+	 */
+	private void setFontsAndColors(){
+		
+		bottomChoosePanel.setBorder(BorderFactory.createTitledBorder(""));
+		topChoosePanel.setBorder(BorderFactory.createTitledBorder(""));
+		
+		chooseAtk.setFont(largeLabelFont);
+		chooseAtk.setForeground(Color.red);
+		
+		freezeButton.setFont(buttonFont);
+		freezeButton.setForeground(Color.red);
+		freezeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		dblAtk.setFont(buttonFont);
+		dblAtk.setForeground(Color.red);
+		dblAtk.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		poisonButton.setFont(buttonFont);
+		poisonButton.setForeground(Color.red);
+		poisonButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		auraButton.setFont(buttonFont);
+		auraButton.setForeground(Color.red);
+		auraButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		chargeButton.setFont(buttonFont);
+		chargeButton.setForeground(Color.red);
+		chargeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		freezeLabel.setFont(labelFont);
+		freezeLabel.setForeground(Color.red);
+		dblAtkLabel.setFont(labelFont);
+		dblAtkLabel.setForeground(Color.red);
+		poisonLabel.setFont(labelFont);
+		poisonLabel.setForeground(Color.red);
+		auraLabel.setFont(labelFont);
+		auraLabel.setForeground(Color.red);
+		chargeLabel.setFont(labelFont);
+		chargeLabel.setForeground(Color.red);
+	}
+	
+	/**
+	 * Pack and show frame
+	 */
+	private void packAndShow(){
+		this.pack();
+		this.setVisible(true);
+	}
+	
+	/**
+	 * Pack and validate frame
+	 */
+	private void packAndValidate(){
+		this.pack();
+		this.validate();
+	}
+	
+	/**
+	 * Dispose frame
+	 */
+	private void disposeFrame(){
+		this.dispose();
+	}
+	
+	/**
+	 * Get parent class
+	 */
+	private JFrame getParentClass(){
+		return this;
+	}
+	
+	/**
+	 * Show the choose move frame
+	 * @param mana
+	 */
+	public void showChooseMove(int mana){
+		manaAmt = mana;
+		packAndShow();
+		
+		freezeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 5){
+					setMove(Move.FREEZE);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		dblAtk.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 9){
+					setMove(Move.DOUBLEATK);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		poisonButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 7){
+					setMove(Move.POISON);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		auraButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(manaAmt > 9){
+					setMove(Move.AURA);
+					disposeFrame();
+				}else{
+					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+					return;
+				}
+			}
+		});
+		
+		chargeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				setMove(Move.CHARGE);
+				disposeFrame();
+			}
+		});
 	}
 }
 
