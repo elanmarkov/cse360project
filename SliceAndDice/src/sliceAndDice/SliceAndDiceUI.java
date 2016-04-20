@@ -488,7 +488,7 @@ public class SliceAndDiceUI {
 			final JLabel playerOneName = new JLabel();	// to be set in listener
 				playerOneName.setFont(largeLabelFont);
 				playerOneName.setAlignmentX(Component.LEFT_ALIGNMENT);
-				playerOneName.setForeground(Color.blue);
+				playerOneName.setForeground(Color.red);
 				
 				
 			JLabel playerOneHealth = new JLabel("Health:");
@@ -538,7 +538,7 @@ public class SliceAndDiceUI {
 					plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
 			JPanel plOneStats = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				plOneStats.setPreferredSize(new Dimension(460, 70));
+				plOneStats.setPreferredSize(new Dimension(460, 60));
 			JPanel plOneStatusIndicators = new JPanel(new GridLayout(3,1,5,7));
 				plOneStatusIndicators.add(playerOneHealthRatio);
 				plOneStatusIndicators.add(playerOneManaRatio);
@@ -548,11 +548,14 @@ public class SliceAndDiceUI {
 				plOneStatusBars.add(plOneHealthStatus);
 				plOneStatusBars.add(plOneManaStatus);
 				plOneStatusBars.add(plOneFoodStatus);
-			JPanel plOneIndicators = new JPanel(new GridLayout(3,2,5,5));
+			JPanel plOneIndicators = new JPanel(new GridLayout(3,3,5,5));
+				plOneIndicators.add(new JPanel());
 				plOneIndicators.add(new JPanel());
 				plOneIndicators.add(playerOneHealth);
 				plOneIndicators.add(new JPanel());
+				plOneIndicators.add(new JPanel());
 				plOneIndicators.add(playerOneMana);
+				plOneIndicators.add(new JPanel());
 				plOneIndicators.add(new JPanel());
 				plOneIndicators.add(playerOneFood);
 					
@@ -610,7 +613,7 @@ public class SliceAndDiceUI {
 			final JLabel playerTwoName = new JLabel();	// to be set in listener
 				playerTwoName.setFont(largeLabelFont);
 				playerTwoName.setAlignmentX(Component.LEFT_ALIGNMENT);
-				playerTwoName.setForeground(Color.blue);
+				playerTwoName.setForeground(Color.red);
 				
 			JLabel playerTwoHealth = new JLabel("Health:");
 				playerTwoHealth.setFont(smallLabelFont);
@@ -658,7 +661,7 @@ public class SliceAndDiceUI {
 					plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 					
 			JPanel plTwoStats = new JPanel(new FlowLayout(FlowLayout.LEFT));
-				plTwoStats.setPreferredSize(new Dimension(460, 70));
+				plTwoStats.setPreferredSize(new Dimension(460, 60));
 			JPanel plTwoStatusIndicators = new JPanel(new GridLayout(3,1,5,7));
 				plTwoStatusIndicators.add(playerTwoHealthRatio);
 				plTwoStatusIndicators.add(playerTwoManaRatio);
@@ -668,11 +671,14 @@ public class SliceAndDiceUI {
 				plTwoStatusBars.add(plTwoHealthStatus);
 				plTwoStatusBars.add(plTwoManaStatus);
 				plTwoStatusBars.add(plTwoFoodStatus);
-			JPanel plTwoIndicators = new JPanel(new GridLayout(3,2,5,5));
+			JPanel plTwoIndicators = new JPanel(new GridLayout(3,3,5,5));
+				plTwoIndicators.add(new JPanel());
 				plTwoIndicators.add(new JPanel());
 				plTwoIndicators.add(playerTwoHealth);
 				plTwoIndicators.add(new JPanel());
+				plTwoIndicators.add(new JPanel());
 				plTwoIndicators.add(playerTwoMana);
+				plTwoIndicators.add(new JPanel());
 				plTwoIndicators.add(new JPanel());
 				plTwoIndicators.add(playerTwoFood);
 					
@@ -789,11 +795,11 @@ public class SliceAndDiceUI {
 			 * dice animation pane
 			 */
 			final JPanel diceAnimationPanel = new JPanel(new GridLayout(2, 2, 1, 1)); // add to middle left panel. panel to play dice animation
-				diceAnimationPanel.setBorder(BorderFactory.createEtchedBorder());
+				//diceAnimationPanel.setBorder(BorderFactory.createTitledBorder(""));
 				diceAnimationPanel.setPreferredSize(diceAnimationPanel.getPreferredSize());
 				
 				final JPanel die1 = new JPanel(new BorderLayout(1, 1));
-					die1.setBorder(BorderFactory.createLoweredBevelBorder());
+					die1.setBorder(BorderFactory.createTitledBorder(""));
 					die1.setPreferredSize(new Dimension(30,30));
 					die1.setBackground(Color.red);
 					
@@ -803,7 +809,7 @@ public class SliceAndDiceUI {
 					die1.add(dieOnePic, BorderLayout.CENTER);
 					
 				final JPanel die2 = new JPanel(new BorderLayout(1, 1));
-					die2.setBorder(BorderFactory.createLoweredBevelBorder());
+					die2.setBorder(BorderFactory.createTitledBorder(""));
 					die2.setPreferredSize(new Dimension(30,30));
 					die2.setBackground(Color.red);
 					
@@ -813,7 +819,7 @@ public class SliceAndDiceUI {
 					die2.add(dieTwoPic, BorderLayout.CENTER);
 					
 				final JPanel die3 = new JPanel(new BorderLayout(1, 1));
-					die3.setBorder(BorderFactory.createLoweredBevelBorder());
+					die3.setBorder(BorderFactory.createTitledBorder(""));
 					die3.setPreferredSize(new Dimension(30,30));
 					die3.setBackground(Color.red);
 					
@@ -823,7 +829,7 @@ public class SliceAndDiceUI {
 					die3.add(dieThreePic, BorderLayout.CENTER);
 					
 				final JPanel die4 = new JPanel(new BorderLayout(1, 1));
-					die4.setBorder(BorderFactory.createLoweredBevelBorder());
+					die4.setBorder(BorderFactory.createTitledBorder(""));
 					die4.setPreferredSize(new Dimension(30,30));
 					die4.setBackground(Color.red);
 					
@@ -1634,6 +1640,32 @@ public class SliceAndDiceUI {
 						gameFrame.setContentPane(modePanel);
 						return;
 					}
+					
+					if(move.equals(Move.FREEZE)){
+						die1.setBackground(Color.blue);
+						die2.setBackground(Color.blue);
+					}
+					
+					die1.removeAll();
+					die2.removeAll();
+					die3.removeAll();
+					die4.removeAll();
+					
+					die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
+					die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
+					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
+					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
+					
+					middleRightPanel.removeAll();
+					middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
+					gameFrame.pack();
+					gameFrame.validate();
+					
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run(){
+							stop.showStopRoll();
+						}
+					});
 				}
 			});
 			
