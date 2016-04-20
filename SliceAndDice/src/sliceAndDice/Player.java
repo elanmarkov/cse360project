@@ -217,6 +217,19 @@ class Status {
 		hitPt = newHP;
 	}
 	/**
+	 * Reduces HP by given value, or sets to 0 if damage
+	 * is higher than remaining hp.
+	 * @param newHP New hitpoints for the player.
+	 */
+	void reduceHP(int damage) {
+		if(damage < hitPt) {
+			hitPt -= damage;
+		}
+		else {
+			hitPt = 0;
+		}
+	}
+	/**
 	 * Setter method for mana.
 	 * @param newMana New mana for the player.
 	 */

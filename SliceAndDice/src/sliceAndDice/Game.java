@@ -36,6 +36,7 @@ public class Game {
 	private Status playerTwoStatus;
 	private int totalTurns;
 	private boolean playerOneTurn;
+	private boolean lastConditionEvaluated;
 	private Turn nextTurn;
 	
 	/**
@@ -52,6 +53,7 @@ public class Game {
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
+		lastConditionEvaluated = false;
 		winnerID = -1; // no winner yet
 		loserID = -1; // no winner yet
 	}
@@ -102,6 +104,10 @@ public class Game {
 	Winner  PlayNextTurn(Move nextMove) {
 		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		
+		/*if(!lastConditionEvaluated) {
+			throw new IllegalStateException("Error: Condition has not been evaluated.");
+		}*/
+		
 		if(playerOneTurn){	// Different turn based on whose move it is
 			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 			gameWinner = nextTurn.playTurnPlayerOne(nextMove);
@@ -130,6 +136,7 @@ public class Game {
 			updateStats();
 		}
 		
+		lastConditionEvaluated = false;
 		return gameWinner;
 		
 	}
@@ -138,6 +145,9 @@ public class Game {
 	 * @return The winner of the game (player 1, player 2, or none yet).
 	 */
 	Winner  PlayNextTurn() {
+		/*if(!lastConditionEvaluated) {
+		throw new IllegalStateException("Error: Condition has not been evaluated.");
+		}*/
 		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		Move nextComputerMove = playerOne.getNextMove(playerOneStatus, playerTwoStatus);
 		if(playerOneTurn){	// Different turn based on whose move it is
@@ -168,9 +178,55 @@ public class Game {
 			playerTwo.getPlayerData().incrWinCount();
 			updateStats();
 		}
-		
+		lastConditionEvaluated = false;
 		return gameWinner;
 		
+	}
+	/**
+	 * Gets the condition of the current turn player.
+	 * @return Condition of the current turn player.
+	 */
+	Condition getPlayerCondition() {
+		Condition prevCondition = Condition.NONE;
+		if(playerOneTurn) {
+			prevCondition = playerOneStatus.getCondition();
+		}
+		else {
+			prevCondition = playerTwoStatus.getCondition();
+		}
+		return prevCondition;
+	}
+	/**
+	 * Updates condition for each player, including damage, and
+	 * evaluates the game winner.
+	 * @return Winner of the current game (player 1, player 2, or none yet).
+	 */
+	Winner updateCondition() {
+		lastConditionEvaluated = true;
+		Winner gameWinner = Winner.NONE;
+		if(playerOneTurn) {
+			if(playerOneStatus.getCondition() == Condition.FROZEN) {
+				//skip a turn, must check condition for other player for their turn
+				playerOneTurn = false;
+				lastConditionEvaluated = false;
+			}
+			nextTurn.updateCondition(playerOneStatus);
+		}
+		else {
+			if(playerTwoStatus.getCondition() == Condition.FROZEN) {
+				//skip a turn, must check condition for other player for their turn
+				playerOneTurn = true;
+				lastConditionEvaluated = false;
+			}
+			nextTurn.updateCondition(playerTwoStatus);
+		}
+		if(playerOneStatus.getHitPts() == 0) {
+			gameWinner = Winner.PLAYER_TWO;
+		}
+		else if (playerTwoStatus.getHitPts() == 0) {
+			gameWinner = Winner.PLAYER_ONE;
+		}
+		return gameWinner;
 	}
 	/**
 	 * Evaluate legality of the next move.
@@ -401,7 +457,7 @@ class Turn {
 		return lastRoll;
 	}
 	/**
-	 * Static method, evalates given a Status and Move whether or not that move is legal.
+	 * Static method, evaluates given a Status and Move whether or not that move is legal.
 	 * @param turnPlayer Status of the turn player.
 	 * @param nextMove Move to be evaluated.
 	 * @return Violation notification, or none if move is legal.
@@ -418,6 +474,48 @@ class Turn {
 		return violation;
 	}
 	/**
+	 * Updates the condition of the turn player between moves.
+	 * Performs temporal changes on current condition and lowers
+	 * HP where needed.
+	 * @param turnPlayer The player who will move next (for whom the condition is evaluated).
+	 */
+	void updateCondition(Status turnPlayer) {
+		switch(turnPlayer.getCondition()) {
+		case NONE:
+			break;
+		case AURA1:
+			turnPlayer.setCondition(Condition.AURA2);
+			break;
+		case AURA2:
+			turnPlayer.setCondition(Condition.NONE);
+			break;
+		case FROZEN:
+			turnPlayer.setCondition(Condition.NONE);
+			break;
+		case POISON1:
+			turnPlayer.setCondition(Condition.POISON2);
+			turnPlayer.reduceHP(1);
+			break;
+		case POISON2:
+			turnPlayer.setCondition(Condition.POISON3);
+			turnPlayer.reduceHP(2);
+			break;
+		case POISON3:
+			turnPlayer.setCondition(Condition.POISON4);
+			turnPlayer.reduceHP(3);
+			break;
+		case POISON4:
+			turnPlayer.setCondition(Condition.POISON5);
+			turnPlayer.reduceHP(4);
+			break;
+		case POISON5:
+			turnPlayer.reduceHP(5);
+			break;
+		default:
+			throw new IllegalArgumentException("Error: A non-condition was given.");
+		}
+	}
+	/**
 	 * Attack method. Performs basic attack based on dice roll value.
 	 * @param turnPlayer Status of turn player.
 	 * @param otherPlayer Status of off-turn player.
@@ -431,13 +529,7 @@ class Turn {
 			sumDamage += lastRoll[rollCount];
 		}
 		
-		int oppHP = otherPlayer.getHitPts();
-		if(oppHP <= sumDamage) {
-			otherPlayer.setHitPts(0);
-		}
-		else {
-			otherPlayer.setHitPts(oppHP - sumDamage);
-		}
+		otherPlayer.reduceHP(sumDamage);
 	}
 	/**
 	 * Food method. Heals a given amount of HP for the turn player.
@@ -472,12 +564,7 @@ class Turn {
 			sumDamage += lastRoll[rollCount];
 		}				
 		int oppHP = otherPlayer.getHitPts();
-		if(oppHP <= sumDamage) {
-			otherPlayer.setHitPts(0);
-		}
-		else {
-			otherPlayer.setHitPts(oppHP - sumDamage);
-		}
+		otherPlayer.reduceHP(sumDamage);
 		if(sumFreeze > 6) {
 			if(otherPlayer.getCondition() != Condition.AURA1 
 					&& otherPlayer.getCondition() != Condition.AURA2) {
@@ -500,14 +587,7 @@ class Turn {
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
 			sumDamage += lastRoll[rollCount];
 		}
-				
-		int oppHP = otherPlayer.getHitPts();
-		if(oppHP <= sumDamage) {
-			otherPlayer.setHitPts(0);
-		}
-		else {
-			otherPlayer.setHitPts(oppHP - sumDamage);
-		}
+		otherPlayer.reduceHP(sumDamage);
 		turnPlayer.reduceMana(manaDouble);
 	}
 	/**
@@ -525,13 +605,7 @@ class Turn {
 		for(int rollCount = 2; rollCount < numRoll; rollCount++) {
 			sumDamage += lastRoll[rollCount];
 		}				
-		int oppHP = otherPlayer.getHitPts();
-		if(oppHP <= sumDamage) {
-			otherPlayer.setHitPts(0);
-		}
-		else {
-			otherPlayer.setHitPts(oppHP - sumDamage);
-		}
+		otherPlayer.reduceHP(sumDamage);
 		if(sumPoison > 6) {
 			if(otherPlayer.getCondition() != Condition.AURA1 
 					&& otherPlayer.getCondition() != Condition.AURA2) {
