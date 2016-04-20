@@ -506,6 +506,8 @@ class Turn {
 			turnPlayer.setCondition(Condition.AURA2);
 			break;
 		case AURA2:
+			turnPlayer.setAtk(0);
+			turnPlayer.setDef(0);
 			turnPlayer.setCondition(Condition.NONE);
 			break;
 		case FROZEN:
