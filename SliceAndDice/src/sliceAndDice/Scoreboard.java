@@ -135,15 +135,7 @@ static ArrayList<Player> players;
     public void resetPlayerDataInArrayList(int userID) {
     	for(int index = 0; index < players.size(); index++) {
     		if(players.get(index).getID() == userID) {
-    			players.get(index).getPlayerData().setScore(1000);
-    			players.get(index).getPlayerData().setRank(0);
-    			players.get(index).getPlayerData().setGame(0);
-    			players.get(index).getPlayerData().setWin(0);
-    			players.get(index).getPlayerData().setAttack(0);
-    			players.get(index).getPlayerData().setMeal(0);
-    			players.get(index).getPlayerData().setHPLost(0);
-    			players.get(index).getPlayerData().setManaUsed(0);
-    			players.get(index).getPlayerData().setFoodUsed(0);
+    			players.get(index).getPlayerData().resetData();
     		}
     	}
     }
