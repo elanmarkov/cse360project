@@ -174,34 +174,14 @@ static ArrayList<Player> players;
      * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
      * @param playerToUpdate Player with data to update
      */
-    public void updatePlayerDataInArrayList(Player playerToUpdate) {
+    public static void updatePlayerDataInArrayList(Player playerToUpdate) {
     	for(int index = 0; index < players.size(); index++) {
     		if(players.get(index).getID() == playerToUpdate.getID()) {
     			players.set(index, playerToUpdate);
     		}
     	}
     }
-/*
-prints out a Player, but not longer needed.
- */
-//    public String playerToString(Player player) {
-//        String dataString = "";
-//        dataString = dataString + player.getID() + "\n";
-//        dataString = dataString + player.getUsername() + "\n";
-//        dataString = dataString + player.getPlayerData().getScore() + "\n";
-//        dataString = dataString + player.getPlayerData().getRank() + "\n";
-//        dataString = dataString + player.getPlayerData().getGame() + "\n";
-//        dataString = dataString + player.getPlayerData().getWin() + "\n";
-//       //dataString = dataString + (player.getPlayerData().getGame() / player.getPlayerData().getWin()) + "\n";
-//        //dataString = dataString + player.getPlayerData().getTurn() + "\n";
-//        dataString = dataString + player.getPlayerData().getAttack() + "\n";
-//        //dataString = dataString + player.getPlayerData().getSPAttack() + "\n";
-//        dataString = dataString + player.getPlayerData().getMeal() + "\n";
-//        dataString = dataString + player.getPlayerData().getHPLost() + "\n";
-//        dataString = dataString + player.getPlayerData().getManaUsed() + "\n";
-//        dataString = dataString + player.getPlayerData().getFoodUsed() + "\n";
-//      return dataString;
-//    }
+
     /**
      * Returns Scoreboard's ArrayList of Players with information on separate lines.
      */
@@ -250,7 +230,7 @@ prints out a Player, but not longer needed.
      * @param winner which player won
      * @return new score of Player whose old score was oldScore1
      */
-    public double calculateScore(double oldScore1, double oldScore2, int winner) {
+    public static double calculateScore(double oldScore1, double oldScore2, int winner) {
     	final int kValue = 16;
     	double number1 = Math.pow(10, (oldScore1 / 400));
     	double number2 = Math.pow(10, (oldScore2 / 400));
