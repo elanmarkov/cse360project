@@ -152,7 +152,7 @@ static ArrayList<Player> players;
      */
     public void addNewPlayerFromUsername(String username) {
     	Player newPlayer = new Player(username, players.size());
-    	players.add(newPlayer);
+    	players.add(players.size(), newPlayer);
     }
     /**
      * Returns true if Player is in Scoreboard's ArrayList and false if Player is not in Scoreboard's ArrayList.
