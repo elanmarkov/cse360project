@@ -151,7 +151,7 @@ static ArrayList<Player> players;
      * @param username username for new Player
      */
     public void addNewPlayerFromUsername(String username) {
-    	Player newPlayer = new Player(username, players.size() + 1);
+    	Player newPlayer = new Player(username, players.size());
     	players.add(newPlayer);
     }
     /**
@@ -220,9 +220,13 @@ prints out a Player, but not longer needed.
 		FileWriter writer = new FileWriter("data.txt");
         BufferedWriter playerWriter = new BufferedWriter(writer);
         Integer numPlayers = players.size();
+        Integer id;
     	playerWriter.write(numPlayers.toString());
     	playerWriter.write("\n");
         for(int count = 0; count < players.size(); count++) {
+        	id = players.get(count).getID();
+        	playerWriter.write(id.toString());
+        	playerWriter.write("\n");
         	playerWriter.write((players.get(count).toString()));
         	playerWriter.write("\n");
         }

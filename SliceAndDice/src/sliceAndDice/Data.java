@@ -162,7 +162,7 @@ public class Data {
 	 * Sets the number of special attacks to the given number.
 	 * @param totalNumSPAttacks new number of special attacks
 	 */
-	void setBaseSPAttack(int totalNumSPAttacks) {
+	void setSPAttack(int totalNumSPAttacks) {
 		this.totalNumSPAttacks = totalNumSPAttacks;
 	}
 	/**
