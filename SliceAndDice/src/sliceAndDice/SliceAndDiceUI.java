@@ -1125,6 +1125,10 @@ public class SliceAndDiceUI {
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
 							break;
+						case NONE:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							break;
 						default:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
@@ -1158,6 +1162,10 @@ public class SliceAndDiceUI {
 						case POISON5:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
+							break;
+						case NONE:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
 							break;
 						default:
 							playerTwoCondition.removeAll();
@@ -1215,15 +1223,24 @@ public class SliceAndDiceUI {
 							
 							break;
 						case DOUBLEATK:
+							
 								if(!game.isPlayerOneTurn()){
 									activePlayer.setText(usernameTwo);
 									// TODO add double attack animation
-								}else{
+								}else if (game.isPlayerOneTurn()){
 									activePlayer.setText(usernameOne);
 									// TODO add double attack animation
 								}
 							break;
 						case POISON:
+							
+							if(!game.isPlayerOneTurn()){
+								activePlayer.setText(usernameTwo);
+								// TODO add frozen player two animation
+							}else if(game.isPlayerOneTurn()){
+								activePlayer.setText(usernameOne);
+								// TODO add frozen player one animation
+							}
 							
 							break;
 						case AURA:
