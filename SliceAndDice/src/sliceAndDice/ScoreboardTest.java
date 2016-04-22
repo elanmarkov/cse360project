@@ -142,15 +142,15 @@ public class ScoreboardTest extends Scoreboard{
 //	}
 	/*
 	 * Status: Passed
-	 * 
+	 * 	@Test
+	public void testReadDataIntoArrayListFromFile() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(board.toString());
+		System.out.println("\n");
+	}
 	 */
-//	@Test
-//	public void testReadDataIntoArrayListFromFile() throws IOException{
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		System.out.println(board.toString());
-//		System.out.println("\n");
-//	}
+
 	/*
 	 * Status: Passed
 	 */
@@ -238,9 +238,7 @@ public class ScoreboardTest extends Scoreboard{
 	 * Status: Passed
 	 */
 	/*
-	 * 
-	 */
-	@Test
+	 * 	@Test
 	public void testAddPlayerAndSortAndSendPlayerDataToFile() throws IOException{
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
@@ -254,6 +252,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.sortArrayListByScore();
 		board.sendPlayerDataToFile();
 	}
+	 */
 
 	@Test
 	public void testWinPercentage() {

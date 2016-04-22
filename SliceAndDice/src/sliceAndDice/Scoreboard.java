@@ -121,12 +121,33 @@ static ArrayList<Player> players;
 	 * @throws IOException
 	 */
 	public void readDataIntoArrayListFromFile() throws IOException{
-		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		int numberOfPlayers = readPlayers.nextInt();
+//		for(int count = 0; count < numberOfPlayers; count++) {
+//			players.add(getPlayerDataFromFile(readPlayers));
+//		}
+//		readPlayers.close();
+		
+		Scanner readPlayers = null;
+		try {
+			readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+		}
+		catch(FileNotFoundException fnfe) {
+		PrintWriter createNewFile = new PrintWriter("data.txt", "UTF-8");
+		createNewFile.write(String.valueOf(0));
+		createNewFile.write("\n");
+		createNewFile.close();
+		}
+		finally { // if numberOfPlayers is 0, it should skip the for loop
+			readPlayers.close();
+		}
+		readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
 		int numberOfPlayers = readPlayers.nextInt();
 		for(int count = 0; count < numberOfPlayers; count++) {
 			players.add(getPlayerDataFromFile(readPlayers));
 		}
 		readPlayers.close();
+		
 	}
 	/**
 	 * Resets a Player's data in Scoreboard's ArrayList.
