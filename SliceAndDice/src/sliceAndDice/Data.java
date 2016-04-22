@@ -15,15 +15,16 @@ public class Data {
 	int rank;
 	int totalGameCount;
 	int totalWinCount;
-	//int totalNumTurns;
 	int totalNumAttacks;
+	int totalNumBaseAttacks;
+	int totalNumSPAttacks;
 	int totalNumMeals;
-	// int totalNumSPAttacks;
 	int totalHealthLost;
 	int totalManaUsed;
 	int totalFoodUsed;
 	// float totalGameTime;
 	// float totalTurnTime;
+	//int totalNumTurns;
 
 	/**
 	 * Constructor for Data, setting all of the data but score to 0 and score to 0.
@@ -33,15 +34,16 @@ public class Data {
 	rank = 0;
 	totalGameCount = 0;
 	totalWinCount = 0;
-	//totalNumTurns = 0;
 	totalNumAttacks = 0;
+	totalNumBaseAttacks = 0;
+	totalNumSPAttacks = 0;
 	totalNumMeals = 0;
-	// totalNumSPAttacks = 0;
 	totalHealthLost = 0;
 	totalManaUsed = 0;
 	totalFoodUsed = 0;
 	// totalGameTime = 0;
 	// totalTurnTime = 0;
+	//totalNumTurns = 0;
 	}
 	/**
 	 * Constructor for Data that uses a Scanner to read in data from data.txt.
@@ -53,6 +55,8 @@ public class Data {
 		totalGameCount = dataReader.nextInt();
 		totalWinCount = dataReader.nextInt();
 		totalNumAttacks = dataReader.nextInt();
+		totalNumBaseAttacks = dataReader.nextInt();
+		totalNumSPAttacks = dataReader.nextInt();
 		totalNumMeals = dataReader.nextInt();
 		totalHealthLost = dataReader.nextInt();
 		totalManaUsed = dataReader.nextInt();
@@ -68,12 +72,30 @@ public class Data {
 		dataString += totalGameCount + "\n";
 		dataString += totalWinCount + "\n";
 		dataString += totalNumAttacks + "\n";
+		dataString += totalNumBaseAttacks + "\n";
+		dataString += totalNumSPAttacks + "\n";
 		dataString += totalNumMeals + "\n";
 		dataString += totalHealthLost + "\n";
 		dataString += totalManaUsed + "\n";
 		dataString += totalFoodUsed + "\n";
 		
 		return dataString;
+	}
+	/**
+	 * resets data in Data object to initial setting
+	 */
+	public void resetData() {
+		score = 1000;
+		rank = 0;
+		totalGameCount = 0;
+		totalWinCount = 0;
+		totalNumAttacks = 0;
+		totalNumBaseAttacks = 0;
+		totalNumSPAttacks = 0;
+		totalNumMeals = 0;
+		totalHealthLost = 0;
+		totalManaUsed = 0;
+		totalFoodUsed = 0;
 	}
 // replaces an existing Data object with one given, but not needed.
 //	void loadData(Data data) {
@@ -128,6 +150,20 @@ public class Data {
 	 */
 	void setAttack(int totalNumAttacks) {
 		this.totalNumAttacks = totalNumAttacks;
+	}
+	/**
+	 * Sets the number of base attacks to the given number.
+	 * @param totalNumbBaseAttacks new number of base attacks
+	 */
+	void setBaseAttack(int totalNumBaseAttacks) {
+		this.totalNumBaseAttacks = totalNumBaseAttacks;
+	}
+	/**
+	 * Sets the number of special attacks to the given number.
+	 * @param totalNumSPAttacks new number of special attacks
+	 */
+	void setSPAttack(int totalNumSPAttacks) {
+		this.totalNumSPAttacks = totalNumSPAttacks;
 	}
 	/**
 	 * Sets the number of meals to the given number.
@@ -196,6 +232,20 @@ public class Data {
 		return totalNumAttacks;
 	}
 	/**
+	 * Returns the number of base attacks of the Data object.
+	 * @return number of base attacks
+	 */
+	int getBaseAttack() {
+		return totalNumBaseAttacks;
+	}
+	/**
+	 * Returns the number of special attacks of the Data object.
+	 * @return number of special attacks
+	 */
+	int getSPAttack() {
+		return totalNumSPAttacks;
+	}
+	/**
 	 * Returns the number of meals of the Data object.
 	 * @return number of meals
 	 */
@@ -247,6 +297,18 @@ public class Data {
 		totalNumAttacks++;
 	}
 	/**
+	 * Increments the Data object's number of base attacks. Called when a Player performs a base attack.
+	 */
+	public void incrNumBaseAttacks() {
+		totalNumBaseAttacks++;
+	}
+	/**
+	 * Increments the Data object's number of special attacks. Called when a Player performs a special attack.
+	 */
+	public void incrNumSPAttacks() {
+		totalNumSPAttacks++;
+	}
+	/**
 	 * Increments the Data object's number of meals. Called when a Player heals.
 	 */
 	public void incrNumMeals() {
@@ -273,11 +335,6 @@ public class Data {
 	public void updateFoodUsed(int finalFood) {
 		totalFoodUsed += (5 - finalFood); // 5 is maxFood
 	}
-	/* Needs to be implemented. Updates the number of times a Player has special attacked. Called when a Player special attacks.
-	public void incrNumSPAttacks() {
-		totalNumSPAttacks++;
-	}
-	*/
 	/* May be implemented. Updates the amount of time the Player has played.
 	public void updateTotalGameTime() {
 	}
