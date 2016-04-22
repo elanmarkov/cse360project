@@ -311,7 +311,7 @@ public class Game {
 		return nextTurn.getLastRoll();
 	}
 	/**
-	 * Updates the player statistics for each player at the end of the game.
+	 * Updates the player statistics for each player at the end of the turn.
 	 */
 	private void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
@@ -665,7 +665,8 @@ class Turn {
 	 */
 	private void aura(Status turnPlayer) {
 		// Roll 4 dice.
-		// Change current condition to Aura if first die is 4 or more.
+		// Change current condition to Aura and apply status boosters
+		// if first die is 4 or more.
 		// Add second die as attack booster.
 		// Add third die as defense booster.
 		// No mana cost if fourth die is 4 or more.
@@ -673,9 +674,9 @@ class Turn {
 		lastRoll = DiceRoll.roll(numRoll);
 		if(lastRoll[0] > 3) {
 			turnPlayer.setCondition(Condition.AURA1);
+			turnPlayer.setAtk(lastRoll[1]);
+			turnPlayer.setDef(lastRoll[2]);
 		}
-		turnPlayer.setAtk(lastRoll[1]);
-		turnPlayer.setDef(lastRoll[2]);
 		if(lastRoll[3] < 4) {
 			turnPlayer.reduceMana(manaAura);
 		}
