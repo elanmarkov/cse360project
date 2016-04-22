@@ -29,8 +29,8 @@ public class Robot extends Player {
 		computerData = new Data();
 	}
 	/**
-	 * Randomly generates a username for the computer from the 
-	 * @return
+	 * Randomly generates a username for the computer from the name list.
+	 * @return Randomly generated name, String.
 	 */
 	static String createRandomUsername() {
 		String robotName = "";

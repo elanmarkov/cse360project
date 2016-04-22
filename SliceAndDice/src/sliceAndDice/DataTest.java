@@ -45,6 +45,31 @@ public class DataTest {
 			System.out.println(e);
 		}
 	}
+	
+	/*
+	 * Tests reset data method to make sure the data is reset properly
+	 */
+	@Test
+	public void testResetData(){
+		Player newPlayer = new Player();
+		newPlayer.setID(1);
+		newPlayer.setUsername("user22");
+		newPlayer.getPlayerData().setScore(1200);
+		newPlayer.getPlayerData().setRank(2);
+		newPlayer.getPlayerData().setGame(1);
+		newPlayer.getPlayerData().setWin(1);
+		newPlayer.getPlayerData().setAttack(10);
+		newPlayer.getPlayerData().setBaseAttack(5);
+		newPlayer.getPlayerData().setSPAttack(5);
+		newPlayer.getPlayerData().setScore(50);
+		newPlayer.getPlayerData().setMeal(5);
+		newPlayer.getPlayerData().setHPLost(50);
+		newPlayer.getPlayerData().setFoodUsed(5);
+		newPlayer.getPlayerData().setManaUsed(50);
+		System.out.println(newPlayer.toString());
+		newPlayer.getPlayerData().resetData();
+		System.out.println(newPlayer.toString());
+	}
 
 	@Test
 	public void testSetScore() {
@@ -80,6 +105,24 @@ public class DataTest {
 		newData.setAttack(100);
 		assertEquals(100, newData.getAttack());
 	}
+/*
+ * 		@Test
+	public void testSetBaseAttack() {
+		Data newData = new Data();
+		newData.setBaseAttack(80);
+		assertEquals(80, newData.getBaseAttack());
+	}
+ */
+
+	/*
+	 * 	@Test
+	public void testSetSPAttack() {
+		Data newData = new Data();
+		newData.setSPAttack(90);
+		assertEquals(90, newData.getSPAttack());
+	}
+	 */
+
 
 	@Test
 	public void testSetMeal() {

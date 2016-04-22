@@ -121,12 +121,33 @@ static ArrayList<Player> players;
 	 * @throws IOException
 	 */
 	public void readDataIntoArrayListFromFile() throws IOException{
-		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+//		int numberOfPlayers = readPlayers.nextInt();
+//		for(int count = 0; count < numberOfPlayers; count++) {
+//			players.add(getPlayerDataFromFile(readPlayers));
+//		}
+//		readPlayers.close();
+		
+		Scanner readPlayers = null;
+		try {
+			readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+		}
+		catch(FileNotFoundException fnfe) {
+		PrintWriter createNewFile = new PrintWriter("data.txt", "UTF-8");
+		createNewFile.write(String.valueOf(0));
+		createNewFile.write("\n");
+		createNewFile.close();
+		}
+		finally { // if numberOfPlayers is 0, it should skip the for loop
+			readPlayers.close();
+		}
+		readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
 		int numberOfPlayers = readPlayers.nextInt();
 		for(int count = 0; count < numberOfPlayers; count++) {
 			players.add(getPlayerDataFromFile(readPlayers));
 		}
 		readPlayers.close();
+		
 	}
 	/**
 	 * Resets a Player's data in Scoreboard's ArrayList.
@@ -135,15 +156,7 @@ static ArrayList<Player> players;
     public void resetPlayerDataInArrayList(int userID) {
     	for(int index = 0; index < players.size(); index++) {
     		if(players.get(index).getID() == userID) {
-    			players.get(index).getPlayerData().setScore(1000);
-    			players.get(index).getPlayerData().setRank(0);
-    			players.get(index).getPlayerData().setGame(0);
-    			players.get(index).getPlayerData().setWin(0);
-    			players.get(index).getPlayerData().setAttack(0);
-    			players.get(index).getPlayerData().setMeal(0);
-    			players.get(index).getPlayerData().setHPLost(0);
-    			players.get(index).getPlayerData().setManaUsed(0);
-    			players.get(index).getPlayerData().setFoodUsed(0);
+    			players.get(index).getPlayerData().resetData();
     		}
     	}
     }
@@ -159,8 +172,8 @@ static ArrayList<Player> players;
      * @param username username for new Player
      */
     public void addNewPlayerFromUsername(String username) {
-    	Player newPlayer = new Player(username, players.size() + 1);
-    	players.add(newPlayer);
+    	Player newPlayer = new Player(username, players.size());
+    	players.add(players.size(), newPlayer);
     }
     /**
      * Returns true if Player is in Scoreboard's ArrayList and false if Player is not in Scoreboard's ArrayList.
@@ -178,38 +191,21 @@ static ArrayList<Player> players;
     	}
     	return found;
     }
-    /**
-     * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
-     * @param playerToUpdate Player with data to update
+    /*
+     * Note: It seems like the following method is not needed because Players will be updated automatically
      */
-    public void updatePlayerDataInArrayList(Player playerToUpdate) {
-    	for(int index = 0; index < players.size(); index++) {
-    		if(players.get(index).getID() == playerToUpdate.getID()) {
-    			players.set(index, playerToUpdate);
-    		}
-    	}
-    }
-/*
-prints out a Player, but not longer needed.
- */
-//    public String playerToString(Player player) {
-//        String dataString = "";
-//        dataString = dataString + player.getID() + "\n";
-//        dataString = dataString + player.getUsername() + "\n";
-//        dataString = dataString + player.getPlayerData().getScore() + "\n";
-//        dataString = dataString + player.getPlayerData().getRank() + "\n";
-//        dataString = dataString + player.getPlayerData().getGame() + "\n";
-//        dataString = dataString + player.getPlayerData().getWin() + "\n";
-//       //dataString = dataString + (player.getPlayerData().getGame() / player.getPlayerData().getWin()) + "\n";
-//        //dataString = dataString + player.getPlayerData().getTurn() + "\n";
-//        dataString = dataString + player.getPlayerData().getAttack() + "\n";
-//        //dataString = dataString + player.getPlayerData().getSPAttack() + "\n";
-//        dataString = dataString + player.getPlayerData().getMeal() + "\n";
-//        dataString = dataString + player.getPlayerData().getHPLost() + "\n";
-//        dataString = dataString + player.getPlayerData().getManaUsed() + "\n";
-//        dataString = dataString + player.getPlayerData().getFoodUsed() + "\n";
-//      return dataString;
-//    }
+ //   /**
+ //    * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
+ //    * @param playerToUpdate Player with data to update
+ //    */
+ //   public static void updatePlayerDataInArrayList(Player playerToUpdate) {
+ //   	for(int index = 0; index < players.size(); index++) {
+ //   		if(players.get(index).getID() == playerToUpdate.getID()) {
+ //   			players.set(index, playerToUpdate);
+ //   		}
+ //   	}
+ //   }
+
     /**
      * Returns Scoreboard's ArrayList of Players with information on separate lines.
      */
@@ -228,11 +224,14 @@ prints out a Player, but not longer needed.
 		FileWriter writer = new FileWriter("data.txt");
         BufferedWriter playerWriter = new BufferedWriter(writer);
         Integer numPlayers = players.size();
+        Integer id;
     	playerWriter.write(numPlayers.toString());
     	playerWriter.write("\n");
         for(int count = 0; count < players.size(); count++) {
-        	playerWriter.write((players.get(count).toString()));
+        	id = players.get(count).getID();
+        	playerWriter.write(id.toString());
         	playerWriter.write("\n");
+        	playerWriter.write((players.get(count).toString()));
         }
         playerWriter.close();
 	}
@@ -254,7 +253,7 @@ prints out a Player, but not longer needed.
      * @param winner which player won
      * @return new score of Player whose old score was oldScore1
      */
-    public double calculateScore(double oldScore1, double oldScore2, int winner) {
+    public static double calculateScore(double oldScore1, double oldScore2, int winner) {
     	final int kValue = 16;
     	double number1 = Math.pow(10, (oldScore1 / 400));
     	double number2 = Math.pow(10, (oldScore2 / 400));
