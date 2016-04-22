@@ -170,17 +170,20 @@ static ArrayList<Player> players;
     	}
     	return found;
     }
-    /**
-     * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
-     * @param playerToUpdate Player with data to update
+    /*
+     * Note: It seems like the following method is not needed because Players will be updated automatically
      */
-    public static void updatePlayerDataInArrayList(Player playerToUpdate) {
-    	for(int index = 0; index < players.size(); index++) {
-    		if(players.get(index).getID() == playerToUpdate.getID()) {
-    			players.set(index, playerToUpdate);
-    		}
-    	}
-    }
+ //   /**
+ //    * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
+ //    * @param playerToUpdate Player with data to update
+ //    */
+ //   public static void updatePlayerDataInArrayList(Player playerToUpdate) {
+ //   	for(int index = 0; index < players.size(); index++) {
+ //   		if(players.get(index).getID() == playerToUpdate.getID()) {
+ //   			players.set(index, playerToUpdate);
+ //   		}
+ //   	}
+ //   }
 
     /**
      * Returns Scoreboard's ArrayList of Players with information on separate lines.
