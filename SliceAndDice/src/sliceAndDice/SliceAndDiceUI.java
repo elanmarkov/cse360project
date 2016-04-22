@@ -35,6 +35,10 @@ public class SliceAndDiceUI {
 	private final int MIN_MANA = 0;
 	private final int MAX_FOOD = 5;
 	private final int MIN_FOOD = 0;
+	private final String COND_FROZEN = "FRZN";
+	private final String COND_POISON = "PZN";
+	private final String COND_AURA = "AUR";
+	private final String COND_NONE = "NONE";
 	private static int player;
 	private String usernameOne;
 	private String usernameTwo;
@@ -227,7 +231,7 @@ public class SliceAndDiceUI {
 				onePlayer.setForeground(Color.red);
 				onePlayer.setToolTipText("New one player game");
 				
-			final JButton twoPlayer = new JButton("Dual");
+			final JButton twoPlayer = new JButton("Duel");
 				twoPlayer.setAlignmentX(Component.CENTER_ALIGNMENT);
 				twoPlayer.setFont(smallButtonFont);
 				twoPlayer.setForeground(Color.red);
@@ -575,15 +579,15 @@ public class SliceAndDiceUI {
 						playerOneCOND.setFont(smallLabelFont);
 						playerOneCOND.setForeground(Color.blue);
 						playerOneCOND.setAlignmentX(Component.LEFT_ALIGNMENT);
-					final JLabel playerOneATKValue = new JLabel(" ");
+					final JLabel playerOneATKValue = new JLabel("0");
 						playerOneATKValue.setFont(smallLabelFont);
 						playerOneATKValue.setForeground(Color.blue);
 						playerOneATKValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
-					final JLabel playerOneDEFValue = new JLabel(" ");
+					final JLabel playerOneDEFValue = new JLabel("0");
 						playerOneDEFValue.setFont(smallLabelFont);
 						playerOneDEFValue.setForeground(Color.blue);
 						playerOneDEFValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
-					final JLabel playerOneCONDValue = new JLabel(" ");
+					final JLabel playerOneCONDValue = new JLabel(COND_NONE);
 						playerOneCONDValue.setFont(smallLabelFont);
 						playerOneCONDValue.setForeground(Color.blue);
 						playerOneCONDValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -698,15 +702,15 @@ public class SliceAndDiceUI {
 						playerTwoCOND.setFont(smallLabelFont);
 						playerTwoCOND.setForeground(Color.blue);
 						playerTwoCOND.setAlignmentX(Component.LEFT_ALIGNMENT);
-					final JLabel playerTwoATKValue = new JLabel(" ");
+					final JLabel playerTwoATKValue = new JLabel("0");
 						playerTwoATKValue.setFont(smallLabelFont);
 						playerTwoATKValue.setForeground(Color.blue);
 						playerTwoATKValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
-					final JLabel playerTwoDEFValue = new JLabel(" ");
+					final JLabel playerTwoDEFValue = new JLabel("0");
 						playerTwoDEFValue.setFont(smallLabelFont);
 						playerTwoDEFValue.setForeground(Color.blue);
 						playerTwoDEFValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
-					final JLabel playerTwoCONDValue = new JLabel(" ");
+					final JLabel playerTwoCONDValue = new JLabel(COND_NONE);
 						playerTwoCONDValue.setFont(smallLabelFont);
 						playerTwoCONDValue.setForeground(Color.blue);
 						playerTwoCONDValue.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -1083,12 +1087,32 @@ public class SliceAndDiceUI {
 			 */
 			stop.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
+					int[] rollResult = game.getLastRoll();
+					
+					die1.removeAll();
+					die2.removeAll();
+					die3.removeAll();
+					die4.removeAll();
+					
+					die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[0] + "_85px.png"))), BorderLayout.CENTER);
+					die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[1] + "_85px.png"))), BorderLayout.CENTER);
+					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[2] + "_85px.png"))), BorderLayout.CENTER);
+					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
+							rollResult[3] + "_85px.png"))), BorderLayout.CENTER);
 					
 					plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 					plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
+					playerTwoATKValue.setText(Integer.toString(game.getPlayerTwoStatus().getAtk()));
+					playerTwoDEFValue.setText(Integer.toString(game.getPlayerTwoStatus().getDef()));
+					
 					
 					plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
 					plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
+					playerOneATKValue.setText(Integer.toString(game.getPlayerOneStatus().getAtk()));
+					playerOneDEFValue.setText(Integer.toString(game.getPlayerOneStatus().getDef()));
 					
 					playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
 					playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
@@ -1101,33 +1125,47 @@ public class SliceAndDiceUI {
 						case FROZEN:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/frozen.png"))));
+							playerOneCONDValue.setText(COND_FROZEN);
 							break;
 						case AURA1:
-							
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerOneCONDValue.setText(COND_AURA);
+							break;
+						case AURA2:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerOneCONDValue.setText(COND_AURA);
 							break;
 						case POISON1:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_1.png"))));
+							playerOneCONDValue.setText(COND_POISON);
 							break;
 						case POISON2:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_2.png"))));
+							playerOneCONDValue.setText(COND_POISON);
 							break;
 						case POISON3:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_3.png"))));
+							playerOneCONDValue.setText(COND_POISON);
 							break;
 						case POISON4:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_4.png"))));
+							playerOneCONDValue.setText(COND_POISON);
 							break;
 						case POISON5:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
+							playerOneCONDValue.setText(COND_POISON);
 							break;
 						case NONE:
 							playerOneCondition.removeAll();
 							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							playerOneCONDValue.setText(COND_NONE);
 							break;
 						default:
 							playerOneCondition.removeAll();
@@ -1139,57 +1177,54 @@ public class SliceAndDiceUI {
 						case FROZEN:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/frozen.png"))));
+							playerTwoCONDValue.setText(COND_FROZEN);
 							break;
 						case AURA1:
-							
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerTwoCONDValue.setText(COND_AURA);
+							break;
+						case AURA2:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerTwoCONDValue.setText(COND_AURA);
 							break;
 						case POISON1:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_1.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
 							break;
 						case POISON2:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_2.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
 							break;
 						case POISON3:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_3.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
 							break;
 						case POISON4:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_4.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
 							break;
 						case POISON5:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
 							break;
 						case NONE:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							playerTwoCONDValue.setText(COND_NONE);
 							break;
 						default:
 							playerTwoCondition.removeAll();
 							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
 							break;
 						}
-						
-						int[] rollResult = game.getLastRoll();
-						
 						middleRightPanel.removeAll();
-						die1.removeAll();
-						die2.removeAll();
-						die3.removeAll();
-						die4.removeAll();
-						
-						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
-								rollResult[0] + "_85px.png"))), BorderLayout.CENTER);
-						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
-								rollResult[1] + "_85px.png"))), BorderLayout.CENTER);
-						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
-								rollResult[2] + "_85px.png"))), BorderLayout.CENTER);
-						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
-								rollResult[3] + "_85px.png"))), BorderLayout.CENTER);
-						
 						switch(move){
 						case ATTACK:
 								if(!game.isPlayerOneTurn()){
@@ -1236,17 +1271,33 @@ public class SliceAndDiceUI {
 							
 							if(!game.isPlayerOneTurn()){
 								activePlayer.setText(usernameTwo);
-								// TODO add frozen player two animation
+								// TODO add poison player two animation
 							}else if(game.isPlayerOneTurn()){
 								activePlayer.setText(usernameOne);
-								// TODO add frozen player one animation
+								// TODO add poison player one animation
 							}
 							
 							break;
 						case AURA:
 							
+							if(!game.isPlayerOneTurn()){
+								activePlayer.setText(usernameTwo);
+								// TODO add aura player two animation
+							}else if(game.isPlayerOneTurn()){
+								activePlayer.setText(usernameOne);
+								// TODO add aura player one animation
+							}
+							
 							break;
 						case CHARGE:
+							
+							if(!game.isPlayerOneTurn()){
+								activePlayer.setText(usernameTwo);
+								// TODO add aura player two animation
+							}else if(game.isPlayerOneTurn()){
+								activePlayer.setText(usernameOne);
+								// TODO add aura player one animation
+							}
 							
 							break;
 						default:
@@ -1436,7 +1487,7 @@ public class SliceAndDiceUI {
 					}else{
 						
 						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
-						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
+						stats.scoreboard.addNewPlayerFromUsername(usernameTwo);
 						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
 						/*
 						 * Launch player select frame in AWT event dispatch thread
@@ -1494,7 +1545,7 @@ public class SliceAndDiceUI {
 					}
 					user = singleUserStatText.getText().toLowerCase();
 					if(stats.findPlayer(user) < 0){
-						JOptionPane.showMessageDialog(gameFrame, "Username does not exits");
+						JOptionPane.showMessageDialog(gameFrame, "Username does not exist");
 						singleUserStatText.setText("");
 						return;
 					}
@@ -1633,6 +1684,8 @@ public class SliceAndDiceUI {
 						
 						die1.setBackground(Color.red);
 						die2.setBackground(Color.red);
+						die3.setBackground(Color.red);
+						die4.setBackground(Color.red);
 						
 						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
 						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
@@ -1777,16 +1830,32 @@ public class SliceAndDiceUI {
 						case FREEZE:
 							die1.setBackground(Color.blue);
 							die2.setBackground(Color.blue);
+							die3.setBackground(Color.red);
+							die4.setBackground(Color.red);
 							break;
 						case AURA:
-							
+							die1.setBackground(Color.cyan);
+							die2.setBackground(Color.cyan);
+							die3.setBackground(Color.cyan);
+							die4.setBackground(Color.cyan);
 							break;
 						case POISON:
 							die1.setBackground(Color.green);
 							die2.setBackground(Color.green);
+							die3.setBackground(Color.red);
+							die4.setBackground(Color.red);
 							break;
 						case DOUBLEATK:
-							
+							die1.setBackground(Color.black);
+							die2.setBackground(Color.black);
+							die3.setBackground(Color.black);
+							die4.setBackground(Color.black);
+							break;
+						case CHARGE:
+							die1.setBackground(Color.cyan);
+							die2.setBackground(Color.cyan);
+							die3.setBackground(Color.cyan);
+							die4.setBackground(Color.cyan);
 							break;
 							
 						default:
@@ -1823,11 +1892,20 @@ public class SliceAndDiceUI {
 							gameFrame.validate();
 						}
 						
-						SwingUtilities.invokeLater(new Runnable(){
-							public void run(){
-								stop.showStopRoll();
-							}
-						});
+						if(move.equals(Move.DOUBLEATK)){
+							// TODO create 8 die panel pass it last roll of dice
+							SwingUtilities.invokeLater(new Runnable(){
+								public void run(){
+									
+								}
+							});
+						}else{
+							SwingUtilities.invokeLater(new Runnable(){
+								public void run(){
+									stop.showStopRoll();
+								}
+							});
+						}
 					}else if(winner.equals(Winner.PLAYER_ONE)){
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
@@ -1904,21 +1982,34 @@ public class SliceAndDiceUI {
 			gameSave.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					
-					JOptionPane.showMessageDialog(gameFrame, "Function disabled");
-//					try{
-//						stats.scoreboard.sendPlayerDataToFile();
-//					}catch(IOException e){
-//						JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
-//					}
-//					JOptionPane.showMessageDialog(gameFrame, "Game saved!");
+					//JOptionPane.showMessageDialog(gameFrame, "Function disabled");
+					try{
+						stats.scoreboard.sendPlayerDataToFile();
+					}catch(IOException e){
+						JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
+					}
+					JOptionPane.showMessageDialog(gameFrame, "Game saved!");
 				}
 			});
 			
 			gameExit.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					
-					gameFrame.dispose();
-					System.exit(0);
+				Object[] inputs = {"Save", "Exit"};
+				int ans = JOptionPane.showOptionDialog(gameFrame, "Exit without saving?", "Slice And Dice",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+						new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png"))), inputs, null);
+				
+					if(ans == 1){
+						try{
+							stats.scoreboard.sendPlayerDataToFile();
+						}catch(IOException e){
+							JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
+						}
+						JOptionPane.showMessageDialog(gameFrame, "Game saved!");
+					}else{
+						gameFrame.dispose();
+						System.exit(0);
+					}
 				}
 			});
 			
