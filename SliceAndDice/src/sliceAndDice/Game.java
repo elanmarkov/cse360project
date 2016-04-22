@@ -46,9 +46,9 @@ public class Game {
 	 */
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
-		//this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
-		//this.playerTwo = Scoreboard.getPlayerByUsername(playerOne);
-		this.playerOne = new Player(playerOne, 1);
+		this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
+		//this.playerTwo = Scoreboard.getPlayerByUsername(playerTwo);
+		//this.playerOne = new Player(playerOne, 1);
 		this.playerTwo = new Player(playerTwo, 2);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
@@ -83,14 +83,14 @@ public class Game {
 	Game(String humanPlayer, boolean humanGoesFirst) {
 		totalTurns = 0;
 		if(humanGoesFirst) {
-			//this.playerOne = Scoreboard.getPlayerByUsername(humanPlayer);
-			this.playerOne = new Player(humanPlayer, 1);
+			this.playerOne = Scoreboard.getPlayerByUsername(humanPlayer);
+			//this.playerOne = new Player(humanPlayer, 1);
 			this.playerTwo = new Robot();
 		}
 		else {
-			//this.playerTwo = Scoreboard.getPlayerByUsername(humanPlayer);
+			this.playerTwo = Scoreboard.getPlayerByUsername(humanPlayer);
 			this.playerOne = new Robot();
-			this.playerTwo = new Player(humanPlayer, 1);
+			//this.playerTwo = new Player(humanPlayer, 1);
 		}
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
@@ -332,24 +332,30 @@ public class Game {
 		switch (turnPlayerMove) {
 		case ATTACK:
 			turnPlayer.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumBaseAttacks();
 			break;
 		case FOOD:
 			turnPlayer.getPlayerData().incrNumMeals();
 			break;
 		case FREEZE:
 			turnPlayer.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumSPAttacks();
 			break;
 		case DOUBLEATK:
 			turnPlayer.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumSPAttacks();
 			break;
 		case POISON:
 			turnPlayer.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumSPAttacks();
 			break;
 		case AURA:
 			turnPlayer.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumSPAttacks();
 			break;
 		case CHARGE:
 			turnPlayer.getPlayerData().incrNumAttacks();
+			turnPlayer.getPlayerData().incrNumSPAttacks();
 			break;
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
@@ -674,6 +680,9 @@ class Turn {
 		}
 		sumBoost = (int) ((double)(sumBoost + 0.5) / 2);
 		turnPlayer.increaseMana(sumBoost);
+		if(turnPlayer.getMana() > Status.getMaxMana()) {
+			turnPlayer.setMana(Status.getMaxMana());
+		}
 	}
 }
 
