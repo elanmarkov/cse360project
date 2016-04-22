@@ -105,20 +105,24 @@ public class DataTest {
 		newData.setAttack(100);
 		assertEquals(100, newData.getAttack());
 	}
-	
-	@Test
+/*
+ * 		@Test
 	public void testSetBaseAttack() {
 		Data newData = new Data();
 		newData.setBaseAttack(80);
 		assertEquals(80, newData.getBaseAttack());
 	}
-	
-	@Test
+ */
+
+	/*
+	 * 	@Test
 	public void testSetSPAttack() {
 		Data newData = new Data();
 		newData.setSPAttack(90);
 		assertEquals(90, newData.getSPAttack());
 	}
+	 */
+
 
 	@Test
 	public void testSetMeal() {

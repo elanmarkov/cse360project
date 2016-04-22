@@ -16,8 +16,8 @@ public class Data {
 	int totalGameCount;
 	int totalWinCount;
 	int totalNumAttacks;
-	int totalNumBaseAttacks;
-	int totalNumSPAttacks;
+	//int totalNumBaseAttacks;
+	//int totalNumSPAttacks;
 	int totalNumMeals;
 	int totalHealthLost;
 	int totalManaUsed;
@@ -35,8 +35,8 @@ public class Data {
 	totalGameCount = 0;
 	totalWinCount = 0;
 	totalNumAttacks = 0;
-	totalNumBaseAttacks = 0;
-	totalNumSPAttacks = 0;
+	//totalNumBaseAttacks = 0;
+	//totalNumSPAttacks = 0;
 	totalNumMeals = 0;
 	totalHealthLost = 0;
 	totalManaUsed = 0;
@@ -55,8 +55,8 @@ public class Data {
 		totalGameCount = dataReader.nextInt();
 		totalWinCount = dataReader.nextInt();
 		totalNumAttacks = dataReader.nextInt();
-		totalNumBaseAttacks = dataReader.nextInt();
-		totalNumSPAttacks = dataReader.nextInt();
+		//totalNumBaseAttacks = dataReader.nextInt();
+		//totalNumSPAttacks = dataReader.nextInt();
 		totalNumMeals = dataReader.nextInt();
 		totalHealthLost = dataReader.nextInt();
 		totalManaUsed = dataReader.nextInt();
@@ -72,8 +72,8 @@ public class Data {
 		dataString += totalGameCount + "\n";
 		dataString += totalWinCount + "\n";
 		dataString += totalNumAttacks + "\n";
-		dataString += totalNumBaseAttacks + "\n";
-		dataString += totalNumSPAttacks + "\n";
+		//dataString += totalNumBaseAttacks + "\n";
+		//dataString += totalNumSPAttacks + "\n";
 		dataString += totalNumMeals + "\n";
 		dataString += totalHealthLost + "\n";
 		dataString += totalManaUsed + "\n";
@@ -90,8 +90,8 @@ public class Data {
 		totalGameCount = 0;
 		totalWinCount = 0;
 		totalNumAttacks = 0;
-		totalNumBaseAttacks = 0;
-		totalNumSPAttacks = 0;
+		//totalNumBaseAttacks = 0;
+		//totalNumSPAttacks = 0;
 		totalNumMeals = 0;
 		totalHealthLost = 0;
 		totalManaUsed = 0;
@@ -156,14 +156,14 @@ public class Data {
 	 * @param totalNumbBaseAttacks new number of base attacks
 	 */
 	void setBaseAttack(int totalNumBaseAttacks) {
-		this.totalNumBaseAttacks = totalNumBaseAttacks;
+		//this.totalNumBaseAttacks = totalNumBaseAttacks;
 	}
 	/**
 	 * Sets the number of special attacks to the given number.
 	 * @param totalNumSPAttacks new number of special attacks
 	 */
 	void setSPAttack(int totalNumSPAttacks) {
-		this.totalNumSPAttacks = totalNumSPAttacks;
+		//this.totalNumSPAttacks = totalNumSPAttacks;
 	}
 	/**
 	 * Sets the number of meals to the given number.
@@ -235,16 +235,16 @@ public class Data {
 	 * Returns the number of base attacks of the Data object.
 	 * @return number of base attacks
 	 */
-	int getBaseAttack() {
-		return totalNumBaseAttacks;
-	}
+	//int getBaseAttack() {
+		//return totalNumBaseAttacks;
+	//}
 	/**
 	 * Returns the number of special attacks of the Data object.
 	 * @return number of special attacks
 	 */
-	int getSPAttack() {
-		return totalNumSPAttacks;
-	}
+	//int getSPAttack() {
+		//return totalNumSPAttacks;
+	//}
 	/**
 	 * Returns the number of meals of the Data object.
 	 * @return number of meals
@@ -300,13 +300,13 @@ public class Data {
 	 * Increments the Data object's number of base attacks. Called when a Player performs a base attack.
 	 */
 	public void incrNumBaseAttacks() {
-		totalNumBaseAttacks++;
+		//totalNumBaseAttacks++;
 	}
 	/**
 	 * Increments the Data object's number of special attacks. Called when a Player performs a special attack.
 	 */
 	public void incrNumSPAttacks() {
-		totalNumSPAttacks++;
+		//totalNumSPAttacks++;
 	}
 	/**
 	 * Increments the Data object's number of meals. Called when a Player heals.

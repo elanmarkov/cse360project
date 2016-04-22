@@ -208,7 +208,6 @@ static ArrayList<Player> players;
         	playerWriter.write(id.toString());
         	playerWriter.write("\n");
         	playerWriter.write((players.get(count).toString()));
-        	playerWriter.write("\n");
         }
         playerWriter.close();
 	}

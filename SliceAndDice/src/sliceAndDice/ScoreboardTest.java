@@ -37,41 +37,58 @@ public class ScoreboardTest extends Scoreboard{
 	/*
 	 * Status: Passed
 	 */
-//	@Test
-//	public void testGetPlayerByUsername() throws IOException {
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		System.out.println(Scoreboard.getPlayerByUsername("user1").toString());
-//		//System.out.println(board.toString());
-//	}
 	/*
-	 * Status: Passed
-	 */
-//	@Test
-//	public void testGetPlayerByID() throws IOException {
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		System.out.println(Scoreboard.getPlayerByID(3).toString());
-//	}
-	/*
-	 * Status: Passed
-	 */
-//	@Test
-//	public void testGetIDByUsername() throws IOException {
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		System.out.println(Scoreboard.getIDByUsername("user1"));
-//	}
-	/*
-	 * Status: Passed
-	 */
 	@Test
+	public void testGetPlayerByUsername() throws IOException {
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(Scoreboard.getPlayerByUsername("user3").toString());
+		board.addNewPlayerFromUsername("newUser");
+		board.addNewPlayerFromUsername("newUser2");
+		System.out.println(Scoreboard.getPlayerByUsername("newUser"));
+		System.out.println(Scoreboard.getPlayerByUsername("newUser2"));
+		Scoreboard.getPlayerByID(3).getPlayerData().resetData();
+		System.out.println(Scoreboard.getPlayerByUsername("user3"));
+		//System.out.println(board.toString());
+	} 
+	 */
+	
+	/*
+	 * Status: Passed
+	 */
+	/*
+	 * 	@Test
+	public void testGetPlayerByID() throws IOException {
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(Scoreboard.getPlayerByID(1).toString());
+	}
+	 */
+	/*
+	 * Status: Passed
+	 */
+	/*
+	 * 	@Test
+	public void testGetIDByUsername() throws IOException {
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.addNewPlayerFromUsername("user4");
+		System.out.println(Scoreboard.getIDByUsername("user4"));
+	}
+	 */
+	/*
+	 * Status: Passed
+	 */
+	/*
+	 * 	@Test
 	public void testGetUsernameByID() throws IOException {
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
-		System.out.println(Scoreboard.getUsernameByID(2));
+		board.addNewPlayerFromUsername("user4");
+		board.addNewPlayerFromUsername("user5");
+		System.out.println(Scoreboard.getUsernameByID(3));
 	}
-
+	 */
 	/*
 	 * Test: Load one player from file and print
 	 * Status: Passed
@@ -194,12 +211,49 @@ public class ScoreboardTest extends Scoreboard{
 	 * Setup: change the method to write to outputData.txt
 	 * Note: it does not print the IDs, so it is correct
 	 */
-//	@Test
-//	public void testSendPlayerDataToFile() throws IOException{
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		board.sendPlayerDataToFile();
-//	}
+	/*
+	 * Status: Passed
+	 */
+	/*
+	 * 	@Test
+	public void testSendPlayerDataToFile() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.sendPlayerDataToFile();
+	}
+	 */
+	/*
+	 * Status: Passed
+	 */
+	/*
+	 * 	@Test
+	public void testAddPlayerAndSendPlayerDataToFile() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.addNewPlayerFromUsername("joseph");
+		board.sendPlayerDataToFile();
+	}
+	 */
+	/*
+	 * Status: Passed
+	 */
+	/*
+	 * 
+	 */
+	@Test
+	public void testAddPlayerAndSortAndSendPlayerDataToFile() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.addNewPlayerFromUsername("user4");
+		board.addNewPlayerFromUsername("user5");
+		board.addNewPlayerFromUsername("user6");
+		Scoreboard.getPlayerByUsername("user4").getPlayerData().incrGameCount();
+		Scoreboard.getPlayerByUsername("user5").getPlayerData().incrWinCount();
+		Scoreboard.getPlayerByUsername("user6").getPlayerData().incrNumAttacks();
+		Scoreboard.getPlayerByUsername("user4").getPlayerData().setScore(calculateScore(2000, 3000, 1));
+		board.sortArrayListByScore();
+		board.sendPlayerDataToFile();
+	}
 
 	@Test
 	public void testWinPercentage() {
@@ -210,7 +264,12 @@ public class ScoreboardTest extends Scoreboard{
 	@Test
 	public void testCalculateScore1() {
 		Scoreboard board = new Scoreboard();
-		assertEquals(2016, board.calculateScore(2000, 3000, 1), .1);
+		assertEquals(2016, Scoreboard.calculateScore(2000, 3000, 1), .1);
+	}
+	@Test
+	public void testCalculateScore2() {
+		Scoreboard board = new Scoreboard();
+		assertEquals(2115.9, Scoreboard.calculateScore(2100, 3100, 1), .1);
 	}
 
 
@@ -237,17 +296,20 @@ public class ScoreboardTest extends Scoreboard{
 //		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
 //	}
 	/*
-	 * Status:
+	 * Status: Passed
 	 */
-//	@Test
-//	public void testAddNewPlayerFromUsername2() {
-//		Scoreboard board = new Scoreboard();
-//		board.addNewPlayerFromUsername("user222");
-//		board.addNewPlayerFromUsername("user333");
-//		board.addNewPlayerFromUsername("user444");
-//		System.out.println(board.toString());
-//		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
-//		System.out.println("ID = " + Scoreboard.getIDByUsername("user333"));
-//		System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
-//	}
+	/*
+	 * 	@Test
+	public void testAddNewPlayerFromUsername2() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user222");
+		board.addNewPlayerFromUsername("user333");
+		board.addNewPlayerFromUsername("user444");
+		System.out.println(board.toString());
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user333"));
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
+	}
+	 */
+
 }
