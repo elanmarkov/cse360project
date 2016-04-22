@@ -153,27 +153,29 @@ public class ScoreboardTest extends Scoreboard{
 
 	/*
 	 * Status: Passed
+	@Test
+	public void testResetPlayerDataInArrayList() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.resetPlayerDataInArrayList(0);
+		System.out.println(board.toString());
+		System.out.println("\n");
+	}
 	 */
-//	@Test
-//	public void testResetPlayerDataInArrayList() throws IOException{
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		board.resetPlayerDataInArrayList(2);
-//		System.out.println(board.toString());
-//		System.out.println("\n");
-//	}
+
 	/*
 	 * Status: Passed, because the constructor initializes username to empty String
+	 * 	@Test
+	public void testAddNewPlayerToArrayList() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		Player newPlayer = new Player();
+		board.addNewPlayerToArrayList(newPlayer);
+		System.out.println(board.toString());
+		System.out.println("\n");
+	}
 	 */
-//	@Test
-//	public void testAddNewPlayerToArrayList() throws IOException{
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		Player newPlayer = new Player();
-//		board.addNewPlayerToArrayList(newPlayer);
-//		System.out.println(board.toString());
-//		System.out.println("\n");
-//	}
+
 	/*
 	 * Status: Passed - returned true because user3 is in ArrayList
 	 */
@@ -296,19 +298,33 @@ public class ScoreboardTest extends Scoreboard{
 //	}
 	/*
 	 * Status: Passed
-	 */
-	/*
-	 * 	@Test
+	 	@Test
 	public void testAddNewPlayerFromUsername2() {
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user222");
 		board.addNewPlayerFromUsername("user333");
 		board.addNewPlayerFromUsername("user444");
+		board.sortArrayListByScore();
 		System.out.println(board.toString());
 		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
 		System.out.println("ID = " + Scoreboard.getIDByUsername("user333"));
 		System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
 	}
 	 */
-
+	/*
+	 * Status: Passed
+	@Test
+	public void testAddNewPlayerFromUsername2() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.addNewPlayerFromUsername("user222");
+		board.addNewPlayerFromUsername("user333");
+		board.addNewPlayerFromUsername("user444");
+		board.sortArrayListByScore();
+		System.out.println(board.toString());
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user333"));
+		System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
+	}
+	 */
 }

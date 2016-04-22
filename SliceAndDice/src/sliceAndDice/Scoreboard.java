@@ -147,7 +147,6 @@ static ArrayList<Player> players;
 			players.add(getPlayerDataFromFile(readPlayers));
 		}
 		readPlayers.close();
-		
 	}
 	/**
 	 * Resets a Player's data in Scoreboard's ArrayList.
