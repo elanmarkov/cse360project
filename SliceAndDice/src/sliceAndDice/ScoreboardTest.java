@@ -14,11 +14,24 @@ import org.junit.Test;
 
 public class ScoreboardTest extends Scoreboard{
 	
+	/*
+	 * Status: Passed
 	@Test
 	public void testScoreboardConstructor1() {
 		Scoreboard board = new Scoreboard();
 		assertNotNull(board);
 	}
+	 */
+
+	/*
+	@Test
+	public void testScoreboardConstructor2() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user1");
+		System.out.println(board.toString());
+	}
+	 */
+	
 //	@Test
 //	public void testGetPlayerDataFromFile() throws IOException{
 //		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
@@ -26,69 +39,72 @@ public class ScoreboardTest extends Scoreboard{
 //		board.getPlayerDataFromFile(readPlayers);
 //		assertNotNull(Scoreboard.getPlayerArrayList());
 //	}
-	
-//	@Test
-//	public void testGetPlayerArrayList() throws IOException {
-//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
-//		Scoreboard board = new Scoreboard();
-//		board.getPlayerDataFromFile(readPlayers);
-//		System.out.println(board.getPlayerArrayList().toString());	
-//	}
 	/*
 	 * Status: Passed
+	@Test
+	public void testGetPlayerArrayList() throws IOException {
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		board.addNewPlayerFromUsername("newUser");
+		System.out.println(Scoreboard.getPlayerArrayList().toString());
+	}
 	 */
+
 	/*
+	 * Status: Passed
 	@Test
 	public void testGetPlayerByUsername() throws IOException {
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
 		System.out.println(Scoreboard.getPlayerByUsername("user3").toString());
 		board.addNewPlayerFromUsername("newUser");
-		board.addNewPlayerFromUsername("newUser2");
-		System.out.println(Scoreboard.getPlayerByUsername("newUser"));
-		System.out.println(Scoreboard.getPlayerByUsername("newUser2"));
-		Scoreboard.getPlayerByID(3).getPlayerData().resetData();
-		System.out.println(Scoreboard.getPlayerByUsername("user3"));
+		System.out.println(Scoreboard.getPlayerByUsername("newUser").toString());
+		try{
+			System.out.println(Scoreboard.getPlayerByUsername("wrongUser").toString());
+		}
+		catch(NullPointerException npe) {
+			Scoreboard.getPlayerByUsername("user3").getPlayerData().resetData();
+			System.out.println(Scoreboard.getPlayerByUsername("user3").toString());
+		}
 		//System.out.println(board.toString());
 	} 
 	 */
 	
 	/*
 	 * Status: Passed
-	 */
-	/*
 	 * 	@Test
 	public void testGetPlayerByID() throws IOException {
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
+		System.out.println(Scoreboard.getPlayerByID(0).toString());
+		System.out.println(Scoreboard.getPlayerByID(2).toString());
 		System.out.println(Scoreboard.getPlayerByID(1).toString());
+		System.out.println(Scoreboard.getPlayerByID(3).toString());
 	}
 	 */
+	
 	/*
 	 * Status: Passed
-	 */
-	/*
-	 * 	@Test
+	@Test
 	public void testGetIDByUsername() throws IOException {
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
 		board.addNewPlayerFromUsername("user4");
-		System.out.println(Scoreboard.getIDByUsername("user4"));
+		System.out.println(Scoreboard.getIDByUsername("user1"));
 	}
 	 */
 	/*
 	 * Status: Passed
-	 */
-	/*
-	 * 	@Test
+	@Test
 	public void testGetUsernameByID() throws IOException {
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
 		board.addNewPlayerFromUsername("user4");
 		board.addNewPlayerFromUsername("user5");
-		System.out.println(Scoreboard.getUsernameByID(3));
+		System.out.println(Scoreboard.getUsernameByID(1));
 	}
 	 */
+
 	/*
 	 * Test: Load one player from file and print
 	 * Status: Passed
@@ -327,4 +343,22 @@ public class ScoreboardTest extends Scoreboard{
 		System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
 	}
 	 */
+	/*
+	 * Status: Passed
+	@Test
+	public void testClearAllData() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(board.toString());
+		board.addNewPlayerFromUsername("newUser");
+		System.out.println(board.toString());
+		board.clearAllData();
+		System.out.println(board.toString());
+		board.addNewPlayerFromUsername("newUser2");
+		System.out.println(board.toString());
+		board.addNewPlayerFromUsername("newUser3");
+		System.out.println(board.toString());
+	}
+	 */
+
 }

@@ -108,7 +108,7 @@ static ArrayList<Player> players;
 		return playerUsername;
 	}
 	/**
-	 * Returns Player with data from data.txt.
+	 * Returns Player with data from data.txt. Used by readDataIntoArrayListFromFile.
 	 * @param readPlayers Scanner used to read players
 	 * @return Player with information from data.txt
 	 */
@@ -294,5 +294,11 @@ static ArrayList<Player> players;
     			sorted = true;
     		}
     	}
+    }
+    /**
+     * Removes all Players from Scoreboard's ArrayList of Players. Used when the user wants to reset all data.
+     */
+    public void clearAllData() {
+    	players.clear();
     }
 }
