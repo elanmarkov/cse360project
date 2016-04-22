@@ -47,9 +47,9 @@ public class Game {
 	Game(String playerOne, String playerTwo) {
 		totalTurns = 0;
 		this.playerOne = Scoreboard.getPlayerByUsername(playerOne);
-		//this.playerTwo = Scoreboard.getPlayerByUsername(playerTwo);
+		this.playerTwo = Scoreboard.getPlayerByUsername(playerTwo);
 		//this.playerOne = new Player(playerOne, 1);
-		this.playerTwo = new Player(playerTwo, 2);
+		//this.playerTwo = new Player(playerTwo, 2);
 		playerOneStatus = new Status();
 		playerTwoStatus = new Status();
 		playerOneTurn = true;
@@ -558,8 +558,11 @@ class Turn {
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
 			sumDamage += lastRoll[rollCount];
 		}
-		
-		otherPlayer.reduceHP(sumDamage);
+		sumDamage += turnPlayer.getAtk();
+		sumDamage -= otherPlayer.getDef();
+		if(sumDamage > 0) {
+			otherPlayer.reduceHP(sumDamage);
+		}
 	}
 	/**
 	 * Food method. Heals a given amount of HP for the turn player.
@@ -593,8 +596,11 @@ class Turn {
 		for(int rollCount = 2; rollCount < numRoll; rollCount++) {
 			sumDamage += lastRoll[rollCount];
 		}				
-		int oppHP = otherPlayer.getHitPts();
-		otherPlayer.reduceHP(sumDamage);
+		sumDamage += turnPlayer.getAtk();
+		sumDamage -= otherPlayer.getDef();
+		if(sumDamage > 0) {
+			otherPlayer.reduceHP(sumDamage);
+		}
 		if(sumFreeze > 6) {
 			if(otherPlayer.getCondition() != Condition.AURA1 
 					&& otherPlayer.getCondition() != Condition.AURA2) {
@@ -617,7 +623,11 @@ class Turn {
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
 			sumDamage += lastRoll[rollCount];
 		}
-		otherPlayer.reduceHP(sumDamage);
+		sumDamage += 2 * turnPlayer.getAtk();
+		sumDamage -= 2 * otherPlayer.getDef();
+		if(sumDamage > 0) {
+			otherPlayer.reduceHP(sumDamage);
+		}
 		turnPlayer.reduceMana(manaDouble);
 	}
 	/**
@@ -635,7 +645,11 @@ class Turn {
 		for(int rollCount = 2; rollCount < numRoll; rollCount++) {
 			sumDamage += lastRoll[rollCount];
 		}				
-		otherPlayer.reduceHP(sumDamage);
+		sumDamage += turnPlayer.getAtk();
+		sumDamage -= otherPlayer.getDef();
+		if(sumDamage > 0) {
+			otherPlayer.reduceHP(sumDamage);
+		}
 		if(sumPoison > 6) {
 			if(otherPlayer.getCondition() != Condition.AURA1 
 					&& otherPlayer.getCondition() != Condition.AURA2) {
