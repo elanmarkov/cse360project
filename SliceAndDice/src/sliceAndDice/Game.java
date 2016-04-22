@@ -56,6 +56,7 @@ public class Game {
 		lastConditionEvaluated = false;
 		winnerID = -1; // no winner yet
 		loserID = -1; // no winner yet
+		nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 	}
 	/**
 	 * Constructor for Game class from two Player objects.
@@ -71,6 +72,7 @@ public class Game {
 		playerOneTurn = true;
 		winnerID = -1; // no winner yet
 		loserID = -1; // no winner yet
+		nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 	}
 	/**
 	 * Constructor for Game class from one username, where the opponent
@@ -95,6 +97,7 @@ public class Game {
 		playerOneTurn = true;
 		winnerID = -1; // no winner yet
 		loserID = -1; // no winner yet
+		nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 	}
 	/**
 	 * Plays the next (half-) turn of the game.
