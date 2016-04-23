@@ -2159,6 +2159,7 @@ public class SliceAndDiceUI {
 					}
 					
 					winner = game.updateCondition();
+					middleRightPanel.removeAll();
 					
 					if(winner.equals(Winner.NONE)){
 						switch(move){
@@ -2187,10 +2188,10 @@ public class SliceAndDiceUI {
 							die4.setBackground(Color.black);
 							break;
 						case CHARGE:
-							die1.setBackground(Color.cyan);
-							die2.setBackground(Color.cyan);
-							die3.setBackground(Color.cyan);
-							die4.setBackground(Color.cyan);
+							die1.setBackground(Color.red);
+							die2.setBackground(Color.red);
+							die3.setBackground(Color.red);
+							die4.setBackground(Color.red);
 							break;
 						default:
 							JOptionPane.showMessageDialog(gameFrame, "Special Attack Selection Error");
@@ -2200,16 +2201,6 @@ public class SliceAndDiceUI {
 						die2.removeAll();
 						die3.removeAll();
 						die4.removeAll();
-						
-//						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
-//						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
-//						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
-//						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-						
-						middleRightPanel.removeAll();
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
-						gameFrame.pack();
-						gameFrame.validate();
 						
 						try{
 							winner = game.PlayNextTurn(move);
@@ -2229,7 +2220,8 @@ public class SliceAndDiceUI {
 							// TODO create 8 die panel pass it last roll of dice
 							SwingUtilities.invokeLater(new Runnable(){
 								public void run(){
-									dblAtk.showDblAtk(game.getLastRoll());
+									int[] rollResult = game.getLastRoll();
+									dblAtk.showDblAtk(rollResult);
 								}
 							});
 						}else{
@@ -2251,7 +2243,6 @@ public class SliceAndDiceUI {
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))));
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
@@ -2264,12 +2255,15 @@ public class SliceAndDiceUI {
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))));
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 						
 					}
+
+					middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
+					gameFrame.pack();
+					gameFrame.validate();
 				}
 			});
 			
@@ -2627,14 +2621,16 @@ class GetStats{
 		return allUserStat;
 	}
 }
+
 /**
  * Double attack dice roll frame
  * @author Jacob Loden
  */
+@SuppressWarnings("serial")
 class DoubleAtk extends JFrame{
 	private final int WIDTH = 700;
 	private final int HEIGHT = 500;
-	boolean rolled;
+	private boolean rolled;
 	
 	JPanel mainPanel = new JPanel(new BorderLayout(5,5));
 	JPanel topPanel = new JPanel(new BorderLayout(5,5));
@@ -2655,28 +2651,32 @@ class DoubleAtk extends JFrame{
 	
 	Font large = new Font("Trubuchet MS", Font.BOLD, 24);
 	Font button = new Font("Trebuchet MS", Font.BOLD, 16);
+
+	int[] roll;
 	
-	Move move;
 	/**
 	 * Constructor
 	 */
 	public DoubleAtk(){
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setTitle("Slice And Dice");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
-		rolled = false;
-		addGifs();
+		//rolled = false;
 		setFonts();
 		addComponents();
 	}
 	
 	/**
 	 * Add the components to parent container
+	 * Add action listeners to buttons
 	 */
 	private void addComponents(){
+		stopButton.addActionListener(new StopButton());
+		closeButton.addActionListener(new CloseButton());
+		
 		topPanel.add(dblLabel, BorderLayout.WEST);
 		topPanel.add(stopButton, BorderLayout.EAST);
 		
@@ -2744,18 +2744,6 @@ class DoubleAtk extends JFrame{
 	}
 	
 	/**
-	 * Set move
-	 * @param
-	 */
-	private void setMove(Move move){
-		this.move = move;
-	}
-	
-	public Move getMove(){
-		return move;
-	}
-	
-	/**
 	 * Add dice roll animations to panel
 	 */
 	private void addGifs(){
@@ -2773,9 +2761,7 @@ class DoubleAtk extends JFrame{
 	 * Add the game turn roll to the panel
 	 * @param diceRoll
 	 */
-	private void rollResult(int[] newRoll){
-		int[] roll = newRoll;
-		
+	private void rollResult(){		
 		die1.removeAll();
 		die2.removeAll();
 		die3.removeAll();
@@ -2801,26 +2787,41 @@ class DoubleAtk extends JFrame{
 	 * @param newRoll
 	 */
 	public void showDblAtk(int[] newRoll){
-		final int[] roll = newRoll;
+		rolled = false;
+		roll = newRoll;
+		addGifs();
 		packAndShow();
-		stopButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				rollResult(roll);
-				rolled = true;
-				packAndValidate();
+	}
+	
+	/**
+	 * Action listener classes
+	 * @author Jacob Loden
+	 *
+	 */
+	public class StopButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			rollResult();
+			rolled = true;
+			packAndValidate();
+		}
+	}
+	
+	public class CloseButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			if(rolled){
+				die1.removeAll();
+				die2.removeAll();
+				die3.removeAll();
+				die4.removeAll();
+				die5.removeAll();
+				die6.removeAll();
+				die7.removeAll();
+				die8.removeAll();
+				disposeFrame();
+			}else{
+				JOptionPane.showMessageDialog(getParentClass(), "You must press 'Stop Roll' first");
 			}
-		});
-		
-		closeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				if(!rolled){
-					JOptionPane.showMessageDialog(getParentClass(), "You must press 'Stop Roll' first");
-				}else{
-					disposeFrame();
-				}
-			}
-		});
-		
+		}
 	}
 	
 }
@@ -2896,9 +2897,16 @@ class ChooseAttack extends JFrame{
 	
 	/**
 	 * Add the components to parent container
+	 * Add action listeners to buttons
 	 */
 	private void addComponents(){
 		topChoosePanel.add(chooseAtk, BorderLayout.CENTER);
+		
+		freezeButton.addActionListener(new FreezeButton());
+		dblAtk.addActionListener(new DoubleAtkButton());
+		poisonButton.addActionListener(new PoisonButton());
+		auraButton.addActionListener(new AuraButton());
+		chargeButton.addActionListener(new ChargeButton());
 		
 		bottomChoosePanel.add(freezeLabel);
 		bottomChoosePanel.add(freezeButton);
@@ -2984,63 +2992,63 @@ class ChooseAttack extends JFrame{
 	 */
 	public void showChooseMove(int mana){
 		manaAmt = mana;
-		
-		freezeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				if(manaAmt > 5){
-					setMove(Move.FREEZE);
-					disposeFrame();
-				}else{
-					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
-					//return;
-				}
-			}
-		});
-		
-		dblAtk.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				if(manaAmt > 9){
-					setMove(Move.DOUBLEATK);
-					disposeFrame();
-				}else{
-					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
-					//return;
-				}
-			}
-		});
-		
-		poisonButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				if(manaAmt > 7){
-					setMove(Move.POISON);
-					disposeFrame();
-				}else{
-					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
-					//return;
-				}
-			}
-		});
-		
-		auraButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				if(manaAmt > 9){
-					setMove(Move.AURA);
-					disposeFrame();
-				}else{
-					JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
-					//return;
-				}
-			}
-		});
-		
-		chargeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				setMove(Move.CHARGE);
+		packAndShow();
+	}
+	
+	/**
+	 * Action listener classes
+	 * @author Jacob Loden
+	 *
+	 */
+	public class FreezeButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			if(manaAmt < 6){
+				JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+			}else{
+				setMove(Move.FREEZE);
 				disposeFrame();
 			}
-		});
-		
-		packAndShow();
+		}
+	}
+	
+	public class DoubleAtkButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			if(manaAmt < 10){
+				JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+			}else{
+				setMove(Move.DOUBLEATK);
+				disposeFrame();
+			}
+		}
+	}
+	
+	public class PoisonButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			if(manaAmt < 8){
+				JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+			}else{
+				setMove(Move.POISON);
+				disposeFrame();
+			}
+		}
+	}
+	
+	public class AuraButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			if(manaAmt < 10){
+				JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
+			}else{
+				setMove(Move.AURA);
+				disposeFrame();
+			}
+		}
+	}
+	
+	public class ChargeButton implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			setMove(Move.CHARGE);
+			disposeFrame();
+		}
 	}
 }
 
