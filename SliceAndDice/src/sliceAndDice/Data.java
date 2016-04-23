@@ -12,19 +12,19 @@ import java.util.Scanner;
  */
 public class Data {
 	double score;
-	int rank;
+	int rank; // may want to eliminte this and just sort by score
 	int totalGameCount;
 	int totalWinCount;
 	int totalNumAttacks;
 	//int totalNumBaseAttacks;
-	//int totalNumSPAttacks;
-	int totalNumMeals;
+	//int totalNumSPAttacks; // do we want to keep track of every type of attack?
+	int totalNumMeals; // might want to keep this
 	int totalHealthLost;
 	int totalManaUsed;
 	int totalFoodUsed;
-	// float totalGameTime;
-	// float totalTurnTime;
-	//int totalNumTurns;
+	// float totalGameTime; // we might be able to include this - System.nanotime()
+	// float totalTurnTime; // we might be able to include this - System.nanotime()
+	//int totalNumTurns; // do we want to have this or not or just display but not store?
 
 	/**
 	 * Constructor for Data, setting all of the data but score to 0 and score to 0.

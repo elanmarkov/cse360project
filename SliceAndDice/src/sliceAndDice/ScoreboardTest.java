@@ -169,15 +169,21 @@ public class ScoreboardTest extends Scoreboard{
 
 	/*
 	 * Status: Passed
-	@Test
+		@Test
 	public void testResetPlayerDataInArrayList() throws IOException{
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
+		System.out.println(board.toString());
 		board.resetPlayerDataInArrayList(0);
 		System.out.println(board.toString());
-		System.out.println("\n");
+		board.resetPlayerDataInArrayList(2);
+		System.out.println(board.toString());
+		board.resetPlayerDataInArrayList(1);
+		System.out.println(board.toString());
 	}
 	 */
+
+	 
 
 	/*
 	 * Status: Passed, because the constructor initializes username to empty String
