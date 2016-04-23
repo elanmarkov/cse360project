@@ -2157,8 +2157,7 @@ public class SliceAndDiceUI {
 						JOptionPane.showMessageDialog(gameFrame, "You have not selected a move. Try again");
 						return;
 					}
-					
-					winner = game.updateCondition();
+	
 					middleRightPanel.removeAll();
 					
 					if(winner.equals(Winner.NONE)){
@@ -2269,11 +2268,10 @@ public class SliceAndDiceUI {
 			
 			spAttack.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					
-					// TODO add special power attack stuff
+					winner = game.updateCondition();
 					SwingUtilities.invokeLater(new Runnable(){
 						public void run(){
-							if(!game.isPlayerOneTurn()){
+							if(game.isPlayerOneTurn()){
 								chooseAtk.showChooseMove(game.getPlayerOneStatus().getMana());
 							}else{
 								chooseAtk.showChooseMove(game.getPlayerTwoStatus().getMana());
