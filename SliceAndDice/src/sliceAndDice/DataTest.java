@@ -219,6 +219,21 @@ public class DataTest {
 		newPlayer.getPlayerData().incrNumAttacks();
 		assertEquals(1, newPlayer.getPlayerData().getAttack());
 	}
+	/*
+	@Test
+	public void testIncrNumBaseAttacks() {
+		Player newPlayer = new Player();
+		newPlayer.getPlayerData().incrNumBaseAttacks();
+		assertEquals(1, newPlayer.getPlayerData().getBaseAttack());
+	}
+	
+	@Test
+	public void testIncrNumSPAttacks() {
+		Player newPlayer = new Player();
+		newPlayer.getPlayerData().incrNumSPAttacks();
+		assertEquals(1, newPlayer.getPlayerData().getSPAttack());
+	}
+	 */
 
 	@Test
 	public void testIncrNumMeals() {
