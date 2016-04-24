@@ -693,7 +693,7 @@ class Turn {
 		for(int rollCount = 0; rollCount < numRoll; rollCount++) {
 			sumBoost += lastRoll[rollCount];
 		}
-		sumBoost = (int) ((double)(sumBoost + 0.5) / 2);
+		sumBoost = (int) (sumBoost * 0.5 + 0.5);
 		turnPlayer.increaseMana(sumBoost);
 		if(turnPlayer.getMana() > Status.getMaxMana()) {
 			turnPlayer.setMana(Status.getMaxMana());
