@@ -1086,6 +1086,571 @@ public class SliceAndDiceUI {
 					gameFrame.validate();
 				}
 			});
+			
+			/*
+			 * Show game play panel when player select panel closes
+			 */
+			whichPlayer.addWindowListener(new WindowAdapter(){
+				public void windowClosed(WindowEvent we){
+					if(!gameFrame.isEnabled()){
+						gameFrame.setEnabled(true);
+					}
+					gameFrame.setPreferredSize(GAME_SIZE);
+					gameFrame.setResizable(false);
+					newGamePanel.removeAll();
+					gameFrame.remove(newGamePanel);
+					
+					if(player > 0){
+						activePlayer.setText(usernameOne);
+						game = new Game(usernameOne, usernameTwo);	// pass user names to game
+					}else{
+						String tmp = usernameOne;	// Swap user names so the winner of the roll will now be "user name 
+						usernameOne = usernameTwo;
+						usernameTwo = tmp;
+						activePlayer.setText(usernameOne);
+						game = new Game(usernameOne, usernameTwo);	// pass user names to game
+					}
+						
+						playerOneName.setText(usernameOne);
+						playerTwoName.setText(usernameTwo);
+					
+						playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
+						playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
+						playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
+						plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
+						plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
+						plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
+						
+						playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
+						playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
+						playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
+						plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+						plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
+						plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
+						
+						gameFrame.setContentPane(gamePlayPanel);
+						gameFrame.pack();
+						playerPane.setDividerLocation(.25);
+						gameFrame.validate();
+				}
+			});
+			
+			/*
+			 * Show player select before game play panel
+			 */
+			newTwoPlayerUserStart.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					if(userName1Text.getText().isEmpty() || userName2Text.getText().isEmpty()){
+						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name for both players");
+						return;
+					}
+					if(userName1Text.getText().length() > 15 || userName2Text.getText().length() > 15){
+						JOptionPane.showMessageDialog(gameFrame, "Usernames must be less than 15 characters");
+						userName1Text.setText("");
+						userName2Text.setText("");
+						return;
+					}
+					if(userName1Text.getText().equals(userName2Text.getText())){
+						JOptionPane.showMessageDialog(gameFrame, "Usernames cannot match");
+						userName1Text.setText("");
+						userName2Text.setText("");
+						return;
+					}
+					usernameOne = userName1Text.getText().toLowerCase();
+					usernameTwo = userName2Text.getText().toLowerCase();
+					singlePlayer = false;
+					
+					// TODO add call to check for existing user profiles
+					
+					if(stats.findPlayer(usernameOne) == 0 && stats.findPlayer(usernameTwo) == 0){
+						newGamePanel.removeAll();
+						gameFrame.remove(newGamePanel);
+						foundPlayerOne.setText(usernameOne);
+						foundPlayerTwo.setText(usernameTwo);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
+						newGamePanel.add(splitPane);
+						gameFrame.setContentPane(newGamePanel);
+						gameFrame.pack();
+						splitPane.setDividerLocation(.30);
+						gameFrame.validate();
+					}else if(stats.findPlayer(usernameOne) == 0 && stats.findPlayer(usernameTwo) < 0){
+						newGamePanel.removeAll();
+						gameFrame.remove(newGamePanel);
+						foundPlayerOne.setText(usernameOne);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
+						newGamePanel.add(splitPane);
+						gameFrame.setContentPane(newGamePanel);
+						gameFrame.pack();
+						splitPane.setDividerLocation(.30);
+						gameFrame.validate();
+					}else if(stats.findPlayer(usernameOne) < 0 && stats.findPlayer(usernameTwo) == 0){
+						newGamePanel.removeAll();
+						gameFrame.remove(newGamePanel);
+						foundPlayerTwo.setText(usernameTwo);
+						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
+						newGamePanel.add(splitPane);
+						gameFrame.setContentPane(newGamePanel);
+						gameFrame.pack();
+						splitPane.setDividerLocation(.30);
+						gameFrame.validate();
+					}else{
+						gameFrame.setEnabled(false);
+						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
+						stats.scoreboard.addNewPlayerFromUsername(usernameTwo);
+						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
+						/*
+						 * Launch player select frame in AWT event dispatch thread
+						 */
+						SwingUtilities.invokeLater(new Runnable(){
+							public void run(){
+								whichPlayer.showPlayerSelect();
+							}
+						});	
+					}
+				}
+			});
+			
+			newTwoPlayerUserExit.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					if(!userName1Text.getText().isEmpty()||!userName2Text.getText().isEmpty()){
+						userName1Text.setText("");
+						userName2Text.setText("");
+					}
+					newGamePanel.removeAll();
+					gameFrame.remove(newGamePanel);
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGameOptionsButtons, imagePanel);
+					newGamePanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(newGamePanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			playerStatusButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					statsPanel.removeAll();
+					gameFrame.remove(modePanel);
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, imagePanel);
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			/*
+			 * Statistics 
+			 */
+			statFind.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					String user;
+					JTable statTable;
+					
+					if(singleUserStatText.getText().isEmpty()){
+						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name");
+						return;
+					}
+					user = singleUserStatText.getText().toLowerCase();
+					if(stats.findPlayer(user) < 0){
+						JOptionPane.showMessageDialog(gameFrame, "Username does not exist");
+						singleUserStatText.setText("");
+						return;
+					}
+					
+					splitPane.removeAll();
+					statsPanel.removeAll();
+					
+					statTable = new JTable(stats.getTableOneName(user));
+					scrollStats = new JScrollPane(statTable);
+					
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			singleStatExit.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					if(!singleUserStatText.getText().isEmpty())
+						singleUserStatText.setText("");
+					
+					splitPane.removeAll();
+					statsPanel.remove(splitPane);
+					
+					gameFrame.remove(statsPanel);
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, imagePanel);
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			allUserStats.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					JTable statTable;
+					
+					splitPane.removeAll();
+					statsPanel.remove(splitPane);
+
+					statTable = new JTable(stats.getTableAllNames());
+					scrollStats = new JScrollPane(statTable);
+					
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			statsExit.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					modePanel.removeAll();
+					gameFrame.remove(statsPanel);
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
+					modePanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(modePanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			singleUserStats.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					if(!singleUserStatText.getText().isEmpty())
+						singleUserStatText.setText("");
+					
+					statsPanel.removeAll();
+					gameFrame.remove(statsPanel);
+					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelSingleUserButtons, imagePanel);
+					statsPanel.add(splitPane, BorderLayout.CENTER);
+					gameFrame.setContentPane(statsPanel);
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			/*
+			 * About game
+			 */
+			abtGameButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					File aboutGame = new File("src/sliceAndDice/game_resources/about.txt");
+					if(Desktop.isDesktopSupported()){
+						try {
+							Desktop.getDesktop().edit(aboutGame);
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(gameFrame, "File Read Error: " + e.getMessage());
+							e.printStackTrace();
+						}
+					}else{
+						JOptionPane.showMessageDialog(gameFrame, "Desktop not supported");
+					}
+				}
+			});
+			
+			/*
+			 * game play button listeners
+			 */
+			attackButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					winner = game.updateCondition();
+					
+					if(winner.equals(Winner.NONE)){
+						move = Move.ATTACK;
+						try{
+							winner = game.PlayNextTurn(move);
+						}catch(IllegalArgumentException e){
+							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
+							return;
+						}catch(IllegalStateException e){
+							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
+							return;
+						}
+	
+						die1.removeAll();
+						die2.removeAll();
+						die3.removeAll();
+						die4.removeAll();
+						
+						die1.setBackground(Color.red);
+						die2.setBackground(Color.red);
+						die3.setBackground(Color.red);
+						die4.setBackground(Color.red);
+						
+						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
+						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
+						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
+						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
+						
+						middleRightPanel.removeAll();
+						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
+						gameFrame.pack();
+						gameFrame.validate();
+						
+						if(gameFrame.isEnabled()){
+							gameFrame.setEnabled(false);
+						}
+	
+						SwingUtilities.invokeLater(new Runnable(){
+							public void run(){
+								stop.showStopRoll();
+							}
+						});
+					}
+				}
+			});
+			
+			healButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					winner = game.updateCondition();
+					
+					move = Move.FOOD;
+					if(game.nextMoveLegality(move).equals(IllegalMove.NOFOOD)){
+						JOptionPane.showMessageDialog(gameFrame, "You are out of food!");
+						return;
+					}
+					
+					try{
+						winner = game.PlayNextTurn(move);
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+						if(!gameFrame.isEnabled()){
+							gameFrame.setEnabled(true);
+						}
+						return;
+					}catch(IllegalStateException e){
+						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+						if(!gameFrame.isEnabled()){
+							gameFrame.setEnabled(true);
+						}
+						return;
+					}
+					
+					plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
+					plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
+					plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
+					playerTwoATKValue.setText(Integer.toString(game.getPlayerTwoStatus().getAtk()));
+					playerTwoDEFValue.setText(Integer.toString(game.getPlayerTwoStatus().getDef()));
+					
+					plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
+					plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
+					plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
+					playerOneATKValue.setText(Integer.toString(game.getPlayerOneStatus().getAtk()));
+					playerOneDEFValue.setText(Integer.toString(game.getPlayerOneStatus().getDef()));
+					
+					playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
+					playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
+					playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
+					
+					playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
+					playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
+					playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
+					
+						switch(game.getPlayerOneStatus().getCondition()){
+						case FROZEN:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/frozen.png"))));
+							playerOneCONDValue.setText(COND_FROZEN);
+							break;
+						case AURA1:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerOneCONDValue.setText(COND_AURA);
+							break;
+						case AURA2:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerOneCONDValue.setText(COND_AURA);
+							break;
+						case POISON1:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_1.png"))));
+							playerOneCONDValue.setText(COND_POISON);
+							break;
+						case POISON2:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_2.png"))));
+							playerOneCONDValue.setText(COND_POISON);
+							break;
+						case POISON3:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_3.png"))));
+							playerOneCONDValue.setText(COND_POISON);
+							break;
+						case POISON4:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_4.png"))));
+							playerOneCONDValue.setText(COND_POISON);
+							break;
+						case POISON5:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
+							playerOneCONDValue.setText(COND_POISON);
+							break;
+						case NONE:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							playerOneCONDValue.setText(COND_NONE);
+							break;
+						default:
+							playerOneCondition.removeAll();
+							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							break;
+						}
+						
+						switch(game.getPlayerTwoStatus().getCondition()){
+						case FROZEN:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/frozen.png"))));
+							playerTwoCONDValue.setText(COND_FROZEN);
+							break;
+						case AURA1:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerTwoCONDValue.setText(COND_AURA);
+							break;
+						case AURA2:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
+							playerTwoCONDValue.setText(COND_AURA);
+							break;
+						case POISON1:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_1.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
+							break;
+						case POISON2:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_2.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
+							break;
+						case POISON3:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_3.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
+							break;
+						case POISON4:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_4.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
+							break;
+						case POISON5:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
+							playerTwoCONDValue.setText(COND_POISON);
+							break;
+						case NONE:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							playerTwoCONDValue.setText(COND_NONE);
+							break;
+						default:
+							playerTwoCondition.removeAll();
+							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
+							break;
+						}
+					
+					middleRightPanel.removeAll();
+					
+					if(winner.equals(Winner.NONE)){
+						middleRightPanel.removeAll();
+						if(!game.isPlayerOneTurn()){
+							
+							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP1.gif"))), BorderLayout.CENTER);							
+							activePlayer.setText(usernameTwo);
+							
+						}else if(game.isPlayerOneTurn()){
+							
+							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP2.gif"))), BorderLayout.CENTER);								
+							activePlayer.setText(usernameOne);
+							
+						}else{
+							JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong in Winner PlayNextTurn() method");
+						}
+						gameFrame.setContentPane(gamePlayPanel);
+					}else if(winner.equals(Winner.PLAYER_ONE)){
+						JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong: There should be no winner here");
+						return;
+						
+					}else if(winner.equals(Winner.PLAYER_TWO)){
+						JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong: There should be no winner here");
+						return;
+					}
+					
+					if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 2) && plTwoFoodStatus.getValue() > (MAX_FOOD / 5)){
+						plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+					}else if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 5)){
+						plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+					}else{
+						plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+					}
+					
+					if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 2) && plTwoHealthStatus.getValue() > (MAX_HEALTH / 5)){
+						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+					}else if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 4)){
+						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+					}else{
+						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+					}
+					
+					if(plOneFoodStatus.getValue() <= (MAX_FOOD / 2) && plOneFoodStatus.getValue() > (MAX_FOOD / 5)){
+						plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plOneFoodStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+					}else if(plOneFoodStatus.getValue() <= (MAX_FOOD / 5)){
+						plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plOneFoodStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+					}else{
+						plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+					}
+					
+					if(plOneHealthStatus.getValue() <= (MAX_HEALTH / 2) && plOneHealthStatus.getValue() > (MAX_HEALTH / 5)){
+						plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plOneHealthStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+					}else if(plOneHealthStatus.getValue() <= (MAX_HEALTH / 4)){
+						plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plOneHealthStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+					}else{
+						plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+						plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+					}
+					gameFrame.pack();
+					splitPane.setDividerLocation(.30);
+					gameFrame.validate();
+				}
+			});
+			
+			
+			/*
+			 * Double attack dice roll window close
+			 */
 			dblAtk.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
 					if(!gameFrame.isEnabled()){
@@ -1472,15 +2037,19 @@ public class SliceAndDiceUI {
 							break;
 						case FREEZE:
 							if(game.getPlayerOneStatus().getCondition().equals(Condition.FROZEN)){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP2.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameTwo);
 							}else if(game.getPlayerTwoStatus().getCondition().equals(Condition.FROZEN)){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP1.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameOne);
 							}else{
 								
 								if(game.isPlayerOneTurn()){
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP1.gif"))), BorderLayout.CENTER);
 									activePlayer.setText(usernameOne);
 									// TODO add frozen player two animation
 								}else{
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP2.gif"))), BorderLayout.CENTER);
 									activePlayer.setText(usernameTwo);
 									// TODO add frozen player one animation
 								}
@@ -1611,552 +2180,9 @@ public class SliceAndDiceUI {
 			});
 			
 			/*
-			 * Show game play panel when player select panel closes
+			 * Choose special attack window closing
+			 * Special attack is chosen at this point
 			 */
-			whichPlayer.addWindowListener(new WindowAdapter(){
-				public void windowClosed(WindowEvent we){
-					if(!gameFrame.isEnabled()){
-						gameFrame.setEnabled(true);
-					}
-					gameFrame.setPreferredSize(GAME_SIZE);
-					gameFrame.setResizable(false);
-					newGamePanel.removeAll();
-					gameFrame.remove(newGamePanel);
-					
-					if(player > 0){
-						activePlayer.setText(usernameOne);
-						game = new Game(usernameOne, usernameTwo);	// pass user names to game
-					}else{
-						String tmp = usernameOne;	// Swap user names so the winner of the roll will now be "user name 
-						usernameOne = usernameTwo;
-						usernameTwo = tmp;
-						activePlayer.setText(usernameOne);
-						game = new Game(usernameOne, usernameTwo);	// pass user names to game
-					}
-						
-						playerOneName.setText(usernameOne);
-						playerTwoName.setText(usernameTwo);
-					
-						playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
-						playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
-						playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
-						plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
-						plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
-						plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
-						
-						playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
-						playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
-						playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
-						plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
-						plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
-						plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
-						
-						gameFrame.setContentPane(gamePlayPanel);
-						gameFrame.pack();
-						playerPane.setDividerLocation(.25);
-						gameFrame.validate();
-				}
-			});
-			
-			/*
-			 * Show player select before game play panel
-			 */
-			newTwoPlayerUserStart.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					
-					if(userName1Text.getText().isEmpty() || userName2Text.getText().isEmpty()){
-						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name for both players");
-						return;
-					}
-					if(userName1Text.getText().length() > 15 || userName2Text.getText().length() > 15){
-						JOptionPane.showMessageDialog(gameFrame, "Usernames must be less than 15 characters");
-						userName1Text.setText("");
-						userName2Text.setText("");
-						return;
-					}
-					if(userName1Text.getText().equals(userName2Text.getText())){
-						JOptionPane.showMessageDialog(gameFrame, "Usernames cannot match");
-						userName1Text.setText("");
-						userName2Text.setText("");
-						return;
-					}
-					usernameOne = userName1Text.getText().toLowerCase();
-					usernameTwo = userName2Text.getText().toLowerCase();
-					singlePlayer = false;
-					
-					// TODO add call to check for existing user profiles
-					
-					if(stats.findPlayer(usernameOne) == 0 && stats.findPlayer(usernameTwo) == 0){
-						newGamePanel.removeAll();
-						gameFrame.remove(newGamePanel);
-						foundPlayerOne.setText(usernameOne);
-						foundPlayerTwo.setText(usernameTwo);
-						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
-						newGamePanel.add(splitPane);
-						gameFrame.setContentPane(newGamePanel);
-						gameFrame.pack();
-						splitPane.setDividerLocation(.30);
-						gameFrame.validate();
-					}else if(stats.findPlayer(usernameOne) == 0 && stats.findPlayer(usernameTwo) < 0){
-						newGamePanel.removeAll();
-						gameFrame.remove(newGamePanel);
-						foundPlayerOne.setText(usernameOne);
-						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
-						newGamePanel.add(splitPane);
-						gameFrame.setContentPane(newGamePanel);
-						gameFrame.pack();
-						splitPane.setDividerLocation(.30);
-						gameFrame.validate();
-					}else if(stats.findPlayer(usernameOne) < 0 && stats.findPlayer(usernameTwo) == 0){
-						newGamePanel.removeAll();
-						gameFrame.remove(newGamePanel);
-						foundPlayerTwo.setText(usernameTwo);
-						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGamePlayersExist, imagePanel);
-						newGamePanel.add(splitPane);
-						gameFrame.setContentPane(newGamePanel);
-						gameFrame.pack();
-						splitPane.setDividerLocation(.30);
-						gameFrame.validate();
-					}else{
-						gameFrame.setEnabled(false);
-						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
-						stats.scoreboard.addNewPlayerFromUsername(usernameTwo);
-						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
-						/*
-						 * Launch player select frame in AWT event dispatch thread
-						 */
-						SwingUtilities.invokeLater(new Runnable(){
-							public void run(){
-								whichPlayer.showPlayerSelect();
-							}
-						});	
-					}
-				}
-			});
-			
-			newTwoPlayerUserExit.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					if(!userName1Text.getText().isEmpty()||!userName2Text.getText().isEmpty()){
-						userName1Text.setText("");
-						userName2Text.setText("");
-					}
-					newGamePanel.removeAll();
-					gameFrame.remove(newGamePanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newGameOptionsButtons, imagePanel);
-					newGamePanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(newGamePanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			playerStatusButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					statsPanel.removeAll();
-					gameFrame.remove(modePanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, imagePanel);
-					statsPanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(statsPanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			/*
-			 * Statistics 
-			 */
-			statFind.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					String user;
-					JTable statTable;
-					
-					if(singleUserStatText.getText().isEmpty()){
-						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name");
-						return;
-					}
-					user = singleUserStatText.getText().toLowerCase();
-					if(stats.findPlayer(user) < 0){
-						JOptionPane.showMessageDialog(gameFrame, "Username does not exist");
-						singleUserStatText.setText("");
-						return;
-					}
-					
-					splitPane.removeAll();
-					statsPanel.removeAll();
-					
-					statTable = new JTable(stats.getTableOneName(user));
-					scrollStats = new JScrollPane(statTable);
-					
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
-					statsPanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(statsPanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			singleStatExit.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					
-					if(!singleUserStatText.getText().isEmpty())
-						singleUserStatText.setText("");
-					
-					splitPane.removeAll();
-					statsPanel.remove(splitPane);
-					
-					gameFrame.remove(statsPanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, imagePanel);
-					statsPanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(statsPanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			allUserStats.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					JTable statTable;
-					
-					splitPane.removeAll();
-					statsPanel.remove(splitPane);
-
-					statTable = new JTable(stats.getTableAllNames());
-					scrollStats = new JScrollPane(statTable);
-					
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
-					statsPanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(statsPanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			statsExit.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					
-					modePanel.removeAll();
-					gameFrame.remove(statsPanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
-					modePanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(modePanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			singleUserStats.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					
-					if(!singleUserStatText.getText().isEmpty())
-						singleUserStatText.setText("");
-					
-					statsPanel.removeAll();
-					gameFrame.remove(statsPanel);
-					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelSingleUserButtons, imagePanel);
-					statsPanel.add(splitPane, BorderLayout.CENTER);
-					gameFrame.setContentPane(statsPanel);
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
-			/*
-			 * About game
-			 */
-			abtGameButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					File aboutGame = new File("src/sliceAndDice/game_resources/about.txt");
-					if(Desktop.isDesktopSupported()){
-						try {
-							Desktop.getDesktop().edit(aboutGame);
-						} catch (IOException e) {
-							JOptionPane.showMessageDialog(gameFrame, "File Read Error: " + e.getMessage());
-							e.printStackTrace();
-						}
-					}else{
-						JOptionPane.showMessageDialog(gameFrame, "Desktop not supported");
-					}
-				}
-			});
-			
-			/*
-			 * game play button listeners
-			 */
-			attackButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					if(gameFrame.isEnabled()){
-						gameFrame.setEnabled(false);
-					}
-					winner = game.updateCondition();
-					
-					if(winner.equals(Winner.NONE)){
-						move = Move.ATTACK;
-						try{
-							winner = game.PlayNextTurn(move);
-						}catch(IllegalArgumentException e){
-							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-							if(!gameFrame.isEnabled()){
-								gameFrame.setEnabled(true);
-							}
-							return;
-						}
-	
-						die1.removeAll();
-						die2.removeAll();
-						die3.removeAll();
-						die4.removeAll();
-						
-						die1.setBackground(Color.red);
-						die2.setBackground(Color.red);
-						die3.setBackground(Color.red);
-						die4.setBackground(Color.red);
-						
-						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
-						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
-						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
-						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-						
-						middleRightPanel.removeAll();
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
-						gameFrame.pack();
-						gameFrame.validate();
-	
-						SwingUtilities.invokeLater(new Runnable(){
-							public void run(){
-								stop.showStopRoll();
-							}
-						});
-					}
-				}
-			});
-			
-			healButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					winner = game.updateCondition();
-					
-					move = Move.FOOD;
-					if(game.nextMoveLegality(move).equals(IllegalMove.NOFOOD)){
-						JOptionPane.showMessageDialog(gameFrame, "You are out of food!");
-						return;
-					}
-					
-					try{
-						winner = game.PlayNextTurn(move);
-					}catch(IllegalArgumentException e){
-						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-						if(!gameFrame.isEnabled()){
-							gameFrame.setEnabled(true);
-						}
-						return;
-					}
-					
-					plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
-					plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
-					plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
-					playerTwoATKValue.setText(Integer.toString(game.getPlayerTwoStatus().getAtk()));
-					playerTwoDEFValue.setText(Integer.toString(game.getPlayerTwoStatus().getDef()));
-					
-					plOneHealthStatus.setValue(game.getPlayerOneStatus().getHitPts());
-					plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
-					plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
-					playerOneATKValue.setText(Integer.toString(game.getPlayerOneStatus().getAtk()));
-					playerOneDEFValue.setText(Integer.toString(game.getPlayerOneStatus().getDef()));
-					
-					playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
-					playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
-					playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
-					
-					playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
-					playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
-					playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
-					
-						switch(game.getPlayerOneStatus().getCondition()){
-						case FROZEN:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/frozen.png"))));
-							playerOneCONDValue.setText(COND_FROZEN);
-							break;
-						case AURA1:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
-							playerOneCONDValue.setText(COND_AURA);
-							break;
-						case AURA2:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
-							playerOneCONDValue.setText(COND_AURA);
-							break;
-						case POISON1:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_1.png"))));
-							playerOneCONDValue.setText(COND_POISON);
-							break;
-						case POISON2:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_2.png"))));
-							playerOneCONDValue.setText(COND_POISON);
-							break;
-						case POISON3:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_3.png"))));
-							playerOneCONDValue.setText(COND_POISON);
-							break;
-						case POISON4:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_4.png"))));
-							playerOneCONDValue.setText(COND_POISON);
-							break;
-						case POISON5:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
-							playerOneCONDValue.setText(COND_POISON);
-							break;
-						case NONE:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
-							playerOneCONDValue.setText(COND_NONE);
-							break;
-						default:
-							playerOneCondition.removeAll();
-							playerOneCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
-							break;
-						}
-						
-						switch(game.getPlayerTwoStatus().getCondition()){
-						case FROZEN:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/frozen.png"))));
-							playerTwoCONDValue.setText(COND_FROZEN);
-							break;
-						case AURA1:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
-							playerTwoCONDValue.setText(COND_AURA);
-							break;
-						case AURA2:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aura.gif"))));
-							playerTwoCONDValue.setText(COND_AURA);
-							break;
-						case POISON1:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_1.png"))));
-							playerTwoCONDValue.setText(COND_POISON);
-							break;
-						case POISON2:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_2.png"))));
-							playerTwoCONDValue.setText(COND_POISON);
-							break;
-						case POISON3:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_3.png"))));
-							playerTwoCONDValue.setText(COND_POISON);
-							break;
-						case POISON4:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_4.png"))));
-							playerTwoCONDValue.setText(COND_POISON);
-							break;
-						case POISON5:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poison_5.png"))));
-							playerTwoCONDValue.setText(COND_POISON);
-							break;
-						case NONE:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
-							playerTwoCONDValue.setText(COND_NONE);
-							break;
-						default:
-							playerTwoCondition.removeAll();
-							playerTwoCondition.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/ok.png"))));
-							break;
-						}
-					
-					middleRightPanel.removeAll();
-					
-					if(winner.equals(Winner.NONE)){
-						middleRightPanel.removeAll();
-						if(!game.isPlayerOneTurn()){
-							
-							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP1.gif"))), BorderLayout.CENTER);							
-							activePlayer.setText(usernameTwo);
-							
-						}else if(game.isPlayerOneTurn()){
-							
-							middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP2.gif"))), BorderLayout.CENTER);								
-							activePlayer.setText(usernameOne);
-							
-						}else{
-							JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong in Winner PlayNextTurn() method");
-						}
-						gameFrame.setContentPane(gamePlayPanel);
-					}else if(winner.equals(Winner.PLAYER_ONE)){
-						JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong: There should be no winner here");
-						return;
-						
-					}else if(winner.equals(Winner.PLAYER_TWO)){
-						JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong: There should be no winner here");
-						return;
-					}
-					
-					if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 2) && plTwoFoodStatus.getValue() > (MAX_FOOD / 5)){
-						plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
-					}else if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 5)){
-						plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
-					}else{
-						plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					}
-					
-					if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 2) && plTwoHealthStatus.getValue() > (MAX_HEALTH / 5)){
-						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
-					}else if(plTwoHealthStatus.getValue() <= (MAX_HEALTH / 4)){
-						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
-					}else{
-						plTwoHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plTwoHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					}
-					
-					if(plOneFoodStatus.getValue() <= (MAX_FOOD / 2) && plOneFoodStatus.getValue() > (MAX_FOOD / 5)){
-						plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plOneFoodStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
-					}else if(plOneFoodStatus.getValue() <= (MAX_FOOD / 5)){
-						plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plOneFoodStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
-					}else{
-						plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					}
-					
-					if(plOneHealthStatus.getValue() <= (MAX_HEALTH / 2) && plOneHealthStatus.getValue() > (MAX_HEALTH / 5)){
-						plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plOneHealthStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
-					}else if(plOneHealthStatus.getValue() <= (MAX_HEALTH / 4)){
-						plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plOneHealthStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
-					}else{
-						plOneHealthStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
-						plOneHealthStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
-					}
-					gameFrame.pack();
-					splitPane.setDividerLocation(.30);
-					gameFrame.validate();
-				}
-			});
-			
 			chooseAtk.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
 					if(!gameFrame.isEnabled()){
@@ -2166,6 +2192,24 @@ public class SliceAndDiceUI {
 					
 					if(move == null){
 						JOptionPane.showMessageDialog(gameFrame, "You have not selected a move. Try again");
+						return;
+					}
+					
+					winner = game.updateCondition();
+					
+					try{
+						winner = game.PlayNextTurn(move);
+					}catch(IllegalArgumentException e){
+						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+						if(!gameFrame.isEnabled()){
+							gameFrame.setEnabled(true);
+						}
+						return;
+					}catch(IllegalStateException e){
+						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+						if(!gameFrame.isEnabled()){
+							gameFrame.setEnabled(true);
+						}
 						return;
 					}
 	
@@ -2211,16 +2255,6 @@ public class SliceAndDiceUI {
 						die2.removeAll();
 						die3.removeAll();
 						die4.removeAll();
-						
-						try{
-							winner = game.PlayNextTurn(move);
-						}catch(IllegalArgumentException e){
-							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-							if(!gameFrame.isEnabled()){
-								gameFrame.setEnabled(true);
-							}
-							return;
-						}
 						
 						if(move.equals(Move.DOUBLEATK)){
 							gameFrame.setEnabled(false);
@@ -2274,10 +2308,12 @@ public class SliceAndDiceUI {
 				}
 			});
 			
+			/*
+			 * Special attack
+			 */
 			spAttack.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					gameFrame.setEnabled(false);
-					winner = game.updateCondition();
 					SwingUtilities.invokeLater(new Runnable(){
 						public void run(){
 							if(game.isPlayerOneTurn()){
@@ -2317,6 +2353,10 @@ public class SliceAndDiceUI {
 				gameFrame.dispose();
 				}
 			});
+			
+			/*
+			 * Save stats
+			 */
 			gameSave.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					
@@ -2330,6 +2370,9 @@ public class SliceAndDiceUI {
 				}
 			});
 			
+			/*
+			 * Game exit
+			 */
 			gameExit.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 				Object[] inputs = {"Save", "Exit"};
