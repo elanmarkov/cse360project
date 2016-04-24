@@ -107,9 +107,9 @@ public class Game {
 	Winner  PlayNextTurn(Move nextMove) {
 		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		
-		/*if(!lastConditionEvaluated) {
+		if(!lastConditionEvaluated) {
 			throw new IllegalStateException("Error: Condition has not been evaluated.");
-		}*/
+		}
 		
 		if(playerOneTurn){	// Different turn based on whose move it is
 			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
@@ -148,9 +148,9 @@ public class Game {
 	 * @return The winner of the game (player 1, player 2, or none yet).
 	 */
 	Winner  PlayNextTurn() {
-		/*if(!lastConditionEvaluated) {
+		if(!lastConditionEvaluated) {
 		throw new IllegalStateException("Error: Condition has not been evaluated.");
-		}*/
+		}
 		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		Move nextComputerMove = playerOne.getNextMove(playerOneStatus, playerTwoStatus);
 		if(playerOneTurn){	// Different turn based on whose move it is
