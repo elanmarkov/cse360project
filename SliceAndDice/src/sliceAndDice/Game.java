@@ -510,13 +510,13 @@ class Turn {
 	void updateCondition(Status turnPlayer) {
 		switch(turnPlayer.getCondition()) {
 		case NONE:
+			turnPlayer.setAtk(0);
+			turnPlayer.setDef(0);
 			break;
 		case AURA1:
 			turnPlayer.setCondition(Condition.AURA2);
 			break;
 		case AURA2:
-			turnPlayer.setAtk(0);
-			turnPlayer.setDef(0);
 			turnPlayer.setCondition(Condition.NONE);
 			break;
 		case FROZEN:
