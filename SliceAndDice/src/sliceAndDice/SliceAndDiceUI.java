@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -1028,6 +1029,9 @@ public class SliceAndDiceUI {
 					/*
 					 * Launch player select frame in AWT event dispatch thread
 					 */
+						if(gameFrame.isEnabled()){
+							gameFrame.setEnabled(false);
+						}
 						SwingUtilities.invokeLater(new Runnable(){
 							public void run(){
 								whichPlayer.showPlayerSelect();
@@ -1084,6 +1088,10 @@ public class SliceAndDiceUI {
 			});
 			dblAtk.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
+					if(!gameFrame.isEnabled()){
+						gameFrame.setEnabled(true);
+					}
+					
 					die1.setBackground(Color.red);
 					die2.setBackground(Color.red);
 					die3.setBackground(Color.red);
@@ -1306,6 +1314,9 @@ public class SliceAndDiceUI {
 			 */
 			stop.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
+					if(!gameFrame.isEnabled()){
+						gameFrame.setEnabled(true);
+					}
 					int[] rollResult = game.getLastRoll();
 					
 					die1.removeAll();
@@ -1604,6 +1615,9 @@ public class SliceAndDiceUI {
 			 */
 			whichPlayer.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
+					if(!gameFrame.isEnabled()){
+						gameFrame.setEnabled(true);
+					}
 					gameFrame.setPreferredSize(GAME_SIZE);
 					gameFrame.setResizable(false);
 					newGamePanel.removeAll();
@@ -1704,7 +1718,7 @@ public class SliceAndDiceUI {
 						splitPane.setDividerLocation(.30);
 						gameFrame.validate();
 					}else{
-						
+						gameFrame.setEnabled(false);
 						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
 						stats.scoreboard.addNewPlayerFromUsername(usernameTwo);
 						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
@@ -1877,7 +1891,9 @@ public class SliceAndDiceUI {
 			 */
 			attackButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					
+					if(gameFrame.isEnabled()){
+						gameFrame.setEnabled(false);
+					}
 					winner = game.updateCondition();
 					
 					if(winner.equals(Winner.NONE)){
@@ -1886,14 +1902,10 @@ public class SliceAndDiceUI {
 							winner = game.PlayNextTurn(move);
 						}catch(IllegalArgumentException e){
 							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-							modePanel.removeAll();
-							gameFrame.remove(gamePlayPanel);
-							splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
-							modePanel.add(splitPane);
-							gameFrame.setContentPane(modePanel);
-							gameFrame.pack();
-							splitPane.setDividerLocation(.30);
-							gameFrame.validate();
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
+							return;
 						}
 	
 						die1.removeAll();
@@ -1939,12 +1951,9 @@ public class SliceAndDiceUI {
 						winner = game.PlayNextTurn(move);
 					}catch(IllegalArgumentException e){
 						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-						e.printStackTrace();
-						modePanel.removeAll();
-						gameFrame.remove(gamePlayPanel);
-						splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
-						modePanel.add(splitPane);
-						gameFrame.setContentPane(modePanel);
+						if(!gameFrame.isEnabled()){
+							gameFrame.setEnabled(true);
+						}
 						return;
 					}
 					
@@ -2150,7 +2159,9 @@ public class SliceAndDiceUI {
 			
 			chooseAtk.addWindowListener(new WindowAdapter(){
 				public void windowClosed(WindowEvent we){
-
+					if(!gameFrame.isEnabled()){
+						gameFrame.setEnabled(true);
+					}
 					move = chooseAtk.getMove();
 					
 					if(move == null){
@@ -2205,18 +2216,14 @@ public class SliceAndDiceUI {
 							winner = game.PlayNextTurn(move);
 						}catch(IllegalArgumentException e){
 							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-							modePanel.removeAll();
-							gameFrame.remove(gamePlayPanel);
-							splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, modePanelButtons, imagePanel);
-							modePanel.add(splitPane);
-							gameFrame.setContentPane(modePanel);
-							gameFrame.pack();
-							splitPane.setDividerLocation(.30);
-							gameFrame.validate();
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
+							return;
 						}
 						
 						if(move.equals(Move.DOUBLEATK)){
-							// TODO create 8 die panel pass it last roll of dice
+							gameFrame.setEnabled(false);
 							SwingUtilities.invokeLater(new Runnable(){
 								public void run(){
 									int[] rollResult = game.getLastRoll();
@@ -2224,6 +2231,7 @@ public class SliceAndDiceUI {
 								}
 							});
 						}else{
+							gameFrame.setEnabled(false);
 							die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
 							die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
 							die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
@@ -2268,6 +2276,7 @@ public class SliceAndDiceUI {
 			
 			spAttack.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					gameFrame.setEnabled(false);
 					winner = game.updateCondition();
 					SwingUtilities.invokeLater(new Runnable(){
 						public void run(){
@@ -2415,6 +2424,7 @@ class StopRoll extends JFrame{
 		stopPanel.setBorder(BorderFactory.createTitledBorder(""));
 		stopButton = new JButton("Stop Roll");
 		stopButton.setToolTipText("Push to stop your roll of the dice");
+		stopButton.addActionListener(new StopTheRoll());
 		
 		bottomPanel.add(new JPanel());
 		bottomPanel.add(stopButton);
@@ -2444,7 +2454,7 @@ class StopRoll extends JFrame{
 	 * Dispose frame
 	 */
 	private void disposeFrame(){
-		this.dispose();
+		StopRoll.this.dispose();
 	}
 	
 	/**
@@ -2452,12 +2462,12 @@ class StopRoll extends JFrame{
 	 */
 	public void showStopRoll(){			
 			packAndShow();
-			
-			stopButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent ae){
-					disposeFrame();
-				}
-			});
+	}
+	
+	public class StopTheRoll implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			disposeFrame();
+		}
 	}
 	
 }
@@ -2656,7 +2666,24 @@ class DoubleAtk extends JFrame{
 	 * Constructor
 	 */
 	public DoubleAtk(){
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				if(!rolled)
+					JOptionPane.showMessageDialog(DoubleAtk.this, "Your roll will be determined for you");
+				
+				die1.removeAll();
+				die2.removeAll();
+				die3.removeAll();
+				die4.removeAll();
+				die5.removeAll();
+				die6.removeAll();
+				die7.removeAll();
+				die8.removeAll();
+				
+				disposeFrame();
+			}
+		});
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -2698,11 +2725,22 @@ class DoubleAtk extends JFrame{
 	}
 	
 	/**
-	 * Set component fonts
+	 * Set component fonts and colors
 	 */
 	private void setFonts(){
 		topPanel.setBorder(BorderFactory.createTitledBorder(""));
 		centerPanel.setBorder(BorderFactory.createTitledBorder(""));
+		centerPanel.setBackground(Color.red);
+		
+		die1.setBackground(Color.red);
+		die2.setBackground(Color.red);
+		die3.setBackground(Color.red);
+		die4.setBackground(Color.red);
+		die5.setBackground(Color.red);
+		die6.setBackground(Color.red);
+		die7.setBackground(Color.red);
+		die8.setBackground(Color.red);
+		
 		bottomPanel.setBorder(BorderFactory.createTitledBorder(""));
 		dblLabel.setFont(large);
 		dblLabel.setForeground(Color.red);
@@ -2731,7 +2769,7 @@ class DoubleAtk extends JFrame{
 	 * Dispose frame
 	 */
 	private void disposeFrame(){
-		this.dispose();
+		DoubleAtk.this.dispose();
 	}
 	
 	/**
@@ -2821,7 +2859,6 @@ class DoubleAtk extends JFrame{
 			}
 		}
 	}
-	
 }
 
 /**
@@ -2989,6 +3026,7 @@ class ChooseAttack extends JFrame{
 	 * @param mana
 	 */
 	public void showChooseMove(int mana){
+		move = null;
 		manaAmt = mana;
 		packAndShow();
 	}
@@ -3057,7 +3095,8 @@ class ChooseAttack extends JFrame{
  */
 @SuppressWarnings("serial")
 class ChooseFirst extends JFrame{
-	
+	private int plyr1Roll;
+	private int plyr2Roll;
 	private JLabel playerOne;
 	private JLabel playerTwo;
 	private JPanel choosePlayerPane;
@@ -3074,7 +3113,21 @@ class ChooseFirst extends JFrame{
 	 * Constructor
 	 */
 	public ChooseFirst(){
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent we){
+				if(!winner){
+					JOptionPane.showMessageDialog(getFrame(), "The first name entered will be 'Player 1' by default");
+					SliceAndDiceUI.setPlayer(1);
+				}else if(plyr1Roll > plyr2Roll){
+					SliceAndDiceUI.setPlayer(1);
+				}else{
+					SliceAndDiceUI.setPlayer(0);
+				}
+				disposeFrame();
+			}
+		});
+		
 		this.setTitle("Slice And Dice");
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png")));
 		this.setPreferredSize(new Dimension(600, 450));
@@ -3234,8 +3287,8 @@ class ChooseFirst extends JFrame{
 						winner = true;
 						BufferedImage roll1Icon = null;
 						BufferedImage roll2Icon = null;
-						int plyr1Roll = getRand();
-						int plyr2Roll = getRand();
+						plyr1Roll = getRand();
+						plyr2Roll = getRand();
 						
 						// eliminate duplicate rolls
 						if(plyr1Roll == plyr2Roll){
