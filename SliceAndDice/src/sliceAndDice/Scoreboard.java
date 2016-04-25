@@ -279,7 +279,11 @@ static ArrayList<Player> players;
      * @param winner Player object of Player who won the Game
      * @param loser Player object of Player who lost the Game
      */
-    public static void calculateNewScore(Player winner, Player loser) {
+    public static void calculateNewScore(int winnerID, int loserID) {
+    	Player winner;
+    	Player loser;
+    	winner = Scoreboard.getPlayerByID(winnerID);
+    	loser = Scoreboard.getPlayerByID(loserID);
     	double differential;
     	// calculate differential
     	differential = (loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;

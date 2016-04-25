@@ -11,6 +11,7 @@ import java.util.Scanner;
  * @version 4/15/16
  */
 public class Data {
+	int numAborts;
 	double score;
 	int rank; // may want to eliminte this and just sort by score
 	int totalGameCount;
@@ -313,6 +314,12 @@ public class Data {
 	 */
 	public void incrNumMeals() {
 		totalNumMeals++;
+	}
+	/**
+	 * Increments the Data object's number of aborted games. Called when a Player ends a Game before a Player wins.
+	 */
+	public void incrNumAborts() {
+		numAborts++;
 	}
 	/**
 	 * Updates the amount of health points a Player has lost. Called at the end of games.
