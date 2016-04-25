@@ -105,6 +105,9 @@ public class Game {
 	 * @return The winner of the game (player 1, player 2, or no winner yet).
 	 */
 	Winner  PlayNextTurn(Move nextMove) {
+		if(winnerID != -1) {
+			throw new IllegalStateException("Error: Game should have already completed.");
+		}
 		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		
 		if(!lastConditionEvaluated) {
@@ -148,6 +151,9 @@ public class Game {
 	 * @return The winner of the game (player 1, player 2, or none yet).
 	 */
 	Winner  PlayNextTurn() {
+		if(winnerID != -1) {
+			throw new IllegalStateException("Error: Game should have already completed.");
+		}
 		if(!lastConditionEvaluated) {
 		throw new IllegalStateException("Error: Condition has not been evaluated.");
 		}
