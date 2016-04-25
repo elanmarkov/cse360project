@@ -936,6 +936,7 @@ public class SliceAndDiceUI {
 				public void actionPerformed(ActionEvent ae){
 					JOptionPane.showMessageDialog(gameFrame,  "Function not implemented.");
 					return;
+//					singlePlayer = true;
 //					newGamePanel.removeAll();
 //					gameFrame.remove(newGamePanel);
 //					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newOnePlayerGameUser, imagePanel);
@@ -949,6 +950,7 @@ public class SliceAndDiceUI {
 			
 			twoPlayer.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					singlePlayer = false;
 					newGamePanel.removeAll();
 					gameFrame.remove(newGamePanel);
 					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, newTwoPlayerGameUser, imagePanel);
@@ -976,13 +978,13 @@ public class SliceAndDiceUI {
 
 			newOnePlayerUserStart.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					
 					if(newOnePlayerUserText.getText().isEmpty()){
 						JOptionPane.showMessageDialog(gameFrame, "You must enter a user name");
 						return;
 					}
 					
 					usernameOne = newOnePlayerUserText.getText().toLowerCase();
+					
 					
 					// TODO add call to check for existing user profile prior to launching player select window
 					
