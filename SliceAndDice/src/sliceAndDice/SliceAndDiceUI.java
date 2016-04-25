@@ -1422,6 +1422,7 @@ public class SliceAndDiceUI {
 						});
 						
 					}else if(winner.equals(Winner.PLAYER_ONE)){
+						middleRightPanel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
@@ -1433,7 +1434,10 @@ public class SliceAndDiceUI {
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+						gameFrame.pack();
+						gameFrame.validate();
 					}else if(winner.equals(Winner.PLAYER_TWO)){
+						middleRightPanel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
@@ -1445,6 +1449,8 @@ public class SliceAndDiceUI {
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+						gameFrame.pack();
+						gameFrame.validate();
 					}
 				}
 			});
@@ -1456,13 +1462,14 @@ public class SliceAndDiceUI {
 						gameFrame.toFront();
 					}
 					move = Move.FOOD;
-					if(game.nextMoveLegality(move) == IllegalMove.NOFOOD){
-						JOptionPane.showMessageDialog(gameFrame, "You are out of food!");
-						return;
-					}
 					
 					if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
 						winner = game.updateCondition();
+					}
+					
+					if(game.nextMoveLegality(move) == IllegalMove.NOFOOD){
+						JOptionPane.showMessageDialog(gameFrame, "You are out of food!");
+						return;
 					}
 					
 					winner = game.updateCondition();
