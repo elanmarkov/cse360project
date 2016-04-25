@@ -1094,6 +1094,7 @@ public class SliceAndDiceUI {
 				public void windowClosed(WindowEvent we){
 					if(!gameFrame.isEnabled()){
 						gameFrame.setEnabled(true);
+						gameFrame.toFront();
 					}
 					gameFrame.setPreferredSize(GAME_SIZE);
 					gameFrame.setResizable(false);
@@ -1196,6 +1197,7 @@ public class SliceAndDiceUI {
 						gameFrame.validate();
 					}else{
 						gameFrame.setEnabled(false);
+						gameFrame.toFront();
 						stats.scoreboard.addNewPlayerFromUsername(usernameOne);
 						stats.scoreboard.addNewPlayerFromUsername(usernameTwo);
 						whichPlayer.setPlayerNames(usernameOne, usernameTwo);
@@ -1368,9 +1370,14 @@ public class SliceAndDiceUI {
 			 */
 			attackButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					
+					if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
+						winner = game.updateCondition();
+					}
+					
 					winner = game.updateCondition();
 					
-					if(winner.equals(Winner.NONE)){
+					if(winner == Winner.NONE){
 						move = Move.ATTACK;
 						try{
 							winner = game.PlayNextTurn(move);
@@ -1410,6 +1417,7 @@ public class SliceAndDiceUI {
 						
 						if(gameFrame.isEnabled()){
 							gameFrame.setEnabled(false);
+							gameFrame.toFront();
 						}
 	
 						SwingUtilities.invokeLater(new Runnable(){
@@ -1423,29 +1431,34 @@ public class SliceAndDiceUI {
 			
 			healButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					winner = game.updateCondition();
-					
+					if(!gameFrame.isEnabled()){
+						gameFrame.setEnabled(true);
+						gameFrame.toFront();
+					}
 					move = Move.FOOD;
-					if(game.nextMoveLegality(move).equals(IllegalMove.NOFOOD)){
+					if(game.nextMoveLegality(move) == IllegalMove.NOFOOD){
 						JOptionPane.showMessageDialog(gameFrame, "You are out of food!");
 						return;
 					}
 					
-					try{
-						winner = game.PlayNextTurn(move);
-					}catch(IllegalArgumentException e){
-						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-						if(!gameFrame.isEnabled()){
-							gameFrame.setEnabled(true);
-						}
-						return;
-					}catch(IllegalStateException e){
-						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-						if(!gameFrame.isEnabled()){
-							gameFrame.setEnabled(true);
-						}
-						return;
+					if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
+						winner = game.updateCondition();
 					}
+					
+					winner = game.updateCondition();
+					if(winner == Winner.NONE){
+						
+						try{
+							winner = game.PlayNextTurn(move);
+						}catch(IllegalArgumentException e){
+							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							return;
+						}catch(IllegalStateException e){
+							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							return;
+						}
+					}
+					middleRightPanel.removeAll();
 					
 					plTwoHealthStatus.setValue(game.getPlayerTwoStatus().getHitPts());
 					plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
@@ -1571,9 +1584,7 @@ public class SliceAndDiceUI {
 							break;
 						}
 					
-					middleRightPanel.removeAll();
-					
-					if(winner.equals(Winner.NONE)){
+					if(winner == Winner.NONE){
 						middleRightPanel.removeAll();
 						if(!game.isPlayerOneTurn()){
 							
@@ -1589,11 +1600,11 @@ public class SliceAndDiceUI {
 							JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong in Winner PlayNextTurn() method");
 						}
 						gameFrame.setContentPane(gamePlayPanel);
-					}else if(winner.equals(Winner.PLAYER_ONE)){
+					}else if(winner == Winner.PLAYER_ONE){
 						JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong: There should be no winner here");
 						return;
 						
-					}else if(winner.equals(Winner.PLAYER_TWO)){
+					}else if(winner == Winner.PLAYER_TWO){
 						JOptionPane.showMessageDialog(gameFrame, "Something has gone horribly wrong: There should be no winner here");
 						return;
 					}
@@ -1655,6 +1666,7 @@ public class SliceAndDiceUI {
 				public void windowClosed(WindowEvent we){
 					if(!gameFrame.isEnabled()){
 						gameFrame.setEnabled(true);
+						gameFrame.toFront();
 					}
 					
 					die1.setBackground(Color.red);
@@ -1790,13 +1802,21 @@ public class SliceAndDiceUI {
 						}
 						middleRightPanel.removeAll();
 							
-								if(!game.isPlayerOneTurn()){
-									activePlayer.setText(usernameTwo);
-									// TODO add double attack animation
-								}else if (game.isPlayerOneTurn()){
-									activePlayer.setText(usernameOne);
-									// TODO add double attack animation
-								}
+//								if(game.isPlayerOneTurn()){
+//									activePlayer.setText(usernameTwo);
+//									// TODO add double attack animation
+//								}else if (!game.isPlayerOneTurn()){
+//									activePlayer.setText(usernameOne);
+//									// TODO add double attack animation
+//								}
+								
+							if(!game.isPlayerOneTurn()){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/doubleattackP1.gif"))), BorderLayout.CENTER);
+								activePlayer.setText(usernameTwo);
+							}else if (game.isPlayerOneTurn()){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/doubleattackP2.gif"))), BorderLayout.CENTER);
+								activePlayer.setText(usernameOne);
+							}
 
 					}else if(winner.equals(Winner.PLAYER_ONE)){
 						plTwoHealthStatus.setValue(0);
@@ -1881,6 +1901,7 @@ public class SliceAndDiceUI {
 				public void windowClosed(WindowEvent we){
 					if(!gameFrame.isEnabled()){
 						gameFrame.setEnabled(true);
+						gameFrame.toFront();
 					}
 					int[] rollResult = game.getLastRoll();
 					
@@ -2036,66 +2057,69 @@ public class SliceAndDiceUI {
 							
 							break;
 						case FREEZE:
-							if(game.getPlayerOneStatus().getCondition().equals(Condition.FROZEN)){
+							if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN){
 								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP2.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameTwo);
-							}else if(game.getPlayerTwoStatus().getCondition().equals(Condition.FROZEN)){
+							}else if(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
 								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP1.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameOne);
 							}else{
 								
 								if(game.isPlayerOneTurn()){
-									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP1.gif"))), BorderLayout.CENTER);
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezefailP2.gif"))), BorderLayout.CENTER);
 									activePlayer.setText(usernameOne);
-									// TODO add frozen player two animation
 								}else{
-									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezeP2.gif"))), BorderLayout.CENTER);
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/freezefailP1.gif"))), BorderLayout.CENTER);
 									activePlayer.setText(usernameTwo);
-									// TODO add frozen player one animation
 								}
 							}
 							
 							break;
-						case DOUBLEATK:
-							
-								if(!game.isPlayerOneTurn()){
-									activePlayer.setText(usernameTwo);
-									// TODO add double attack animation
-								}else if (game.isPlayerOneTurn()){
-									activePlayer.setText(usernameOne);
-									// TODO add double attack animation
-								}
-							break;
+//						case DOUBLEATK:
+//							
+//								if(!game.isPlayerOneTurn()){
+//									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/doubleattackP1.gif"))), BorderLayout.CENTER);
+//									activePlayer.setText(usernameTwo);
+//								}else if (game.isPlayerOneTurn()){
+//									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/doubleattackP2.gif"))), BorderLayout.CENTER);
+//									activePlayer.setText(usernameOne);
+//								}
+//							break;
 						case POISON:
 							
 							if(!game.isPlayerOneTurn()){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poisonP1.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameTwo);
-								// TODO add poison player two animation
 							}else if(game.isPlayerOneTurn()){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/poisonP2.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameOne);
-								// TODO add poison player one animation
 							}
 							
 							break;
 						case AURA:
-							
-							if(!game.isPlayerOneTurn()){
-								activePlayer.setText(usernameTwo);
-								// TODO add aura player two animation
-							}else if(game.isPlayerOneTurn()){
-								activePlayer.setText(usernameOne);
-								// TODO add aura player one animation
+							if(game.getPlayerOneStatus().getCondition() == Condition.AURA1){
+								
+							}else if(game.getPlayerTwoStatus().getCondition() == Condition.AURA1){
+								
 							}
+							
+								if(!game.isPlayerOneTurn()){
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aurafailP1.gif"))), BorderLayout.CENTER);
+									activePlayer.setText(usernameTwo);
+								}else if(game.isPlayerOneTurn()){
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/aurafailP2.gif"))), BorderLayout.CENTER);
+									activePlayer.setText(usernameOne);
+								}
 							
 							break;
 						case CHARGE:
 							
 							if(!game.isPlayerOneTurn()){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/chargeP1.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameTwo);
-								// TODO add aura player two animation
 							}else if(game.isPlayerOneTurn()){
+								middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/chargeP2.gif"))), BorderLayout.CENTER);
 								activePlayer.setText(usernameOne);
-								// TODO add aura player one animation
 							}
 							
 							break;
@@ -2187,35 +2211,35 @@ public class SliceAndDiceUI {
 				public void windowClosed(WindowEvent we){
 					if(!gameFrame.isEnabled()){
 						gameFrame.setEnabled(true);
+						gameFrame.toFront();
 					}
-					move = chooseAtk.getMove();
 					
-					if(move == null){
-						JOptionPane.showMessageDialog(gameFrame, "You have not selected a move. Try again");
-						return;
+					if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
+						winner = game.updateCondition();
 					}
 					
 					winner = game.updateCondition();
-					
-					try{
-						winner = game.PlayNextTurn(move);
-					}catch(IllegalArgumentException e){
-						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-						if(!gameFrame.isEnabled()){
-							gameFrame.setEnabled(true);
+					if(winner == Winner.NONE){
+						move = chooseAtk.getMove();
+						
+						if(move == null){
+							JOptionPane.showMessageDialog(gameFrame, "You have not selected a move. Try again");
+							return;
 						}
-						return;
-					}catch(IllegalStateException e){
-						JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
-						if(!gameFrame.isEnabled()){
-							gameFrame.setEnabled(true);
+						
+						try{
+							winner = game.PlayNextTurn(move);
+						}catch(IllegalArgumentException e){
+							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							return;
+						}catch(IllegalStateException e){
+							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							return;
 						}
-						return;
 					}
-	
 					middleRightPanel.removeAll();
 					
-					if(winner.equals(Winner.NONE)){
+					if(winner == Winner.NONE){
 						switch(move){
 						case FREEZE:
 							die1.setBackground(Color.blue);
@@ -2256,8 +2280,9 @@ public class SliceAndDiceUI {
 						die3.removeAll();
 						die4.removeAll();
 						
-						if(move.equals(Move.DOUBLEATK)){
+						if(move == Move.DOUBLEATK){
 							gameFrame.setEnabled(false);
+							gameFrame.toFront();
 							SwingUtilities.invokeLater(new Runnable(){
 								public void run(){
 									int[] rollResult = game.getLastRoll();
@@ -2266,6 +2291,7 @@ public class SliceAndDiceUI {
 							});
 						}else{
 							gameFrame.setEnabled(false);
+							gameFrame.toFront();
 							die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
 							die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
 							die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
@@ -2276,7 +2302,7 @@ public class SliceAndDiceUI {
 								}
 							});
 						}
-					}else if(winner.equals(Winner.PLAYER_ONE)){
+					}else if(winner == Winner.PLAYER_ONE){
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
@@ -2288,7 +2314,7 @@ public class SliceAndDiceUI {
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 						
-					}else if(winner.equals(Winner.PLAYER_TWO)){
+					}else if(winner == Winner.PLAYER_TWO){
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
@@ -2314,6 +2340,7 @@ public class SliceAndDiceUI {
 			spAttack.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
 					gameFrame.setEnabled(false);
+					gameFrame.toFront();
 					SwingUtilities.invokeLater(new Runnable(){
 						public void run(){
 							if(game.isPlayerOneTurn()){
