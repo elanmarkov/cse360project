@@ -36,8 +36,8 @@ public class Robot extends Player {
 		String robotName = "";
 		int[] roll = DiceRoll.roll(3, 8);
 		robotName += title[roll[0] - 1];
-		robotName += " " + title[roll[1] - 1];
-		robotName += " " + title[roll[2] - 1];
+		robotName += " " + name[roll[1] - 1];
+		robotName += " " + suffix[roll[2] - 1];
 		return robotName;
 	}
 	/**
