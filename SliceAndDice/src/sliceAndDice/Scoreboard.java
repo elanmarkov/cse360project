@@ -252,7 +252,8 @@ static ArrayList<Player> players;
      * @param winner which player won
      * @return new score of Player whose old score was oldScore1
      */
-    public static double calculateScore(double oldScore1, double oldScore2, int winner) {
+    /*
+    public static double calculateScore2(double oldScore1, double oldScore2, int winner) {
     	final int kValue = 16;
     	double number1 = Math.pow(10, (oldScore1 / 400));
     	double number2 = Math.pow(10, (oldScore2 / 400));
@@ -271,6 +272,20 @@ static ArrayList<Player> players;
     	double newScore1 = oldScore1 + (kValue * (actualScore1 - expectedScore1));
     	//oldScore2 = oldScore2 + (kValue * (actualScore2 - expectedScore2));
     	return newScore1;
+    }
+     */
+    /**
+     * Calculates new scores for the two input Players based on order of input.
+     * @param winner Player object of Player who won the Game
+     * @param loser Player object of Player who lost the Game
+     */
+    public static void calculateNewScore(Player winner, Player loser) {
+    	double differential;
+    	// calculate differential
+    	differential = (loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;
+    	// update winner and loser scores
+    	winner.getPlayerData().setScore(winner.getPlayerData().getScore() + differential);
+    	loser.getPlayerData().setScore(loser.getPlayerData().getScore() - differential);
     }
     /**
      * Bubble sorts Scoreboard's ArrayList of Players by score, allowing the rank to be determined by position in the ArrayList.
