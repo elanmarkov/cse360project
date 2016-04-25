@@ -365,7 +365,7 @@ public class Game {
 		}
 
 	}
-	private void abortGame() {
+	public void abortGame() {
 		playerOne.getPlayerData().incrNumAborts();
 		playerTwo.getPlayerData().incrNumAborts();
 		updateStats();
