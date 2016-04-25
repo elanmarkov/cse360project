@@ -311,7 +311,7 @@ public class Game {
 		return nextTurn.getLastRoll();
 	}
 	/**
-	 * Updates the player statistics for each player at the end of the turn.
+	 * Updates the player statistics for each player at the end of the game.
 	 */
 	private void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
@@ -322,6 +322,7 @@ public class Game {
 		playerTwo.getPlayerData().updateHealthLost(playerTwoStatus.getHitPts());
 		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
 		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
+		//Scoreboard.calculateNewScore(winnerID, loserID);
 	}
 	/**
 	 * Updates the move count for each player after each turn.
@@ -361,6 +362,11 @@ public class Game {
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
 
+	}
+	private void abortGame() {
+		//playerOne.getPlayerData().incrNumAborts();
+		//playerTwo.getPlayerData().incrNumAborts();
+		updateStats();
 	}
 }
 /**
