@@ -116,7 +116,15 @@ public class SliceAndDiceUI {
 					gameFrame.addWindowListener(new WindowAdapter(){
 							public void windowClosing(WindowEvent e){
 								
-								// TODO add closing actions
+								if(winner == Winner.NONE){
+									game.abortGame();
+								}
+								
+								try{
+									stats.scoreboard.sendPlayerDataToFile();
+								}catch(IOException ex){
+									JOptionPane.showMessageDialog(gameFrame, "Error: " + ex.getMessage());
+								}
 								
 								e.getWindow().dispose();
 								System.exit(0);
@@ -2398,6 +2406,11 @@ public class SliceAndDiceUI {
 			 */
 			mainMenu.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
+					
+					if(winner == Winner.NONE){
+						game.abortGame();
+					}
+					
 					try{
 						stats.scoreboard.sendPlayerDataToFile();
 					}catch(IOException e){
@@ -2431,23 +2444,28 @@ public class SliceAndDiceUI {
 			 */
 			gameExit.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-				Object[] inputs = {"Save", "Exit"};
-				int ans = JOptionPane.showOptionDialog(gameFrame, "Exit without saving?", "Slice And Dice",
-						JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-						new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png"))), inputs, null);
-				
-					if(ans == 0){
-						try{
-							stats.scoreboard.sendPlayerDataToFile();
-						}catch(IOException e){
-							JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
-						}
-						JOptionPane.showMessageDialog(gameFrame, "Game saved!");
-					}else{
-						gameFrame.dispose();
-						System.exit(0);
+					
+					if(winner == Winner.NONE){
+						game.abortGame();
 					}
-				}
+					
+					Object[] inputs = {"Save", "Exit"};
+					int ans = JOptionPane.showOptionDialog(gameFrame, "Exit without saving?", "Slice And Dice",
+							JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+							new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png"))), inputs, null);
+					
+						if(ans == 0){
+							try{
+								stats.scoreboard.sendPlayerDataToFile();
+							}catch(IOException e){
+								JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
+							}
+							JOptionPane.showMessageDialog(gameFrame, "Game saved!");
+						}else{
+							gameFrame.dispose();
+							System.exit(0);
+						}
+					}
 			});
 			
 				/*
