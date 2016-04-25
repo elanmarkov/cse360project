@@ -322,7 +322,9 @@ public class Game {
 		playerTwo.getPlayerData().updateHealthLost(playerTwoStatus.getHitPts());
 		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
 		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
-		//Scoreboard.calculateNewScore(winnerID, loserID);
+		if(winnerID >= 0) {
+			//Scoreboard.calculateNewScore(winnerID, loserID);
+		}
 	}
 	/**
 	 * Updates the move count for each player after each turn.
