@@ -323,7 +323,7 @@ public class Game {
 		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
 		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
 		if(winnerID >= 0) {
-			//Scoreboard.calculateNewScore(winnerID, loserID);
+			Scoreboard.calculateNewScore(winnerID, loserID);
 		}
 	}
 	/**
@@ -366,8 +366,8 @@ public class Game {
 
 	}
 	private void abortGame() {
-		//playerOne.getPlayerData().incrNumAborts();
-		//playerTwo.getPlayerData().incrNumAborts();
+		playerOne.getPlayerData().incrNumAborts();
+		playerTwo.getPlayerData().incrNumAborts();
 		updateStats();
 	}
 }
