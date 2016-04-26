@@ -155,13 +155,12 @@ public class Game {
 			throw new IllegalStateException("Error: Game should have already completed.");
 		}
 		if(!lastConditionEvaluated) {
-		throw new IllegalStateException("Error: Condition has not been evaluated.");
+			throw new IllegalStateException("Error: Condition has not been evaluated.");
 		}
 		Winner gameWinner = Winner.NONE; // If this turn is played, no one won yet.
 		Move nextComputerMove = playerOne.getNextMove(playerOneStatus, playerTwoStatus);
 		if(playerOneTurn){	// Different turn based on whose move it is
 			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
-			
 			gameWinner = nextTurn.playTurnPlayerOne(nextComputerMove);
 			playerOneTurn = false;
 			updateMoveCount(playerOne, nextComputerMove);

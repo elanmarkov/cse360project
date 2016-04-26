@@ -47,6 +47,9 @@ public class Robot extends Player {
 	 * @return Next move to be performed by computer.
 	 */
 	Move getNextMove(Status ownStatus, Status oppStatus) {
+		if(ownStatus.getMana() >= 10) {
+			return Move.DOUBLEATK;
+		}
 		return Move.ATTACK;
 	}
 	/**
