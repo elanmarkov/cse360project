@@ -130,4 +130,11 @@ public class PlayerRobotTest {
 		}
 		assertTrue(!thrown);
 	}
+	
+	@Test
+	public void robotDataPass() {
+		Player robot = new Robot();
+		Data roboData = robot.getPlayerData();
+		assertNotNull(roboData);
+	}
 }
