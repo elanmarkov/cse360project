@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 /**
- * JUnit tests for the Player class.
+ * JUnit tests for the Player, Turn, and Robot classes.
  * @author Eisher Saroya
  *
  */
-public class PlayerTest {
+public class PlayerRobotTest {
 
 	@Test
 	public void playerNotNull() {
@@ -89,7 +89,7 @@ public class PlayerTest {
 		Status status1 = new Status();
 		
 		status1.reduceFoodCount();
-		assertEquals(status1.getFoodCount(), status1.getMaxFood() - 1);
+		assertEquals(status1.getFoodCount(), Status.getMaxFood() - 1);
 	}	
 	
 	@Test
@@ -97,5 +97,37 @@ public class PlayerTest {
 		// Test the setter and getter for the player condition
 		Status status1 = new Status();
 		assertEquals(status1.getCondition(), Condition.NONE);
+	}
+	
+	@Test
+	public void getNextMoveThrows() {
+		// Check that the Player getNextMove throws an exception
+		boolean thrown = false;
+		Player human = new Player();
+		Status ownStatus = new Status();
+		Status oppStatus = new Status();
+		try {
+			human.getNextMove(ownStatus, oppStatus);
+		}
+		catch (Exception e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
+	}
+	
+	@Test
+	public void getNextMoveInheritance() {
+		// Check that the inheritance works properly for getNextMove of Robot
+		boolean thrown = false;
+		Player robot = new Robot();
+		Status ownStatus = new Status();
+		Status oppStatus = new Status();
+		try {
+			robot.getNextMove(ownStatus, oppStatus);
+		}
+		catch (Exception e) {
+			thrown = true;
+		}
+		assertTrue(!thrown);
 	}
 }
