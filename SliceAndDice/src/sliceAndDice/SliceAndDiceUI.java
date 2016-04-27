@@ -2283,7 +2283,11 @@ public class SliceAndDiceUI {
 					if(singlePlayer && winner == Winner.NONE && (computerFirst &&
 							!(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)
 							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN)))){
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> branch 'master' of https://github.com/emarkovcse360/cse360project.git
 							if(gameFrame.isEnabled()){
 								gameFrame.setEnabled(false);
 								gameFrame.toFront();
