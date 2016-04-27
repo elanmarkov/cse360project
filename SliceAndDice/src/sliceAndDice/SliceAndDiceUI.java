@@ -1688,13 +1688,11 @@ public class SliceAndDiceUI {
 			 */
 			attackButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent ae){
-					
 					if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
 						winner = game.updateCondition();
 					}
 					
 					winner = game.updateCondition();
-					
 					if(winner == Winner.NONE){
 						move = Move.ATTACK;
 						try{
@@ -1748,7 +1746,7 @@ public class SliceAndDiceUI {
 							}
 						});
 						
-					}else if(winner.equals(Winner.PLAYER_ONE)){
+					}else if(winner == Winner.PLAYER_ONE){
 						middlePlayerSel.removeAll();
 						middleRightPanel.removeAll();
 						plTwoHealthStatus.setValue(0);
@@ -1764,7 +1762,7 @@ public class SliceAndDiceUI {
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 						gameFrame.pack();
 						gameFrame.validate();
-					}else if(winner.equals(Winner.PLAYER_TWO)){
+					}else if(winner == Winner.PLAYER_TWO){
 						middlePlayerSel.removeAll();
 						middleRightPanel.removeAll();
 						plOneHealthStatus.setValue(0);
@@ -2041,7 +2039,10 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					splitPane.setDividerLocation(.30);
 					gameFrame.validate();
-					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+					if(singlePlayer && winner == Winner.NONE && (computerFirst
+							&& !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN))
+							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+						
 							if(gameFrame.isEnabled()){
 								gameFrame.setEnabled(false);
 								gameFrame.toFront();
@@ -2278,11 +2279,19 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
+<<<<<<< HEAD
 					int p1hp = game.getPlayerOneStatus().getHitPts();
 					int p2hp = game.getPlayerTwoStatus().getHitPts();
 					Winner winnar = winner;
 					int winzor = game.getWinnerID();
 					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+=======
+					
+					if(singlePlayer && winner == Winner.NONE && (computerFirst
+							&& !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN))
+							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+						
+>>>>>>> branch 'master' of https://github.com/emarkovcse360/cse360project.git
 							if(gameFrame.isEnabled()){
 								gameFrame.setEnabled(false);
 								gameFrame.toFront();
@@ -2336,7 +2345,7 @@ public class SliceAndDiceUI {
 					playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 					playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
 					
-					if(winner.equals(Winner.NONE)){
+					if(winner == Winner.NONE){
 						switch(game.getPlayerOneStatus().getCondition()){
 						case FROZEN:
 							playerOneCondition.removeAll();
@@ -2529,7 +2538,7 @@ public class SliceAndDiceUI {
 						
 						}
 
-					}else if(winner.equals(Winner.PLAYER_ONE)){
+					}else if(winner == Winner.PLAYER_ONE){
 						middlePlayerSel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
@@ -2542,7 +2551,7 @@ public class SliceAndDiceUI {
 						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
-					}else if(winner.equals(Winner.PLAYER_TWO)){
+					}else if(winner == Winner.PLAYER_TWO){
 						middlePlayerSel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
@@ -2603,7 +2612,10 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
-					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+					if(singlePlayer && winner == Winner.NONE && (computerFirst &&
+							!(game.getPlayerOneStatus().getCondition() == Condition.FROZEN))
+							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+						
 						if(gameFrame.isEnabled()){
 							gameFrame.setEnabled(false);
 							gameFrame.toFront();
@@ -3665,11 +3677,7 @@ class ChooseFirst extends JFrame{
 	 * @return randNum
 	 */
 	private int getRand(){
-		Random rand = new Random();
-		
-		int randNum = rand.nextInt((6 - 1) + 1) + 1;
-		
-		return randNum;
+		return DiceRoll.roll(1)[0];
 	}
 	
 	/**
