@@ -551,9 +551,13 @@ class Turn {
 			turnPlayer.setCondition(Condition.NONE);
 			break;
 		case FROZEN:
+			turnPlayer.setAtk(0);
+			turnPlayer.setDef(0);
 			turnPlayer.setCondition(Condition.NONE);
 			break;
 		case POISON1:
+			turnPlayer.setAtk(0);
+			turnPlayer.setDef(0);
 			turnPlayer.setCondition(Condition.POISON2);
 			turnPlayer.reduceHP(1);
 			break;
