@@ -38,6 +38,7 @@ public class Game {
 	private boolean playerOneTurn;
 	private boolean lastConditionEvaluated;
 	private Turn nextTurn;
+	private Move lastComputerMove;
 	
 	/**
 	 * Constructor for Game class from two usernames.
@@ -189,6 +190,7 @@ public class Game {
 			updateStats();
 		}
 		lastConditionEvaluated = false;
+		lastComputerMove = nextComputerMove;
 		return gameWinner;
 		
 	}
@@ -380,6 +382,9 @@ public class Game {
 		playerOne.getPlayerData().incrNumAborts();
 		playerTwo.getPlayerData().incrNumAborts();
 		updateStats();
+	}
+	public Move getLastComputerMove() {
+		return lastComputerMove;
 	}
 }
 /**
