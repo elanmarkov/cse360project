@@ -1,4 +1,19 @@
 package sliceAndDice;
+/**
+ * Game class to run a game, including create turns, track
+ * interface with GUI, and update statistics between turns.
+ * Turn class to play turns, roll dice, and evaluate legality
+ * of any given move.
+ * 
+ * @author Team 1, CSE 360 Spring 2016
+ * Group members:
+ * Jacob Loden
+ * Elan Markov
+ * Daniel Saman
+ * Eisher Saroya
+ * Andrew Stanton
+ *
+ */
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,8 +37,9 @@ import javax.swing.table.TableModel;
 
 
 /**
- * Game GUI class
- * @author Jacob
+ * Game user interface.
+ * 
+ * @author Jacob Loden, PIN 514, CSE 360, Spring 2016
  *
  */
 public class SliceAndDiceUI {
@@ -93,7 +108,7 @@ public class SliceAndDiceUI {
 			return player;
 		}
 		
-		/**
+		/*
 		 * Time delay method
 		 */
 		public void delayTime(){
@@ -102,7 +117,7 @@ public class SliceAndDiceUI {
 			}catch(Exception e){}
 		}
 		
-		/**
+		/*
 		 * Show GUI method
 		 */
 		public void showUI(){
@@ -117,16 +132,6 @@ public class SliceAndDiceUI {
 				gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					gameFrame.addWindowListener(new WindowAdapter(){
 							public void windowClosing(WindowEvent e){
-								
-//								if(winner == Winner.NONE){
-//									game.abortGame();
-//								}
-//								
-//								try{
-//									stats.scoreboard.sendPlayerDataToFile();
-//								}catch(IOException ex){
-//									JOptionPane.showMessageDialog(gameFrame, "Error: " + ex.getMessage());
-//								}
 								
 								e.getWindow().dispose();
 								System.exit(0);
@@ -2645,8 +2650,8 @@ public class SliceAndDiceUI {
 						}
 					}
 					middleRightPanel.removeAll();
-					
-					if(winner == Winner.NONE){
+//					
+//					if(winner == Winner.NONE){
 						switch(move){
 						case FREEZE:
 							die1.setBackground(Color.blue);
@@ -2709,33 +2714,33 @@ public class SliceAndDiceUI {
 								}
 							});
 						}
-					}else if(winner == Winner.PLAYER_ONE){
-						middlePlayerSel.removeAll();
-						plTwoHealthStatus.setValue(0);
-						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
-						
-						gamePlayerWinner.setText(usernameOne);
-						winningPlayer.add(gamePlayerWinner);
-						winningPlayer.add(winnerLabel);
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/victoryP1.png"))));
-						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
-						middleGamePanel.add(playerPane, BorderLayout.CENTER);
-						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
-						
-					}else if(winner == Winner.PLAYER_TWO){
-						middlePlayerSel.removeAll();
-						plOneHealthStatus.setValue(0);
-						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
-						
-						gamePlayerWinner.setText(usernameTwo);
-						winningPlayer.add(gamePlayerWinner);
-						winningPlayer.add(winnerLabel);
-						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/victoryP2.png"))));
-						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
-						middleGamePanel.add(playerPane, BorderLayout.CENTER);
-						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
-						
-					}
+//					}else if(winner == Winner.PLAYER_ONE){
+//						middlePlayerSel.removeAll();
+//						plTwoHealthStatus.setValue(0);
+//						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
+//						
+//						gamePlayerWinner.setText(usernameOne);
+//						winningPlayer.add(gamePlayerWinner);
+//						winningPlayer.add(winnerLabel);
+//						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/victoryP1.png"))));
+//						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
+//						middleGamePanel.add(playerPane, BorderLayout.CENTER);
+//						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+//						
+//					}else if(winner == Winner.PLAYER_TWO){
+//						middlePlayerSel.removeAll();
+//						plOneHealthStatus.setValue(0);
+//						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
+//						
+//						gamePlayerWinner.setText(usernameTwo);
+//						winningPlayer.add(gamePlayerWinner);
+//						winningPlayer.add(winnerLabel);
+//						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/victoryP2.png"))));
+//						playerPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, middleLeftPanel, middleRightPanel);
+//						middleGamePanel.add(playerPane, BorderLayout.CENTER);
+//						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
+//						
+//					}
 
 					middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/defaultplayers.jpg"))), BorderLayout.CENTER);
 					gameFrame.pack();
