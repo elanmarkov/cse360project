@@ -49,7 +49,7 @@ public class Robot extends Player {
 	 */
 	Move getNextMove(Status ownStatus, Status oppStatus) {
 		if(ownStatus.getMana() >= 10) {
-			return Move.DOUBLEATK;
+			//return Move.DOUBLEATK;
 		}
 		return Move.ATTACK;
 	}
