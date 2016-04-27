@@ -60,6 +60,10 @@ public class Robot extends Player {
 	Data getPlayerData() {
 		return computerData;
 	}
+	/**
+	 * Get the robot's ID
+	 * @return robot's ID
+	 */
 	int getID() {
 		return robotID;
 	}
