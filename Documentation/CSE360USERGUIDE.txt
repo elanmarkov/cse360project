@@ -1,0 +1,142 @@
+ __ _ _                            _      ___ _          
+/ _| (_) ___ ___    __ _ _ __   __| |    /   (_) ___ ___ 
+\ \| | |/ __/ _ \  / _` | '_ \ / _` |   / /\ | |/ __/ _ \
+_\ | | | (_|  __/ | (_| | | | | (_| |  / /_//| | (_|  __/
+\__|_|_|\___\___|  \__,_|_| |_|\__,_| /___,' |_|\___\___|
+
+			   Slice and Dice
+___________________________________________________________________
+		          Table of Contents
+___________________________________________________________________
+
+1. Creators
+
+2. Rules
+
+3. Gameplay
+
+4. Special Attacks
+
+5. Conditions and Modifiers
+
+6. Game Modes
+
+7. Statistics
+
+___________________________________________________________________
+			      1. Creators
+___________________________________________________________________
+
+Team 1
+
+Jacob Loden
+
+Elan Markov
+
+Daniel Saman
+
+Eisher Saroya
+
+Andrew Stanton
+
+___________________________________________________________________
+			      2. Rules
+___________________________________________________________________
+
+1. All players begin the round with 100 hit points
+
+2. All players begin the round with 30 Mana points
+
+3. All players begin the round with 5 healing foods
+
+4. The first player to move is decided by a six-sided die roll - whoever rolls
+highest goes first.
+
+5. Each player takes turns performing one move until the game is over. Possible
+moves are described in the Gameplay section of this document.
+
+6. The game ends when one player's hit points are reduced to 0.
+
+___________________________________________________________________
+			     3. Gameplay
+___________________________________________________________________
+
+Objective:The goal of Slice and Dice is to attack your enemy until their HP reaches 0.
+To achieve this you will need to use basic attacks and special attacks while 
+also healing yourself using food.
+
+Possible Moves:
+
+	Attack: Roll four 6-sided dice to attack your enemy
+	Cost:None
+	Damage: The sum of the four dice rolls is the damage for the turn.
+
+	Special Attack: Choose a unique ability and pay a cost in mana to use it.
+	Cost: varies
+	Damage: Varies
+
+	Eat: Consume 1 Food and heal 25 HP(will not heal over 100 hp if at 75hp or higher)
+	Cost: 1 Food
+
+___________________________________________________________________
+			  4. Special Attacks
+___________________________________________________________________
+
+Freeze: Roll 4 dice. The first two dice will Freeze your opponent if the roll sum is higher than 7. The other two dice will deal damage equal to their sum.
+Freeze Effect: Player is unable to attack or eat for 1 turn.  
+ 
+
+Double Attack: Roll eight dice and deal damage equal to their sum.
+
+
+Poison: Roll 4 dice. The first two dice will poison your opponent if the roll sum is higher than 7. The other two dice will deal damage equal to their sum.
+Poison Effect: Player is damaged over time with increasing power. Starting damage of 1 that increases to 5 that does not expire.
+
+
+Aura: Roll 4 dice: The first one will grant you an AURA if a 4 or higher is rolled. The second one will boost your ATK(attack power) based on your roll.
+The third dice will boost your DEF(defense power) based on your roll. The fourth dice will have a chance to make Aura cost 0 mana if a 4 or higher is rolled. All benifits 
+of Aura expire after 2 turns.
+
+
+Charge: Roll 4 dice. Regain mana equal to half the sum of your rolls.
+
+___________________________________________________________________
+			  5. Conditions and Modifiers
+___________________________________________________________________
+ 
+Stat modifiers
+ATK: If you are the turn player, increase the damage you do to your opponent by your current ATK stat. For example, if you roll a sum of 12 and you have an ATK of 3, then you do 15 damage.
+DEF: If you are the off-turn player, decrease the damage your opponent does to you by your DEF stat. For example, if they roll a sum of 12 and your DEF is 3, then they do 9 damage instead.
+Double Attack is affected by these modifiers. Both ATK and DEF are doubled.
+
+Conditions
+Only 1 condition at a time. 
+Aura: Cure yourself of poison,become protected from all other conditions and gain boosted ATK and DEF for 2 turns. If you fail to roll a 4 or higher you will only roll 2 dice total, 1 for the aura chance and one for the 0 mana chance.
+Freeze: Unable to use any attacks or eat for 1 turn. Freezing an opponent removes the poison condition.
+Poison: Get damaged every turn starting with 1 damage per turn and increasing to a max of 5 per turn. This condition does not expire.
+___________________________________________________________________
+			  6. Game Modes
+___________________________________________________________________
+
+Single Player: Battle against a computer enemy.
+
+
+Dual: Fight between two human enemies.
+
+___________________________________________________________________
+			 7. Statistics
+___________________________________________________________________
+
+Clicking the Player Stats icon on the main page of the game GUI will allow
+the user to view statistics about games previously played. Statistics can be
+viewed for a single player (search by username) or for all players of the current
+game.
+
+Statistics tracked:
+
+	Number of wins
+	Number of games played
+	Average number of turns per game
+	Average food used
+	Average mana used
+	Average HP lost
