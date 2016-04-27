@@ -24,6 +24,7 @@ public class ScoreboardTest extends Scoreboard{
 	 */
 
 	/*
+	 * Status: Passed
 	@Test
 	public void testScoreboardConstructor2() {
 		Scoreboard board = new Scoreboard();
@@ -31,14 +32,18 @@ public class ScoreboardTest extends Scoreboard{
 		System.out.println(board.toString());
 	}
 	 */
-	
-//	@Test
-//	public void testGetPlayerDataFromFile() throws IOException{
-//		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
-//		Scoreboard board = new Scoreboard();
-//		board.getPlayerDataFromFile(readPlayers);
-//		assertNotNull(Scoreboard.getPlayerArrayList());
-//	}
+	/*
+	 * Status: Passed
+	@Test
+	public void testGetPlayerDataFromFile() throws IOException{
+		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
+		Scoreboard board = new Scoreboard();
+		readPlayers.nextInt();
+		assertNotNull(Scoreboard.getPlayerArrayList());
+		System.out.println(board.getPlayerDataFromFile(readPlayers));
+	}
+	 */
+
 	/*
 	 * Status: Passed
 	@Test
@@ -91,6 +96,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.readDataIntoArrayListFromFile();
 		board.addNewPlayerFromUsername("user4");
 		System.out.println(Scoreboard.getIDByUsername("user1"));
+		System.out.println(board.toString());
 	}
 	 */
 	/*
@@ -183,8 +189,6 @@ public class ScoreboardTest extends Scoreboard{
 	}
 	 */
 
-	 
-
 	/*
 	 * Status: Passed, because the constructor initializes username to empty String
 	 * 	@Test
@@ -200,14 +204,16 @@ public class ScoreboardTest extends Scoreboard{
 
 	/*
 	 * Status: Passed - returned true because user3 is in ArrayList
+	@Test
+	public void testCheckForPlayerInArrayList1() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(board.toString());
+		System.out.print(board.checkForPlayerInArrayList(2));
+		System.out.println("\n");
+	}
 	 */
-//	@Test
-//	public void testCheckForPlayerInArrayList1() throws IOException{
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		System.out.print(board.checkForPlayerInArrayList(3));
-//		System.out.println("\n");
-//	}
+
 	/*
 	 * Status: Passed - returned false because no user has ID 4 in ArrayList
 	 */
@@ -220,16 +226,18 @@ public class ScoreboardTest extends Scoreboard{
 //	}
 	/*
 	 * Status: Passed - incremented the game count to 23 for user2
+	 * 	@Test
+	public void testUpdatePlayerDataInArrayList() throws IOException{
+		Scoreboard board = new Scoreboard();
+		board.readDataIntoArrayListFromFile();
+		System.out.println(board.getPlayerByID(2).toString());
+		board.getPlayerByID(2).getPlayerData().incrGameCount();
+		System.out.println(board.getPlayerByID(2).toString());
+		board.getPlayerByID(2).getPlayerData().resetData();
+		System.out.println(board.getPlayerByID(2).toString());
+	}
 	 */
-//	@Test
-//	public void testUpdatePlayerDataInArrayList() throws IOException{
-//		Scoreboard board = new Scoreboard();
-//		board.readDataIntoArrayListFromFile();
-//		board.getPlayerByID(2).getPlayerData().incrGameCount();
-//		board.updatePlayerDataInArrayList(board.getPlayerByID(2));
-//		System.out.print(board.toString());
-//		System.out.println("\n");
-//	}
+
 	/*
 	 * Status: Passed - it outputted the data to outputData.txt file
 	 * Setup: change the method to write to outputData.txt
@@ -262,7 +270,7 @@ public class ScoreboardTest extends Scoreboard{
 	 * Status: Passed
 	 */
 	/*
-	 * 	@Test
+	@Test
 	public void testAddPlayerAndSortAndSendPlayerDataToFile() throws IOException{
 		Scoreboard board = new Scoreboard();
 		board.readDataIntoArrayListFromFile();
@@ -271,8 +279,8 @@ public class ScoreboardTest extends Scoreboard{
 		board.addNewPlayerFromUsername("user6");
 		Scoreboard.getPlayerByUsername("user4").getPlayerData().incrGameCount();
 		Scoreboard.getPlayerByUsername("user5").getPlayerData().incrWinCount();
-		Scoreboard.getPlayerByUsername("user6").getPlayerData().incrNumAttacks();
-		Scoreboard.getPlayerByUsername("user4").getPlayerData().setScore(calculateScore(2000, 3000, 1));
+		Scoreboard.getPlayerByUsername("user6").getPlayerData().incrNumBaseAttacks();
+		Scoreboard.calculateNewScore(3,0);
 		board.sortArrayListByScore();
 		board.sendPlayerDataToFile();
 	}
@@ -296,6 +304,35 @@ public class ScoreboardTest extends Scoreboard{
 	}
  */
 
+	@Test
+	public void testCalculateScore0() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user1");
+		board.addNewPlayerFromUsername("user2");
+		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
+		assertNotNull(Scoreboard.getPlayerByID(0));
+	}
+	@Test
+	public void testCalculateScore00() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user1");
+		board.addNewPlayerFromUsername("user2");
+		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
+		assertNotNull(Scoreboard.getPlayerByID(1));
+	}
+	@Test
+	public void testCalculateScore000() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user1");
+		board.addNewPlayerFromUsername("user2");
+		board.addNewPlayerFromUsername("user3");
+		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
+		System.out.println(Scoreboard.getPlayerByID(0).toString());
+		System.out.println(Scoreboard.getPlayerByID(1).toString());
+		System.out.println(Scoreboard.getPlayerByID(2).toString());
+		assertNotNull(Scoreboard.getPlayerByID(2));
+	}
+	
 	@Test
 	public void testCalculateScore1() {
 		Scoreboard board = new Scoreboard();
@@ -368,6 +405,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.getPlayerByUsername("user2").getPlayerData().setScore(2100);
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user2"), Scoreboard.getIDByUsername("user1"));
+		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user3"), Scoreboard.getIDByUsername("user1"));
 		assertEquals(2077.894737, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .0000001);
 	}
 	
