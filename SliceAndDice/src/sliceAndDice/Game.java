@@ -232,9 +232,13 @@ public class Game {
 		}
 		if(playerOneStatus.getHitPts() == 0) {
 			gameWinner = Winner.PLAYER_TWO;
+			winnerID = playerTwo.getID();
+			loserID = playerOne.getID();
 		}
 		else if (playerTwoStatus.getHitPts() == 0) {
 			gameWinner = Winner.PLAYER_ONE;
+			winnerID = playerOne.getID();
+			loserID = playerTwo.getID();
 		}
 		return gameWinner;
 	}
@@ -423,6 +427,9 @@ class Turn {
 			// Return if player one has won
 			gameWinner = Winner.PLAYER_ONE;
 		}
+		else if(statusP1.getHitPts() == 0) {
+			gameWinner = Winner.PLAYER_TWO;
+		}
 		return gameWinner;
 	}
 	/**
@@ -439,10 +446,14 @@ class Turn {
 		
 		playNextTurn(moveP2, statusP2, statusP1);
 			
-		if(statusP1.getHitPts() == 0) {
+		if(statusP2.getHitPts() == 0) {
+			// Return if player one has won
+			gameWinner = Winner.PLAYER_ONE;
+		}
+		else if(statusP1.getHitPts() == 0) {
 			gameWinner = Winner.PLAYER_TWO;
 		}
-
+		
 		return gameWinner;
 	}
 	/**
@@ -715,4 +726,3 @@ class Turn {
 		}
 	}
 }
-
