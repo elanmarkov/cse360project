@@ -360,6 +360,7 @@ public class ScoreboardTest extends Scoreboard{
 	}
 	@Test
 	public void testCalculateScore4() {
+		//quick comment
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user1");
 		board.addNewPlayerFromUsername("user2");
