@@ -84,21 +84,26 @@ ___________________________________________________________________
 
 Freeze: Roll 4 dice. The first two dice will Freeze your opponent if the roll sum is higher than 7. The other two dice will deal damage equal to their sum.
 Freeze Effect: Player is unable to attack or eat for 1 turn.  
+Cost: 6 mana
  
 
 Double Attack: Roll eight dice and deal damage equal to their sum.
+Cost: 10 mana
 
 
 Poison: Roll 4 dice. The first two dice will poison your opponent if the roll sum is higher than 7. The other two dice will deal damage equal to their sum.
 Poison Effect: Player is damaged over time with increasing power. Starting damage of 1 that increases to 5 that does not expire.
+Cost: 8 mana
 
 
 Aura: Roll 4 dice: The first one will grant you an AURA if a 4 or higher is rolled. The second one will boost your ATK(attack power) based on your roll.
 The third dice will boost your DEF(defense power) based on your roll. The fourth dice will have a chance to make Aura cost 0 mana if a 4 or higher is rolled. All benifits 
 of Aura expire after 2 turns.
+Cost: 10 mana / 0 mana
 
 
 Charge: Roll 4 dice. Regain mana equal to half the sum of your rolls.
+Cost: 0 mana
 
 ___________________________________________________________________
 			  5. Conditions and Modifiers
