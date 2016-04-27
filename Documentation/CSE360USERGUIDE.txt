@@ -110,7 +110,7 @@ DEF: If you are the off-turn player, decrease the damage your opponent does to y
 Double Attack is affected by these modifiers. Both ATK and DEF are doubled.
 
 Conditions
-Only 1 condition at a time. You can not be poisoned and
+Only 1 condition at a time. 
 Aura: Cure yourself of poison,become protected from all other conditions and gain boosted ATK and DEF for 2 turns. If you fail to roll a 4 or higher you will only roll 2 dice total, 1 for the aura chance and one for the 0 mana chance.
 Freeze: Unable to use any attacks or eat for 1 turn. Freezing an opponent removes the poison condition.
 Poison: Get damaged every turn starting with 1 damage per turn and increasing to a max of 5 per turn. This condition does not expire.
