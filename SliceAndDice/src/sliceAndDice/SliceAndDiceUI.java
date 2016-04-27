@@ -2039,9 +2039,9 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					splitPane.setDividerLocation(.30);
 					gameFrame.validate();
-					if(singlePlayer && winner == Winner.NONE && (computerFirst
-							&& !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN))
-							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+					if(singlePlayer && winner == Winner.NONE && (computerFirst &&
+							!(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)
+							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN)))){
 						
 							if(gameFrame.isEnabled()){
 								gameFrame.setEnabled(false);
@@ -2280,9 +2280,9 @@ public class SliceAndDiceUI {
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
 					
-					if(singlePlayer && winner == Winner.NONE && (computerFirst
-							&& !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN))
-							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+					if(singlePlayer && winner == Winner.NONE && (computerFirst &&
+							!(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)
+							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN)))){
 
 							if(gameFrame.isEnabled()){
 								gameFrame.setEnabled(false);
@@ -2604,9 +2604,10 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
+					//boolean yep = singlePlayer;
 					if(singlePlayer && winner == Winner.NONE && (computerFirst &&
-							!(game.getPlayerOneStatus().getCondition() == Condition.FROZEN))
-							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+							!(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)
+							|| (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN)))){
 						
 						if(gameFrame.isEnabled()){
 							gameFrame.setEnabled(false);
