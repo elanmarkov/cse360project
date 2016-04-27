@@ -48,8 +48,10 @@ public class SliceAndDiceUI {
 	private JSplitPane playerPane;
 	private JScrollPane scrollStats;
 	public String tempUser = "";
-	Boolean singlePlayer = true;
+	boolean singlePlayer = true;
+	boolean computerFirst;
 	Timer timer;
+	Timer timeKiller;
 	Game game;
 	GetStats stats = new GetStats();
 	Winner winner = Winner.NONE;
@@ -916,6 +918,32 @@ public class SliceAndDiceUI {
  * Action listeners
  */
 			/*
+			 * Time killer timer
+			 */
+			ActionListener killTime = new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					die1.removeAll();
+					die2.removeAll();
+					die3.removeAll();
+					die4.removeAll();
+					
+					die1.setBackground(Color.red);
+					die2.setBackground(Color.red);
+					die3.setBackground(Color.red);
+					die4.setBackground(Color.red);
+					
+					die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
+					die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
+					die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
+					die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
+					gameFrame.pack();
+					gameFrame.validate();
+					timer.start();
+				}
+			};
+			timeKiller = new Timer(2000, killTime);
+			timeKiller.setRepeats(false);
+			/*
 			 * Computer turn timer
 			 */
 				ActionListener computerTurn = new ActionListener(){
@@ -949,6 +977,8 @@ public class SliceAndDiceUI {
 								rollResult[2] + "_85px.png"))), BorderLayout.CENTER);
 						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/die_land_" + 
 								rollResult[3] + "_85px.png"))), BorderLayout.CENTER);
+						
+						middleRightPanel.removeAll();
 						
 						if(winner == Winner.NONE){
 							
@@ -1155,7 +1185,9 @@ public class SliceAndDiceUI {
 					}
 				};
 				
-				timer = new Timer(2000, computerTurn);
+				timer = new Timer(3000, computerTurn);
+				timer.setRepeats(false);
+				
 	
 			/*
 			 * menu button listeners
@@ -1439,8 +1471,11 @@ public class SliceAndDiceUI {
 							playerTwoName.setText(usernameTwo);
 						
 					}else if(singlePlayer && player > 0){
+						computerFirst = false;
 						game = new Game(usernameOne, true);
+						
 						usernameTwo = Robot.createRandomUsername();
+						
 						playerTwoName.setFont(smallLabelFont);
 						
 						playerOneName.setText(usernameOne);
@@ -1449,14 +1484,18 @@ public class SliceAndDiceUI {
 						activePlayer.setText(usernameOne);
 						
 					}else{
+						computerFirst = true;
 						game = new Game(usernameOne, false);
-						usernameTwo = Robot.createRandomUsername();
+						
+						usernameTwo = usernameOne;
+						usernameOne = Robot.createRandomUsername();
+						
 						playerOneName.setFont(smallLabelFont);
 						
-						playerOneName.setText(usernameTwo);
-						playerTwoName.setText(usernameOne);
+						playerOneName.setText(usernameOne);
+						playerTwoName.setText(usernameTwo);
 						
-						activePlayer.setText(usernameTwo);
+						activePlayer.setText(usernameOne);
 					}
 					
 					gameFrame.setPreferredSize(GAME_SIZE);
@@ -1483,8 +1522,8 @@ public class SliceAndDiceUI {
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
 					
-					if(activePlayer.getText().equals(usernameTwo)){
-						timer.start();
+					if(singlePlayer && computerFirst){
+						timeKiller.start();
 					}
 				}
 			});
@@ -1982,26 +2021,12 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					splitPane.setDividerLocation(.30);
 					gameFrame.validate();
-					if(singlePlayer){
-						if(gameFrame.isEnabled()){
-							gameFrame.setEnabled(false);
-							gameFrame.toFront();
-						}
-						die1.removeAll();
-						die2.removeAll();
-						die3.removeAll();
-						die4.removeAll();
-						
-						die1.setBackground(Color.red);
-						die2.setBackground(Color.red);
-						die3.setBackground(Color.red);
-						die4.setBackground(Color.red);
-						
-						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
-						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
-						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
-						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-						timer.start();
+					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+							if(gameFrame.isEnabled()){
+								gameFrame.setEnabled(false);
+								gameFrame.toFront();
+							}
+							timeKiller.start();
 					}
 				}
 			});
@@ -2231,28 +2256,14 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
-					if(singlePlayer){
-						if(gameFrame.isEnabled()){
-							gameFrame.setEnabled(false);
-							gameFrame.toFront();
-						}
-						die1.removeAll();
-						die2.removeAll();
-						die3.removeAll();
-						die4.removeAll();
-						
-						die1.setBackground(Color.red);
-						die2.setBackground(Color.red);
-						die3.setBackground(Color.red);
-						die4.setBackground(Color.red);
-						
-						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
-						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
-						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
-						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-						timer.start();
-					}
 					
+					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
+							if(gameFrame.isEnabled()){
+								gameFrame.setEnabled(false);
+								gameFrame.toFront();
+							}
+							timeKiller.start();
+					}
 				}
 			});
 			
@@ -2565,26 +2576,12 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
-					if(singlePlayer){
+					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
 						if(gameFrame.isEnabled()){
 							gameFrame.setEnabled(false);
 							gameFrame.toFront();
 						}
-						die1.removeAll();
-						die2.removeAll();
-						die3.removeAll();
-						die4.removeAll();
-						
-						die1.setBackground(Color.red);
-						die2.setBackground(Color.red);
-						die3.setBackground(Color.red);
-						die4.setBackground(Color.red);
-						
-						die1.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_1.gif"))), BorderLayout.CENTER);
-						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
-						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
-						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-						timer.start();
+						timeKiller.start();
 					}
 				}
 			});
@@ -3182,6 +3179,8 @@ class DoubleAtk extends JFrame{
 	 * Set component fonts and colors
 	 */
 	private void setFonts(){
+		stopButton.setToolTipText("Push to stop dice roll");
+		closeButton.setToolTipText("Return to game");
 		topPanel.setBorder(BorderFactory.createTitledBorder(""));
 		centerPanel.setBorder(BorderFactory.createTitledBorder(""));
 		centerPanel.setBackground(Color.red);
@@ -3427,18 +3426,23 @@ class ChooseAttack extends JFrame{
 		freezeButton.setFont(buttonFont);
 		freezeButton.setForeground(Color.red);
 		freezeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		freezeButton.setToolTipText("Roll to freeze your opponent for a turn");
 		dblAtk.setFont(buttonFont);
 		dblAtk.setForeground(Color.red);
 		dblAtk.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		dblAtk.setToolTipText("Roll 8 dice instead of 4. Damage equals sum of dice rolled");
 		poisonButton.setFont(buttonFont);
 		poisonButton.setForeground(Color.red);
 		poisonButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		poisonButton.setToolTipText("Roll to poison your opponent");
 		auraButton.setFont(buttonFont);
 		auraButton.setForeground(Color.red);
 		auraButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		auraButton.setToolTipText("Roll to cast an aura on yourself");
 		chargeButton.setFont(buttonFont);
 		chargeButton.setForeground(Color.red);
 		chargeButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		chargeButton.setToolTipText("Roll to charge your mana");
 		
 		freezeLabel.setFont(labelFont);
 		freezeLabel.setForeground(Color.red);
@@ -3697,6 +3701,7 @@ class ChooseFirst extends JFrame{
 			choosePlayerCenter.setBorder(BorderFactory.createTitledBorder(""));
 			choosePlayerCenter.setBackground(Color.red);
 		final JButton stopRoll = new JButton("Stop Roll");
+			stopRoll.setToolTipText("Stop the dice roll");
 		final JPanel stopPanel = new JPanel(new GridLayout(3,1,2,2));
 		JPanel fillPanel1 = new JPanel();
 			fillPanel1.setBackground(Color.red);
@@ -3710,6 +3715,7 @@ class ChooseFirst extends JFrame{
 		JPanel choosePlayerBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			
 			JButton cont = new JButton("Start Game");
+				cont.setToolTipText("Start game");
 			
 			choosePlayerBottom.add(cont);
 			
