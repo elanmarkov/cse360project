@@ -2278,7 +2278,10 @@ public class SliceAndDiceUI {
 					gameFrame.pack();
 					playerPane.setDividerLocation(.25);
 					gameFrame.validate();
-					
+					int p1hp = game.getPlayerOneStatus().getHitPts();
+					int p2hp = game.getPlayerTwoStatus().getHitPts();
+					Winner winnar = winner;
+					int winzor = game.getWinnerID();
 					if(singlePlayer && winner == Winner.NONE && (computerFirst && !(game.getPlayerOneStatus().getCondition() == Condition.FROZEN)) || (!computerFirst && !(game.getPlayerTwoStatus().getCondition() == Condition.FROZEN))){
 							if(gameFrame.isEnabled()){
 								gameFrame.setEnabled(false);
