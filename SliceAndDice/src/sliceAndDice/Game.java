@@ -133,13 +133,13 @@ public class Game {
 			winnerID = playerOne.getID();
 			loserID = playerTwo.getID();
 			playerOne.getPlayerData().incrWinCount();
-			//updateStats();
+			updateStats();
 		}
 		else if(gameWinner == Winner.PLAYER_TWO){
 			winnerID = playerTwo.getID();
 			loserID = playerOne.getID();
 			playerTwo.getPlayerData().incrWinCount();
-			//updateStats();
+			updateStats();
 		}
 		
 		lastConditionEvaluated = false;

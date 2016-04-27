@@ -15,6 +15,7 @@ public class Robot extends Player {
 	private final static String[] suffix = {"the Mighty", "the Wise", "the Valiant", 
 			"the Wretched", "the Blighted", "the Lionheart", "the Great",
 			"the Pretender"};
+	private final static int robotID = -1337;
 	/**
 	 * Default constructor for Robot class. No arguments.
 	 */
@@ -58,5 +59,11 @@ public class Robot extends Player {
 	 */
 	Data getPlayerData() {
 		return computerData;
+	}
+	int getID() {
+		return robotID;
+	}
+	static int getRobotID() {
+		return robotID;
 	}
 }
