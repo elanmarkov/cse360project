@@ -1709,10 +1709,6 @@ public class SliceAndDiceUI {
 								gameFrame.setEnabled(true);
 							}
 							return;
-						}catch(NullPointerException e){
-							if(!gameFrame.isEnabled()){
-								gameFrame.setEnabled(true);
-							}
 						}
 	
 						die1.removeAll();
@@ -1816,10 +1812,6 @@ public class SliceAndDiceUI {
 								gameFrame.setEnabled(true);
 							}
 							return;
-						}catch(NullPointerException e){
-							if(!gameFrame.isEnabled()){
-								gameFrame.setEnabled(true);
-							}
 						}
 					}
 					middleRightPanel.removeAll();
@@ -2650,10 +2642,6 @@ public class SliceAndDiceUI {
 								gameFrame.setEnabled(true);
 							}
 							return;
-						}catch(NullPointerException e){
-							if(!gameFrame.isEnabled()){
-								gameFrame.setEnabled(true);
-							}
 						}
 					}
 					middleRightPanel.removeAll();
