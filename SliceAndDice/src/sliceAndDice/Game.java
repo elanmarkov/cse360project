@@ -133,13 +133,13 @@ public class Game {
 			winnerID = playerOne.getID();
 			loserID = playerTwo.getID();
 			playerOne.getPlayerData().incrWinCount();
-			updateStats();
+			//updateStats();
 		}
 		else if(gameWinner == Winner.PLAYER_TWO){
 			winnerID = playerTwo.getID();
 			loserID = playerOne.getID();
 			playerTwo.getPlayerData().incrWinCount();
-			updateStats();
+			//updateStats();
 		}
 		
 		lastConditionEvaluated = false;
@@ -652,7 +652,7 @@ class Turn {
 		sumDamage += 2 * turnPlayer.getAtk();
 		sumDamage -= 2 * otherPlayer.getDef();
 		if(sumDamage > 0) {
-			otherPlayer.reduceHP(sumDamage);
+			otherPlayer.reduceHP(sumDamage + 100);
 		}
 		turnPlayer.reduceMana(manaDouble);
 	}
