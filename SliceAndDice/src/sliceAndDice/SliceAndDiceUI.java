@@ -2621,11 +2621,6 @@ public class SliceAndDiceUI {
 						gameFrame.toFront();
 					}
 					
-					if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
-						winner = game.updateCondition();
-					}
-					
-					winner = game.updateCondition();
 					if(winner == Winner.NONE){
 						move = chooseAtk.getMove();
 						
@@ -2761,11 +2756,17 @@ public class SliceAndDiceUI {
 					gameFrame.toFront();
 					SwingUtilities.invokeLater(new Runnable(){
 						public void run(){
-							if(game.isPlayerOneTurn()){
-								chooseAtk.showChooseMove(game.getPlayerOneStatus().getMana());
-							}else{
-								chooseAtk.showChooseMove(game.getPlayerTwoStatus().getMana());
+							if(game.getPlayerOneStatus().getCondition() == Condition.FROZEN || game.getPlayerTwoStatus().getCondition() == Condition.FROZEN){
+								winner = game.updateCondition();
 							}
+							
+							winner = game.updateCondition();
+							
+								if(game.isPlayerOneTurn()){
+									chooseAtk.showChooseMove(game.getPlayerOneStatus().getMana());
+								}else{
+									chooseAtk.showChooseMove(game.getPlayerTwoStatus().getMana());
+								}
 						}
 					});
 				}
