@@ -368,6 +368,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(960.7843137, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .0000001);
 	}
+	@Test
 	public void testCalculateScore5() {
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user1");
@@ -378,6 +379,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(500, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .0000001);
 	}
+	@Test
 	public void testCalculateScore6() {
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user1");
@@ -388,6 +390,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(1500, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .0000001);
 	}
+	@Test
 	public void testCalculateScore7() {
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user1");
@@ -398,6 +401,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user2"), Scoreboard.getIDByUsername("user1"));
 		assertEquals(1922.105263, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .0000001);
 	}
+	@Test
 	public void testCalculateScore8() {
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user1");
@@ -408,6 +412,23 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user2"), Scoreboard.getIDByUsername("user1"));
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user3"), Scoreboard.getIDByUsername("user1"));
 		assertEquals(2077.894737, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .0000001);
+	}
+	@Test
+	public void testCalculateScoreRobot1() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user1");
+		Player robotPlayer = new Robot();
+		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Robot.getRobotID());
+		assertEquals(1020, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
+	}
+	@Test
+	public void testCalculateScoreRobot2() {
+		Scoreboard board = new Scoreboard();
+		board.addNewPlayerFromUsername("user1");
+		Player robotPlayer = new Robot();
+		Scoreboard.calculateNewScore(Robot.getRobotID(), Scoreboard.getIDByUsername("user1"));
+		assertEquals(980, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .1);
+
 	}
 	
 
