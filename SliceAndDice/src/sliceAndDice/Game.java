@@ -652,7 +652,7 @@ class Turn {
 		sumDamage += 2 * turnPlayer.getAtk();
 		sumDamage -= 2 * otherPlayer.getDef();
 		if(sumDamage > 0) {
-			otherPlayer.reduceHP(sumDamage + 70);
+			otherPlayer.reduceHP(sumDamage);
 		}
 		turnPlayer.reduceMana(manaDouble);
 	}
