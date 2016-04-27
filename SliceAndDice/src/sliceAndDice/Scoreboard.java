@@ -282,8 +282,18 @@ static ArrayList<Player> players;
     public static void calculateNewScore(int winnerID, int loserID) {
     	Player winner;
     	Player loser;
-    	winner = Scoreboard.getPlayerByID(winnerID);
-    	loser = Scoreboard.getPlayerByID(loserID);
+    	if(winnerID == Robot.getRobotID()) {
+    		winner = new Robot();
+    	}
+    	else {
+    		winner = Scoreboard.getPlayerByID(winnerID);
+    	}
+    	if(loserID == Robot.getRobotID()) {
+    		loser = new Robot();
+    	}
+    	else {
+    		loser = Scoreboard.getPlayerByID(winnerID);
+    	}
     	double differential;
     	// calculate differential
     	differential = (loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;
