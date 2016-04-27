@@ -151,7 +151,7 @@ public class SliceAndDiceUI {
 				 * Fonts
 				 */
 				Font bigButtonFont = new Font("Trebuchet MS", Font.BOLD, 32);
-				Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
+				final Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
 				final Font smallLabelFont = new Font("Trebuchet MS", Font.BOLD, 12);
 				Font verySmallLabelFont = new Font("Trebuchet MS", Font.BOLD, 10);
 				Font smallButtonFont = new Font("Trebuchet MS", Font.BOLD, 16);
@@ -1107,11 +1107,12 @@ public class SliceAndDiceUI {
 							plTwoManaStatus.setValue(game.getPlayerTwoStatus().getMana());
 							plTwoFoodStatus.setValue(game.getPlayerTwoStatus().getFoodCount());
 						}else if(winner.equals(Winner.PLAYER_ONE)){
+							middlePlayerSel.removeAll();
 							middleRightPanel.removeAll();
 							plTwoHealthStatus.setValue(0);
 							playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 							
-							gamePlayerWinner.setText(game.getPlayerOneUsername());
+							gamePlayerWinner.setText(usernameOne);
 							winningPlayer.add(gamePlayerWinner);
 							winningPlayer.add(winnerLabel);
 							
@@ -1121,11 +1122,12 @@ public class SliceAndDiceUI {
 							gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 
 						}else if(winner.equals(Winner.PLAYER_TWO)){
+							middlePlayerSel.removeAll();
 							middleRightPanel.removeAll();
 							plOneHealthStatus.setValue(0);
 							playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 							
-							gamePlayerWinner.setText(game.getPlayerTwoUsername());
+							gamePlayerWinner.setText(usernameTwo);
 							winningPlayer.add(gamePlayerWinner);
 							winningPlayer.add(winnerLabel);
 							
@@ -1476,7 +1478,7 @@ public class SliceAndDiceUI {
 						
 						usernameTwo = Robot.createRandomUsername();
 						
-						playerTwoName.setFont(smallLabelFont);
+						playerTwoName.setFont(labelFont);
 						
 						playerOneName.setText(usernameOne);
 						playerTwoName.setText(usernameTwo);
@@ -1490,7 +1492,7 @@ public class SliceAndDiceUI {
 						usernameTwo = usernameOne;
 						usernameOne = Robot.createRandomUsername();
 						
-						playerOneName.setFont(smallLabelFont);
+						playerOneName.setFont(labelFont);
 						
 						playerOneName.setText(usernameOne);
 						playerTwoName.setText(usernameTwo);
@@ -1709,6 +1711,10 @@ public class SliceAndDiceUI {
 								gameFrame.setEnabled(true);
 							}
 							return;
+						}catch(NullPointerException e){
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 						}
 	
 						die1.removeAll();
@@ -1743,11 +1749,12 @@ public class SliceAndDiceUI {
 						});
 						
 					}else if(winner.equals(Winner.PLAYER_ONE)){
+						middlePlayerSel.removeAll();
 						middleRightPanel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerOneUsername());
+						gamePlayerWinner.setText(usernameOne);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -1758,11 +1765,12 @@ public class SliceAndDiceUI {
 						gameFrame.pack();
 						gameFrame.validate();
 					}else if(winner.equals(Winner.PLAYER_TWO)){
+						middlePlayerSel.removeAll();
 						middleRightPanel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerTwoUsername());
+						gamePlayerWinner.setText(usernameTwo);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -1800,10 +1808,20 @@ public class SliceAndDiceUI {
 							winner = game.PlayNextTurn(move);
 						}catch(IllegalArgumentException e){
 							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 							return;
 						}catch(IllegalStateException e){
 							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 							return;
+						}catch(NullPointerException e){
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 						}
 					}
 					middleRightPanel.removeAll();
@@ -1950,10 +1968,11 @@ public class SliceAndDiceUI {
 						
 						gameFrame.setContentPane(gamePlayPanel);
 					}else if(winner.equals(Winner.PLAYER_ONE)){
+						middlePlayerSel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerOneUsername());
+						gamePlayerWinner.setText(usernameOne);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -1962,10 +1981,11 @@ public class SliceAndDiceUI {
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 					}else if(winner.equals(Winner.PLAYER_TWO)){
+						middlePlayerSel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerTwoUsername());
+						gamePlayerWinner.setText(usernameTwo);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -2185,10 +2205,11 @@ public class SliceAndDiceUI {
 							}
 
 					}else if(winner.equals(Winner.PLAYER_ONE)){
+						middlePlayerSel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerOneUsername());
+						gamePlayerWinner.setText(usernameOne);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -2197,10 +2218,11 @@ public class SliceAndDiceUI {
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 					}else if(winner.equals(Winner.PLAYER_TWO)){
+						middlePlayerSel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerTwoUsername());
+						gamePlayerWinner.setText(usernameTwo);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -2505,10 +2527,11 @@ public class SliceAndDiceUI {
 						}
 
 					}else if(winner.equals(Winner.PLAYER_ONE)){
+						middlePlayerSel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerOneUsername());
+						gamePlayerWinner.setText(usernameOne);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -2517,10 +2540,11 @@ public class SliceAndDiceUI {
 						middleGamePanel.add(playerPane, BorderLayout.CENTER);
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 					}else if(winner.equals(Winner.PLAYER_TWO)){
+						middlePlayerSel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerTwoUsername());
+						gamePlayerWinner.setText(usernameTwo);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						
@@ -2613,10 +2637,20 @@ public class SliceAndDiceUI {
 							winner = game.PlayNextTurn(move);
 						}catch(IllegalArgumentException e){
 							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 							return;
 						}catch(IllegalStateException e){
 							JOptionPane.showMessageDialog(gameFrame, "Fatal Error! " + e.getMessage());
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 							return;
+						}catch(NullPointerException e){
+							if(!gameFrame.isEnabled()){
+								gameFrame.setEnabled(true);
+							}
 						}
 					}
 					middleRightPanel.removeAll();
@@ -2685,10 +2719,11 @@ public class SliceAndDiceUI {
 							});
 						}
 					}else if(winner == Winner.PLAYER_ONE){
+						middlePlayerSel.removeAll();
 						plTwoHealthStatus.setValue(0);
 						playerTwoHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerOneUsername());
+						gamePlayerWinner.setText(usernameOne);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/victoryP1.png"))));
@@ -2697,10 +2732,11 @@ public class SliceAndDiceUI {
 						gamePlayPanel.add(middleGamePanel, BorderLayout.CENTER);
 						
 					}else if(winner == Winner.PLAYER_TWO){
+						middlePlayerSel.removeAll();
 						plOneHealthStatus.setValue(0);
 						playerOneHealthRatio.setText(0 + "/" + Status.getMaxHP());
 						
-						gamePlayerWinner.setText(game.getPlayerTwoUsername());
+						gamePlayerWinner.setText(usernameTwo);
 						winningPlayer.add(gamePlayerWinner);
 						winningPlayer.add(winnerLabel);
 						middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/victoryP2.png"))));
@@ -2782,24 +2818,26 @@ public class SliceAndDiceUI {
 					if(winner == Winner.NONE){
 						game.abortGame();
 					}
-					
-					Object[] inputs = {"Save", "Exit"};
-					int ans = JOptionPane.showOptionDialog(gameFrame, "Exit without saving?", "Slice And Dice",
-							JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-							new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png"))), inputs, null);
-					
-						if(ans == 0){
-							try{
-								stats.scoreboard.sendPlayerDataToFile();
-							}catch(IOException e){
-								JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
+						Object[] inputs = {"Save", "Exit"};
+						int ans = JOptionPane.showOptionDialog(gameFrame, "Exit without saving?", "Slice And Dice",
+								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+								new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sliceAndDice/game_resources/dieIcon.png"))), inputs, null);
+						
+							if(ans == 0){
+								try{
+									stats.scoreboard.sendPlayerDataToFile();
+								}catch(IOException e){
+									JOptionPane.showMessageDialog(gameFrame, "Error: " + e.getMessage());
+								}
+								JOptionPane.showMessageDialog(gameFrame, "Game saved!");
+								gameFrame.dispose();
+								System.exit(0);
+							}else{
+								gameFrame.dispose();
+								System.exit(0);
 							}
-							JOptionPane.showMessageDialog(gameFrame, "Game saved!");
-						}else{
-							gameFrame.dispose();
-							System.exit(0);
 						}
-					}
+					
 			});
 			
 				/*
