@@ -292,7 +292,7 @@ static ArrayList<Player> players;
     		loser = new Robot();
     	}
     	else {
-    		loser = Scoreboard.getPlayerByID(winnerID);
+    		loser = Scoreboard.getPlayerByID(loserID);
     	}
     	double differential;
     	// calculate differential
