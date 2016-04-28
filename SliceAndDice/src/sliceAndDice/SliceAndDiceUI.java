@@ -1342,7 +1342,7 @@ public class SliceAndDiceUI {
 					}
 				};
 				
-				timer = new Timer(3000, computerTurn);
+				timer = new Timer(2000, computerTurn);
 				timer.setRepeats(false);
 				
 	
