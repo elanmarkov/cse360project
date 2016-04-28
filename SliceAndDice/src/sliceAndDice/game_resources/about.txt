@@ -124,11 +124,13 @@ Double Attack is doubly affected by these modifiers. Both ATK and DEF are double
 
 Conditions
 Only 1 condition at a time. 
-Aura: Cure yourself of poison, become protected from all other conditions and gain boosted ATK and DEF for 2 turns. 
-If you fail to roll a 4 or higher on the first die, the effect of the second and third die are not applied.
-Freeze: Unable to use any attacks or eat for 1 turn. Freezing an opponent removes the poison condition.
-Poison: Get damaged every turn starting with 1 damage per turn and increasing to a max of 5 per turn. 
-This condition does not expire.
+Aura: Cure yourself of poison, become protected from all other conditions for 2 turns, and gain boosted
+ATK and DEF for 3 turns. If you fail to roll a 4 or higher on the first die, the effect of the second and
+third die are not applied. 
+Freeze: Unable to use any attacks or eat for 1 turn. Freezing an opponent
+removes the poison condition. 
+Poison: Get damaged every turn starting with 1 damage per turn and increasing
+to a max of 5 per turn. This condition does not expire.
 ___________________________________________________________________
 			  6. Game Modes
 ___________________________________________________________________
@@ -143,16 +145,23 @@ ___________________________________________________________________
 
 Clicking the Player Stats icon on the main page of the game GUI will allow
 the user to view statistics about games previously played. Statistics can be
-viewed for a single player (search by username) or for all players of the current
-game.
+viewed for a single player (search by username) or for all players.
 
-Statistics tracked:
 
-	Number of wins
-	Number of games played
-	Average number of turns per game
-	Average food used
-	Average mana used
-	Average HP lost
-	Number of attacks used
-	Number of special attacks used
+Statistics tracked per user:
+
+	Player Score
+	Total Number of Games Played
+	Total Number of Wins
+	Total Number of Game Aborts
+	Total Number of Base Attacks
+	Total Number of Special Attacks
+	Total Number of Poison Attacks
+	Total Number of Freeze Attacks
+	Total Number of Double Attacks
+	Total Number of Auras Cast
+	Total Number of Mana Charges
+	Total Number of Meals (Heals)
+	Total Health Lost
+	Total Mana Used
+	Total Food Used
