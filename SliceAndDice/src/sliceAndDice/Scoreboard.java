@@ -291,16 +291,17 @@ static ArrayList<Player> players;
     		loser = Scoreboard.getPlayerByID(loserID);
     	}
     	if(loserID == Robot.getRobotID()) {
-    		loser = new Robot();
     		winner = Scoreboard.getPlayerByID(winnerID);
+    		loser = new Robot();
+    		
     	}
     	else {
-    		loser = Scoreboard.getPlayerByID(loserID);
     		winner = Scoreboard.getPlayerByID(winnerID);
+    		loser = Scoreboard.getPlayerByID(loserID);
     	}
     	double differential;
     	// calculate differential
-    	differential = (loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;
+    	differential = ((double)loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;
     	// update winner and loser scores
     	winner.getPlayerData().setScore(winner.getPlayerData().getScore() + differential);
     	loser.getPlayerData().setScore(loser.getPlayerData().getScore() - differential);

@@ -356,7 +356,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.addNewPlayerFromUsername("user2");
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
-		assertEquals(1039.215686, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
+		assertEquals(1039.21568627, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
 	}
 	@Test
 	public void testCalculateScore4() {
