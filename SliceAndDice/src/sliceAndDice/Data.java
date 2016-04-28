@@ -486,7 +486,7 @@ public class Data {
 	 * Updates the amount of food points a Player has used. Called at the end of games.
 	 * @param finalFood amount of food points the Player has at the end of the game
 	public void updateFoodUsed(int finalFood) {
-		totalFoodUsed += (Status.getMaxFood - finalFood); // 5 is maxFood
+		totalFoodUsed += (Status.getMaxFood() - finalFood); // 5 is maxFood
 	}
 	 */
 	/**
