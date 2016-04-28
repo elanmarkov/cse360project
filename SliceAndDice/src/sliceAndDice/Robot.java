@@ -212,7 +212,8 @@ public class Robot extends Player {
 		}
 				
 		if(Turn.moveIsLegal(ownStatus, nextMove) != IllegalMove.NONE) {
-			throw new IllegalStateException("Error: Computer logic allowed for an illegal move");
+			throw new IllegalStateException("Error: Computer logic allowed for an illegal move"
+					+ "in strategy " + strategyChoice);
 		}
 		return nextMove;
 	}
