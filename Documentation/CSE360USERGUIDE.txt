@@ -85,7 +85,7 @@ ___________________________________________________________________
 Freeze: Roll 4 dice. The first two dice will Freeze your opponent if their roll sum is higher than 6. 
 The last two dice will deal damage equal to their sum.
 Freeze Effect: Player is unable to attack or eat for 1 turn.  
-Cost: 6 mana
+Cost: 4 mana
  
 
 Double Attack: Roll eight dice and deal damage equal to their sum.
@@ -108,7 +108,7 @@ defense boost until the turn after the Aura effect expires.
 Cost: 10 mana / 0 mana
 
 
-Charge: Roll 4 dice. Regain mana equal to half the sum of your rolls, rounding up.
+Charge: Roll 4 dice. Regain mana equal to 75% of the sum of your rolls, rounding up.
 Cost: 0 mana
 
 ___________________________________________________________________
