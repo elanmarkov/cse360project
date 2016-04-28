@@ -975,6 +975,8 @@ public class SliceAndDiceUI {
 							die3.setBackground(Color.yellow);
 							die4.setBackground(Color.yellow);
 							break;
+						case FOOD:
+							break;
 						default:
 							JOptionPane.showMessageDialog(gameFrame, "Special Attack Selection Error");
 							//break;
@@ -1132,6 +1134,30 @@ public class SliceAndDiceUI {
 							}
 							
 							switch(move){
+							case FOOD:
+								if(!game.isPlayerOneTurn()){
+									
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP1.gif"))), BorderLayout.CENTER);							
+									activePlayer.setText(usernameTwo);
+									
+								}else if(game.isPlayerOneTurn()){
+									
+									middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/eatfoodP2.gif"))), BorderLayout.CENTER);								
+									activePlayer.setText(usernameOne);
+									
+								}
+								
+								break;
+							case DOUBLEATK:
+									if(!game.isPlayerOneTurn()){
+										middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/doubleattackP1.gif"))), BorderLayout.CENTER);
+										activePlayer.setText(usernameTwo);
+									}else if (game.isPlayerOneTurn()){
+										middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/doubleattackP2.gif"))), BorderLayout.CENTER);
+										activePlayer.setText(usernameOne);
+									}
+									
+								break;
 							case ATTACK:
 									if(!game.isPlayerOneTurn()){
 										middleRightPanel.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/baseattackP1.gif"))), BorderLayout.CENTER);
