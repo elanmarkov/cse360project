@@ -394,7 +394,7 @@ class Turn {
 	private Status statusP1;
 	private Status statusP2;
 	static int[] lastRoll;
-	private final static int manaFreeze = 6;
+	private final static int manaFreeze = 4;
 	private final static int manaDouble = 10;
 	private final static int manaPoison = 8;
 	private final static int manaAura = 10;
