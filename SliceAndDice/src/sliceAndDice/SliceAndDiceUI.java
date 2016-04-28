@@ -935,10 +935,9 @@ public class SliceAndDiceUI {
 					
 					if(winner == Winner.NONE){
 						winner = game.PlayNextTurn();
-					}
-					
-					move = game.getLastComputerMove();
-					
+						
+						move = game.getLastComputerMove();
+						
 						switch(move){
 						case ATTACK:
 							die1.setBackground(Color.red);
@@ -990,7 +989,8 @@ public class SliceAndDiceUI {
 						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
 						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
 						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-						
+					}
+							
 						gameFrame.pack();
 						gameFrame.validate();
 						timer.start();
@@ -3161,16 +3161,16 @@ class GetStats{
 	 * Loads column name vector
 	 */
 	private void setColNames(){
-		colNames.add("Username");
+		colNames.add("Name");
 		colNames.add("Score");
 		colNames.add("Rank");
-		colNames.add("Total Games");
-		colNames.add("Total Wins");
-		colNames.add("Total Attacks");
-		colNames.add("Total Meals");
-		colNames.add("Total Health Lost");
-		colNames.add("Total Mana Used");
-		colNames.add("Total Food");
+		colNames.add("Games");
+		colNames.add("Wins");
+		colNames.add("Attacks");
+		colNames.add("Meals");
+		colNames.add("Health Lost");
+		colNames.add("Mana Used");
+		colNames.add("Food");
 	}
 	
 	/**
