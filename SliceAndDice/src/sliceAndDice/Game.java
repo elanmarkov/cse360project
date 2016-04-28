@@ -119,12 +119,12 @@ public class Game {
 			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 			gameWinner = nextTurn.playTurnPlayerOne(nextMove);
 			playerOneTurn = false;
-			updateMoveCount(playerOne, nextMove);
+			updateMoveCount(playerOne, nextMove, playerOneStatus);
 		}
 		else{
 			gameWinner = nextTurn.playTurnPlayerTwo(nextMove);
 			playerOneTurn = true;
-			updateMoveCount(playerTwo, nextMove);
+			updateMoveCount(playerTwo, nextMove, playerTwoStatus);
 		}
 
 		totalTurns++;
@@ -165,13 +165,13 @@ public class Game {
 			nextTurn = new Turn(playerOneStatus, playerTwoStatus);
 			gameWinner = nextTurn.playTurnPlayerOne(nextComputerMove);
 			playerOneTurn = false;
-			updateMoveCount(playerOne, nextComputerMove);
+			updateMoveCount(playerOne, nextComputerMove, playerOneStatus);
 		}
 		else{
 			nextComputerMove = playerTwo.getNextMove(playerTwoStatus, playerOneStatus);
 			gameWinner = nextTurn.playTurnPlayerTwo(nextComputerMove);
 			playerOneTurn = true;
-			updateMoveCount(playerTwo, nextComputerMove);
+			updateMoveCount(playerTwo, nextComputerMove, playerTwoStatus);
 		}
 
 		totalTurns++;
@@ -328,14 +328,12 @@ public class Game {
 	 */
 	private void updateStats() {
 		playerOne.getPlayerData().incrGameCount();
-		playerOne.getPlayerData().updateHealthLost(playerOneStatus.getHitPts());
-		playerOne.getPlayerData().updateManaUsed(playerOneStatus.getMana());
-		playerOne.getPlayerData().updateFoodUsed(playerOneStatus.getFoodCount());
+		playerOne.getPlayerData().updateTotalHealthLost(playerOneStatus.getHitPts());
+		playerOne.getPlayerData().updateTotalManaUsed(playerOneStatus.getMana());
 		playerTwo.getPlayerData().incrGameCount();
-		playerTwo.getPlayerData().updateHealthLost(playerTwoStatus.getHitPts());
-		playerTwo.getPlayerData().updateManaUsed(playerTwoStatus.getMana());
-		playerTwo.getPlayerData().updateFoodUsed(playerTwoStatus.getFoodCount());
-		if(winnerID >= 0) {
+		playerTwo.getPlayerData().updateTotalHealthLost(playerTwoStatus.getHitPts());
+		playerTwo.getPlayerData().updateTotalManaUsed(playerTwoStatus.getMana());
+		if(winnerID != -1) {
 			Scoreboard.calculateNewScore(winnerID, loserID);
 		}
 	}
@@ -344,39 +342,36 @@ public class Game {
 	 * @param turnPlayer the Player who just made a move
 	 * @param turnPlayerMove the move made by the player
 	 */
-	private void updateMoveCount(Player turnPlayer, Move turnPlayerMove) {
+	private void updateMoveCount(Player turnPlayer, Move turnPlayerMove, Status turnPlayerStatus) {
 		switch (turnPlayerMove) {
 		case ATTACK:
-			turnPlayer.getPlayerData().incrNumAttacks();
 			turnPlayer.getPlayerData().incrNumBaseAttacks();
 			break;
 		case FOOD:
 			turnPlayer.getPlayerData().incrNumMeals();
+			turnPlayer.getPlayerData().updateHPHealedAndFoodUsed(
+					turnPlayerStatus.getHitPts() - turnPlayerStatus.getPrevHitPts()); // needs amount healed as input (even for when < 25)
 			break;
 		case FREEZE:
-			turnPlayer.getPlayerData().incrNumAttacks();
-			turnPlayer.getPlayerData().incrNumSPAttacks();
+			turnPlayer.getPlayerData().incrNumFreezes();
 			break;
 		case DOUBLEATK:
-			turnPlayer.getPlayerData().incrNumAttacks();
-			turnPlayer.getPlayerData().incrNumSPAttacks();
+			turnPlayer.getPlayerData().incrNumDoubles();
 			break;
 		case POISON:
-			turnPlayer.getPlayerData().incrNumAttacks();
-			turnPlayer.getPlayerData().incrNumSPAttacks();
+			turnPlayer.getPlayerData().incrNumPoisons();
 			break;
 		case AURA:
-			turnPlayer.getPlayerData().incrNumAttacks();
-			turnPlayer.getPlayerData().incrNumSPAttacks();
+			turnPlayer.getPlayerData().incrNumAuras();
 			break;
 		case CHARGE:
-			turnPlayer.getPlayerData().incrNumAttacks();
-			turnPlayer.getPlayerData().incrNumSPAttacks();
+			turnPlayer.getPlayerData().incrNumCharges();
+			turnPlayer.getPlayerData().updateMPChargedAndUsed(
+					turnPlayerStatus.getMana() - turnPlayerStatus.getPrevMana()); // needs amount charged as input
 			break;
 		default:
 			throw new IllegalArgumentException("Error: Illegal move not caught.");	
 		}
-
 	}
 	public void abortGame() {
 		playerOne.getPlayerData().incrNumAborts();

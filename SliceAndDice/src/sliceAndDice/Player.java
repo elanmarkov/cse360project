@@ -138,6 +138,8 @@ class Status {
 	private int hitPt;
 	private int mana;
 	private int food;
+	private int prevHP;
+	private int prevMana;
 	private final static int maxHP = 100;
 	private final static int maxMana = 30;
 	private final static int maxFood = 5;
@@ -151,7 +153,9 @@ class Status {
 	 */
 	Status() {
 		hitPt = maxHP;
+		prevHP = hitPt;
 		mana = maxMana;
+		prevMana = mana;
 		food = maxFood;
 		atk = 0;
 		def = 0;
@@ -180,6 +184,20 @@ class Status {
 	 */
 	int getMana() {
 		return mana;
+	}
+	/**
+	 * Getter method for previous HP
+	 * @return previous HP
+	 */
+	int getPrevHitPts() {
+		return prevHP;
+	}
+	/**
+	 * Getter method for previous mana
+	 * @return previous mana
+	 */
+	int getPrevMana() {
+		return prevMana;
 	}
 	/**
 	 * Getter method for food.
@@ -214,6 +232,7 @@ class Status {
 	 * @param newHP New hitpoints for the player.
 	 */
 	void setHitPts(int newHP) {
+		prevHP = hitPt;
 		hitPt = newHP;
 	}
 	/**
@@ -222,6 +241,7 @@ class Status {
 	 * @param newHP New hitpoints for the player.
 	 */
 	void reduceHP(int damage) {
+		prevHP = hitPt;
 		if(damage < hitPt) {
 			hitPt -= damage;
 		}
@@ -234,6 +254,7 @@ class Status {
 	 * @param newMana New mana for the player.
 	 */
 	void setMana(int newMana) {
+		prevMana = mana;
 		mana = newMana;
 	}
 	/**
@@ -241,6 +262,7 @@ class Status {
 	 * @param reduceCount Reduce mana by this value.
 	 */
 	void reduceMana(int reduceCount) {
+		prevMana = mana;
 		mana -= reduceCount;
 	}
 	/**
@@ -248,6 +270,7 @@ class Status {
 	 * @param increaseCount Increase mana by this value.
 	 */
 	void increaseMana(int increaseCount) {
+		prevMana = mana;
 		mana += increaseCount;
 	}
 	/**
