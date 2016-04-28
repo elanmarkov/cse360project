@@ -3154,6 +3154,7 @@ class GetStats{
 		}catch(IOException e){
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+		scoreboard.sortArrayListByScore();
 		players = Scoreboard.getPlayerArrayList();
 		findPlayerStats = new Player();
 		colNames = new Vector<String>();
@@ -3540,7 +3541,7 @@ class ChooseAttack extends JFrame{
 	JButton auraButton = new JButton("Aura");
 	JButton chargeButton = new JButton("Charge");
 	
-	JLabel freezeLabel = new JLabel("Freeze Attack: -6 Mana");
+	JLabel freezeLabel = new JLabel("Freeze Attack: -4 Mana");
 	JLabel dblAtkLabel = new JLabel("Double Attack: -10 Mana");
 	JLabel poisonLabel = new JLabel("Poison Attack: -8 Mana");
 	JLabel auraLabel = new JLabel("Cast Aura: -0 or 10 Mana");
@@ -3697,7 +3698,7 @@ class ChooseAttack extends JFrame{
 	 */
 	public class FreezeButton implements ActionListener{
 		public void actionPerformed(ActionEvent ae){
-			if(manaAmt < 6){
+			if(manaAmt < 4){
 				JOptionPane.showMessageDialog(getParentClass(), "You don't have enough mana for this attack");
 			}else{
 				setMove(Move.FREEZE);
