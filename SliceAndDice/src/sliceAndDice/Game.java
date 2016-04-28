@@ -656,7 +656,7 @@ class Turn {
 		sumDamage += 2 * turnPlayer.getAtk();
 		sumDamage -= 2 * otherPlayer.getDef();
 		if(sumDamage > 0) {
-			otherPlayer.reduceHP(sumDamage + 100);
+			otherPlayer.reduceHP(sumDamage);
 		}
 		turnPlayer.reduceMana(manaDouble);
 	}
@@ -728,5 +728,40 @@ class Turn {
 		if(turnPlayer.getMana() > Status.getMaxMana()) {
 			turnPlayer.setMana(Status.getMaxMana());
 		}
+	}
+	/**
+	 * Static getter for mana cost for freeze attack
+	 * @return mana cost for freeze.
+	 */
+	public static int getManaFreeze() {
+		return manaFreeze;
+	}
+	/**
+	 * Static getter for mana cost for double attack
+	 * @return mana cost for double attack.
+	 */
+	public static int getManaDouble() {
+		return manaDouble;
+	}
+	/**
+	 * Static getter for mana cost for poison attack
+	 * @return mana cost for poison.
+	 */
+	public static int getManaPoison() {
+		return manaPoison;
+	}
+	/**
+	 * Static getter for mana cost for aura
+	 * @return mana cost for aura.
+	 */
+	public static int getManaAura() {
+		return manaAura;
+	}
+	/**
+	 * Static getter for mana cost for charge attack
+	 * @return mana cost for charge.
+	 */
+	public static int getManaCharge() {
+		return manaCharge;
 	}
 }

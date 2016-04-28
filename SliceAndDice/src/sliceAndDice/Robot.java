@@ -48,10 +48,38 @@ public class Robot extends Player {
 	 * @return Next move to be performed by computer.
 	 */
 	Move getNextMove(Status ownStatus, Status oppStatus) {
-		if(ownStatus.getMana() >= 10) {
-			//return Move.DOUBLEATK;
+		Move nextMove = Move.ATTACK;
+		if(ownStatus.getHitPts() < 30 && ownStatus.getFoodCount() > 0) {
+			nextMove = Move.FOOD;
 		}
-		return Move.ATTACK;
+		else if((ownStatus.getCondition() == Condition.POISON1 ||
+				ownStatus.getCondition() == Condition.POISON2 ||
+				ownStatus.getCondition() == Condition.POISON3 ||
+				ownStatus.getCondition() == Condition.POISON4 ||
+				ownStatus.getCondition() == Condition.POISON5) &&
+				ownStatus.getMana() >= Turn.getManaAura()) {
+			nextMove = Move.AURA;
+		}
+		else if(ownStatus.getMana() >= Turn.getManaDouble() && oppStatus.getCondition() == Condition.NONE) {
+			nextMove = Move.POISON;
+		}
+		else if(ownStatus.getMana() >= Turn.getManaDouble() && oppStatus.getDef() == 0) {
+			nextMove = Move.DOUBLEATK;
+		}
+		else if(ownStatus.getMana() >= Turn.getManaFreeze() && oppStatus.getHitPts() < 25) {
+			nextMove = Move.FREEZE;
+		}
+		else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 35) {
+			nextMove = Move.CHARGE;
+		}
+		else {
+			nextMove = Move.ATTACK;
+		}
+		
+		if(Turn.moveIsLegal(ownStatus, nextMove) != IllegalMove.NONE) {
+			throw new IllegalStateException("Error: Computer logic allowed for an illegal move");
+		}
+		return nextMove;
 	}
 	/**
 	 * Getter method for user's data statistics.
