@@ -3168,7 +3168,7 @@ class GetStats{
 		colNames.add("Wins");
 		colNames.add("Attacks");
 		colNames.add("Meals");
-		colNames.add("Health Lost");
+		colNames.add("HP Lost");
 		colNames.add("Mana Used");
 		colNames.add("Food");
 	}

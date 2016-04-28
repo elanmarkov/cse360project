@@ -17,9 +17,11 @@ ___________________________________________________________________
 
 4. Special Attacks
 
-5. Game Modes
+5. Conditions and Modifiers
 
-6. Statistics
+6. Game Modes
+
+7. Statistics
 
 ___________________________________________________________________
 			      1. Creators
@@ -69,7 +71,7 @@ Possible Moves:
 	Cost:None
 	Damage: The sum of the four dice rolls is the damage for the turn.
 
-	Special Attack: Choose use a unique ability and pay a cost in mana to use it.
+	Special Attack: Choose a unique ability and pay a cost in mana to use it.
 	Cost: varies
 	Damage: Varies
 
@@ -77,32 +79,66 @@ Possible Moves:
 	Cost: 1 Food
 
 ___________________________________________________________________
-			  4. Special Attacks (NOT YET IMPLEMENTED)
+			  4. Special Attacks
 ___________________________________________________________________
 
-Freeze: Enemy is Frozen for 1 turn ( a Frozen player can not use any attacks or eat)
-NOT YET IMPLEMENTED
+Freeze: Roll 4 dice. The first two dice will Freeze your opponent if their roll sum is higher than 6. 
+The last two dice will deal damage equal to their sum.
+Freeze Effect: Player is unable to attack or eat for 1 turn.  
+Cost: 6 mana
+ 
 
-Double Attack: Roll two dice and attack your opponent twice in one turn
-NOT YET IMPLEMENTED
+Double Attack: Roll eight dice and deal damage equal to their sum.
+Cost: 10 mana
 
-Special Attack 3: Perform a third special ability.
-NOT YET IMPLEMENTED
 
-Special Attack 4: Perform a fourth special ability.
-NOT YET IMPLEMENTED
+Poison: Roll 4 dice. The first two dice will poison your opponent if their roll sum is higher than 6. 
+The last two dice will deal damage equal to their sum.
+Poison Effect: Player is damaged over time with increasing power. 
+Starting damage of 1 that incrementally increases to 5 that does not expire.
+Cost: 8 mana
+
+
+Aura: Roll 4 dice: The first one will grant you an AURA if a 4 or higher is rolled. 
+The second one will boost your ATK(attack power) based on your roll (if AURA is granted).
+The third dice will boost your DEF(defense power) based on your roll (if AURA is granted). 
+The fourth die will make Aura cost 0 mana if a 4 or higher is rolled. 
+Aura effect: For two turns, immune to other conditions (poison and freeze). Gain attack and
+defense boost until the turn after the Aura effect expires.
+Cost: 10 mana / 0 mana
+
+
+Charge: Roll 4 dice. Regain mana equal to half the sum of your rolls, rounding up.
+Cost: 0 mana
 
 ___________________________________________________________________
-			  5. Game Modes
+			  5. Conditions and Modifiers
+___________________________________________________________________
+ 
+Stat modifiers
+ATK: If you are the turn player, increase the damage you do to your opponent by your current ATK stat. 
+For example, if you roll a sum of 12 and you have an ATK of 3, then you do 15 damage.
+DEF: If you are the off-turn player, decrease the damage your opponent does to you by your DEF stat. 
+For example, if they roll a sum of 12 and your DEF is 3, then they do 9 damage instead.
+Double Attack is doubly affected by these modifiers. Both ATK and DEF are doubled.
+
+Conditions
+Only 1 condition at a time. 
+Aura: Cure yourself of poison, become protected from all other conditions and gain boosted ATK and DEF for 2 turns. 
+If you fail to roll a 4 or higher on the first die, the effect of the second and third die are not applied.
+Freeze: Unable to use any attacks or eat for 1 turn. Freezing an opponent removes the poison condition.
+Poison: Get damaged every turn starting with 1 damage per turn and increasing to a max of 5 per turn. 
+This condition does not expire.
+___________________________________________________________________
+			  6. Game Modes
 ___________________________________________________________________
 
 Single Player: Battle against a computer enemy.
-NOT YET IMPLEMENTED
 
-Dual: Fight between two human enemies.
+Duel: Fight between two human players
 
 ___________________________________________________________________
-			 6. Statistics
+			 7. Statistics
 ___________________________________________________________________
 
 Clicking the Player Stats icon on the main page of the game GUI will allow
@@ -118,3 +154,5 @@ Statistics tracked:
 	Average food used
 	Average mana used
 	Average HP lost
+	Number of attacks used
+	Number of special attacks used
