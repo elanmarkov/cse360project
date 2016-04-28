@@ -3164,16 +3164,22 @@ class GetStats{
 	 * Loads column name vector
 	 */
 	private void setColNames(){
-		colNames.add("Name");
+		colNames.add("Username");
 		colNames.add("Score");
-		colNames.add("Rank");
-		colNames.add("Games");
-		colNames.add("Wins");
-		colNames.add("Attacks");
-		colNames.add("Meals");
-		colNames.add("HP Lost");
-		colNames.add("Mana Used");
-		colNames.add("Food");
+		colNames.add("Total Games");
+		colNames.add("Total Wins");
+		colNames.add("Total Aborts");
+		colNames.add("Total Base Attacks");
+		colNames.add("Total Special Attacks");
+		colNames.add("Total Poison");
+		colNames.add("Total Freezes");
+		colNames.add("Total Doubles");
+		colNames.add("Total Auras");
+		colNames.add("Total Charges");
+		colNames.add("Total Meals");
+		colNames.add("Total HP Lost");
+		colNames.add("Total Mana Used");
+		colNames.add("Total Food Used");
 	}
 	
 	/**
@@ -3191,14 +3197,20 @@ class GetStats{
 			Vector<String> foundPlayer = new Vector<String>();
 			foundPlayer.add(findPlayerStats.getUsername());
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().score));
-			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().rank));
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getGame()));
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getWin()));
-			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getAttack()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getAbort()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getBaseAttack()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getTotalNumSPAttacks()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getPoison()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getFreeze()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getDouble()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getAura()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getCharge()));
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getMeal()));
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getHPLost()));
 			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getManaUsed()));
-			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getFoodUsed()));
+			foundPlayer.add(String.valueOf(findPlayerStats.getPlayerData().getTotalFoodUsed()));
 			rowData.add(foundPlayer);
 			isVisible = true;
 		}
@@ -3227,17 +3239,23 @@ class GetStats{
 		}
 		
 		for(int playerLoop = 0; playerLoop < players.size(); playerLoop++){
-			Vector<String> getPlayerStats = new Vector<String>();
+			Vector<String> getPlayerStats = new Vector<String>();	
 				getPlayerStats.add(players.get(playerLoop).getUsername());
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().score));
-				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().rank));
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getGame()));
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getWin()));
-				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getAttack()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getAbort()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getBaseAttack()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getTotalNumSPAttacks()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getPoison()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getFreeze()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getDouble()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getAura()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getCharge()));
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getMeal()));
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getHPLost()));
 				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getManaUsed()));
-				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getFoodUsed()));
+				getPlayerStats.add(String.valueOf(players.get(playerLoop).getPlayerData().getTotalFoodUsed()));
 				rowData.add(getPlayerStats);
 		}
 		
