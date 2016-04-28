@@ -286,14 +286,9 @@ static ArrayList<Player> players;
     		winner = new Robot();
     		loser = Scoreboard.getPlayerByID(loserID);
     	}
-    	else {
-    		winner = Scoreboard.getPlayerByID(winnerID);
-    		loser = Scoreboard.getPlayerByID(loserID);
-    	}
-    	if(loserID == Robot.getRobotID()) {
+    	else if(loserID == Robot.getRobotID()) {
     		winner = Scoreboard.getPlayerByID(winnerID);
     		loser = new Robot();
-    		
     	}
     	else {
     		winner = Scoreboard.getPlayerByID(winnerID);
