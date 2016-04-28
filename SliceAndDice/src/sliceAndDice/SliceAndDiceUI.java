@@ -939,7 +939,6 @@ public class SliceAndDiceUI {
 					
 					move = game.getLastComputerMove();
 					
-					if(winner == Winner.NONE){
 						switch(move){
 						case ATTACK:
 							die1.setBackground(Color.red);
@@ -991,7 +990,7 @@ public class SliceAndDiceUI {
 						die2.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_2.gif"))), BorderLayout.CENTER);
 						die3.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_3.gif"))), BorderLayout.CENTER);
 						die4.add(new JLabel(new ImageIcon(getClass().getResource("/sliceAndDice/game_resources/sm_dice_roll_4.gif"))), BorderLayout.CENTER);
-					}	
+						
 						gameFrame.pack();
 						gameFrame.validate();
 						timer.start();
@@ -1664,6 +1663,10 @@ public class SliceAndDiceUI {
 					gameFrame.validate();
 					
 					if(singlePlayer && computerFirst){
+						if(gameFrame.isEnabled()){
+							gameFrame.setEnabled(false);
+							gameFrame.toFront();
+						}
 						timeKiller.start();
 					}
 				}
