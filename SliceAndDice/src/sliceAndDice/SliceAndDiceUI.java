@@ -1725,8 +1725,10 @@ public class SliceAndDiceUI {
 					statsPanel.removeAll();
 					
 					statTable = new JTable(stats.getTableOneName(user));
+					statTable.getTableHeader().setFont(new Font("SanSerif", Font.BOLD, 10));
 					statTable.setEnabled(false);
-					scrollStats = new JScrollPane(statTable);
+					scrollStats = new JScrollPane(statTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					statTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
 					statsPanel.add(splitPane, BorderLayout.CENTER);
 					gameFrame.setContentPane(statsPanel);
@@ -1763,9 +1765,10 @@ public class SliceAndDiceUI {
 					statsPanel.remove(splitPane);
 
 					statTable = new JTable(stats.getTableAllNames());
+					statTable.getTableHeader().setFont(new Font("SanSerif", Font.BOLD, 10));
 					statTable.setEnabled(false);
-					scrollStats = new JScrollPane(statTable);
-					
+					scrollStats = new JScrollPane(statTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					statTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 					splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, statPanelOptionsButtons, scrollStats);
 					statsPanel.add(splitPane, BorderLayout.CENTER);
 					gameFrame.setContentPane(statsPanel);
@@ -3502,11 +3505,11 @@ class ChooseAttack extends JFrame{
 	JButton auraButton = new JButton("Aura");
 	JButton chargeButton = new JButton("Charge");
 	
-	JLabel freezeLabel = new JLabel("Freeze Attack: ");
-	JLabel dblAtkLabel = new JLabel("Double Attack: ");
-	JLabel poisonLabel = new JLabel("Poison Attack: ");
-	JLabel auraLabel = new JLabel("Cast Aura: ");
-	JLabel chargeLabel = new JLabel("Charge Attack: ");
+	JLabel freezeLabel = new JLabel("Freeze Attack: -6 Mana");
+	JLabel dblAtkLabel = new JLabel("Double Attack: -10 Mana");
+	JLabel poisonLabel = new JLabel("Poison Attack: -8 Mana");
+	JLabel auraLabel = new JLabel("Cast Aura: -0 or 10 Mana");
+	JLabel chargeLabel = new JLabel("Charge Attack: -0 Mana");
 	
 	Font largeLabelFont = new Font("Trubuchet MS", Font.BOLD, 24);
 	Font labelFont = new Font("Trebuchet MS", Font.BOLD, 16);
