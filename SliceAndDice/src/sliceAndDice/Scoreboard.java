@@ -312,7 +312,7 @@ static ArrayList<Player> players;
     	while(!sorted) {
     		swapped = false;
     		for(int index = 0; index < players.size() - 1; index++) {
-    			if((players.get(index).getPlayerData().getScore()) > (players.get(index + 1).getPlayerData().getScore())) {
+    			if((players.get(index).getPlayerData().getScore()) < (players.get(index + 1).getPlayerData().getScore())) {
     				tempPlayer = players.get(index);
     				players.set(index, players.get(index + 1));
     				players.set(index + 1, tempPlayer);

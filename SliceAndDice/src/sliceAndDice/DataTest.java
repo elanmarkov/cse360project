@@ -140,10 +140,17 @@ public class DataTest {
 	}
 	
 	@Test
-	public void testSetPoison() {
+	public void testSetPoison1() {
 		Data newData = new Data();
 		newData.setPoison(100);
 		assertEquals(100, newData.getPoison());
+	}
+	@Test
+	public void testSetPoison2() {
+		Data newData = new Data();
+		newData.incrNumPoisons();
+		newData.setPoison(20);
+		assertEquals(20, newData.getPoison());
 	}
 	
 	@Test
