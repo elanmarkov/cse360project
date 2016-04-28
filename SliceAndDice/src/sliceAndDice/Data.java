@@ -473,20 +473,20 @@ public class Data {
 	 * @param finalHP amount of health points the Player has at the end of the game
 	 */
 	public void updateTotalHealthLost(int finalHP) {
-		totalHealthLost += (100 - finalHP); // 100 is maxHP
+		totalHealthLost += (Status.getMaxHP() - finalHP); // 100 is maxHP
 	}
 	/**
 	 * Updates the amount of mana points a Player has used. Called at the end of games.
 	 * @param finalMana amount of mana points the Player has at the end of the game
 	 */
 	public void updateTotalManaUsed(int finalMana) {
-		totalManaUsed += (30 - finalMana); // 30 is maxMana
+		totalManaUsed += (Status.getMaxMana() - finalMana); // 30 is maxMana
 	}
 	/* NOT STORED
 	 * Updates the amount of food points a Player has used. Called at the end of games.
 	 * @param finalFood amount of food points the Player has at the end of the game
 	public void updateFoodUsed(int finalFood) {
-		totalFoodUsed += (5 - finalFood); // 5 is maxFood
+		totalFoodUsed += (Status.getMaxFood - finalFood); // 5 is maxFood
 	}
 	 */
 	/**
