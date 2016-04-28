@@ -55,7 +55,7 @@ public class Robot extends Player {
 		// switch strategies once every three runs.
 		switch(strategyTimer) {
 		case SHIFT:
-			strategyChoice = 1 + DiceRoll.roll(1,4)[0];
+			strategyChoice = DiceRoll.roll(1,4)[0];
 			strategyTimer = StrategyShift.STANDBY1;
 			break;
 		case STANDBY1:
