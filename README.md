@@ -10,16 +10,17 @@
 Download Instructions:
   Download master as zip
   Unzip to desktop
+  Note directory location of "SliceAndDice" folder
   
 Installation Instructions (Using Eclipse IDE)
   New project inside the workspace dir:
     Create a new empty Java project into the workspace (File->New->Java Project).
     Right click on the source folder and choose Import...->General->File system
-    choose your files, and it will make a copy of your files.
-      Note: you can drag&drop your files from the Finder into the src folder.
+    choose entire contents of SliceAndDice folder.
+      Note: you can drag&drop the files from the Finder into the src folder.
 
   Create an eclipse project in your existing dir:
     Create a new Java project, but in the "New Java Project" window:
-      Un-check the "Use default location" option, and choose the directory where your non-Eclipse project is located.
-    Click Next and configure the sub-directories of your non-Eclipse project where the source files are located.
+      Un-check the "Use default location" option, and choose the directory where the SliceAndDice folder is located.
+    Click Next and configure the sub-directories of the SliceAndDice folder, where the source files are located.
   
