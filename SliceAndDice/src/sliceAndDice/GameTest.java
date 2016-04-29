@@ -319,6 +319,45 @@ public class GameTest {
 	}
 	
 	@Test
+	public void chargeIncreasesMana() {
+		// Check that charge attack increases mana.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		status1.setMana(0);
+		turn.playTurnPlayerOne(Move.CHARGE);
+		assertTrue(status1.getMana() > 0);
+	}
+	
+	@Test
+	public void auraWhenAura() {
+		// Check that player has Aura after it is used.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		Winner winner = Winner.NONE;
+		boolean aura = false;
+		boolean auraApplied = false;
+		int[] lastRoll;
+		int counter = 0;
+		while(!auraApplied && counter < 40) {
+			status1.setMana(Status.getMaxMana());
+			turn.playTurnPlayerOne(Move.AURA);
+			lastRoll = turn.getLastRoll();
+			if(lastRoll[0] > 3) {
+				auraApplied = true;
+				if(status1.getCondition() == Condition.AURA1) {
+					aura = true;
+				}
+			}
+			counter++;
+		}
+		
+		assertTrue(aura && auraApplied);
+		
+	}
+	
+	@Test
 	public void allowsLegalMove() {
 		// Check that Turn allows a move that is legal.
 		Status status1 = new Status();
