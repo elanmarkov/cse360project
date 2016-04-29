@@ -18,6 +18,8 @@ Installation Instructions (Using Eclipse IDE):
     Right click on the source folder and choose Import...->General->File system
     choose entire contents of SliceAndDice folder.
       Note: you can drag&drop the files from the Finder into the src folder.
+      
+Or
 
   Create an eclipse project in your existing dir:
     Create a new Java project, but in the "New Java Project" window:
