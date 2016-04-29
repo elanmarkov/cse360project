@@ -137,4 +137,11 @@ public class PlayerRobotTest {
 		Data roboData = robot.getPlayerData();
 		assertNotNull(roboData);
 	}
+	
+	@Test
+	public void robotIDVerified() {
+		// Check that the Robot is assigned the correct robot ID
+		Player robot = new Robot();
+		assertEquals(robot.getID(), Robot.getRobotID());
+	}
 }

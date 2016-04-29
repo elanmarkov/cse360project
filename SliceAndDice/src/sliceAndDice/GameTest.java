@@ -71,10 +71,15 @@ public class GameTest {
 		Game game = new Game(player1, player2);	
 		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
 		
 		assertEquals(game.getTotalTurns(), 6);
@@ -86,7 +91,7 @@ public class GameTest {
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
-		
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
 		int[] roll = game.getLastRoll();
 		
@@ -105,62 +110,22 @@ public class GameTest {
 		
 		int turnCount = 0;
 		while(!isWinner && turnCount < 40) {
-			result = game.PlayNextTurn(Move.ATTACK);
+			result = game.updateCondition();
 			if(result != Winner.NONE) {
 				isWinner = true;
+			}
+			else {
+				result = game.PlayNextTurn(Move.ATTACK);
+				if(result != Winner.NONE) {
+					isWinner = true;
+				}
 			}
 			turnCount++;
 		}
 		
 		assertTrue(isWinner);
 	}
-	
-	@Test
-	public void gameWinnerHasID() {
-		// Check that a winner has been recorded
-		// After a game must have ended.
-		Player player1 = new Player("test1", 1);
-		Player player2 = new Player("test2", 2);
-		Game game = new Game(player1, player2);	
-		boolean isWinner = false;
-		Winner result = Winner.NONE;
 		
-		int turnCount = 0;
-		while(!isWinner && turnCount < 40) {
-			result = game.PlayNextTurn(Move.ATTACK);
-			if(result != Winner.NONE) {
-				isWinner = true;
-			}
-			turnCount++;
-		}
-		
-		boolean winnerHasID = (game.getWinnerID() != -1);
-		assertTrue(winnerHasID);
-	}
-	
-	@Test
-	public void gameLoserHasID() {
-		// Check that a loser has been recorded
-		// After a game must have ended.
-		Player player1 = new Player("test1", 1);
-		Player player2 = new Player("test2", 2);
-		Game game = new Game(player1, player2);	
-		boolean isWinner = false;
-		Winner result = Winner.NONE;
-		
-		int turnCount = 0;
-		while(!isWinner && turnCount < 40) {
-			result = game.PlayNextTurn(Move.ATTACK);
-			if(result != Winner.NONE) {
-				isWinner = true;
-			}
-			turnCount++;
-		}
-		
-		boolean loserHasID = (game.getWinnerID() != -1);
-		assertTrue(loserHasID);
-	}
-	
 	@Test
 	public void evaluateLegalityInGame() {
 		// Check that the Turn.nextMoveLegality method
@@ -300,6 +265,56 @@ public class GameTest {
 			damageHealed = true;
 		}
 		assertTrue(damageHealed);
+		
+	}
+	
+	@Test
+	public void freezeWhenFrozen() {
+		// Check that player is frozen when freeze condition is met.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		Winner winner = Winner.NONE;
+		boolean frozen = false;
+		boolean freezeApplied = false;
+		int[] lastRoll;
+		while(!freezeApplied && winner == Winner.NONE) {
+			turn.playTurnPlayerOne(Move.FREEZE);
+			lastRoll = turn.getLastRoll();
+			if(lastRoll[0] + lastRoll[1] > 6) {
+				freezeApplied = true;
+				if(status2.getCondition() == Condition.FROZEN) {
+					frozen = true;
+				}
+			}
+		}
+		
+		assertTrue(frozen && freezeApplied);
+		
+	}
+
+	@Test
+	public void poisonWhenPoisoned() {
+		// Check that player is poisoned when the poison condition is met.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		Winner winner = Winner.NONE;
+		boolean poisoned = false;
+		boolean poisonApplied = false;
+		int[] lastRoll;
+		while(!poisonApplied && winner == Winner.NONE) {
+			turn.playTurnPlayerOne(Move.POISON);
+			lastRoll = turn.getLastRoll();
+			if(lastRoll[0] + lastRoll[1] > 6) {
+				poisonApplied = true;
+				if(status2.getCondition() == Condition.POISON1) {
+					poisoned = true;
+				}
+			}
+		}
+		
+		assertTrue(poisoned && poisonApplied);
 		
 	}
 	

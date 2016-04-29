@@ -241,14 +241,14 @@ public class Robot extends Player {
 		return computerData;
 	}
 	/**
-	 * Get the robot's ID
+	 * Get the robot's ID. Used for player ID inheritance.
 	 * @return robot's ID
 	 */
 	int getID() {
 		return robotID;
 	}
 	/**
-	 * Returns the value that is used for the Robot ID.
+	 * Returns the value that is used for any Robot ID.
 	 * @return robot's ID
 	 */
 	static int getRobotID() {
