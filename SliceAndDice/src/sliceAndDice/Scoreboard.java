@@ -296,7 +296,7 @@ static ArrayList<Player> players;
     	}
     	double differential;
     	// calculate differential
-    	differential = ((double)loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;
+    	differential = (double)((double)loser.getPlayerData().getScore() / winner.getPlayerData().getScore()) * 20;
     	// update winner and loser scores
     	winner.getPlayerData().setScore(winner.getPlayerData().getScore() + differential);
     	loser.getPlayerData().setScore(loser.getPlayerData().getScore() - differential);
