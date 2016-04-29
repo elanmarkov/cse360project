@@ -156,8 +156,7 @@ public class Robot extends Player {
 				else if(ownStatus.getHitPts() < 30 && ownStatus.getFoodCount() > 0) {
 					nextMove = Move.FOOD;
 				}
-				else if((ownStatus.getCondition() == Condition.POISON2 ||
-						ownStatus.getCondition() == Condition.POISON3 ||
+				else if((ownStatus.getCondition() == Condition.POISON3 ||
 						ownStatus.getCondition() == Condition.POISON4 ||
 						ownStatus.getCondition() == Condition.POISON5) &&
 						ownStatus.getMana() >= Turn.getManaAura()) {
@@ -195,8 +194,7 @@ public class Robot extends Player {
 				else if(ownStatus.getHitPts() < 30 && ownStatus.getFoodCount() > 0) {
 					nextMove = Move.FOOD;
 				}
-				else if((ownStatus.getCondition() == Condition.POISON2 ||
-						ownStatus.getCondition() == Condition.POISON3 ||
+				else if((ownStatus.getCondition() == Condition.POISON3 ||
 						ownStatus.getCondition() == Condition.POISON4 ||
 						ownStatus.getCondition() == Condition.POISON5) &&
 						ownStatus.getMana() >= Turn.getManaAura()) {
