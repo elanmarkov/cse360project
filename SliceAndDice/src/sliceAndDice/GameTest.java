@@ -58,6 +58,7 @@ public class GameTest {
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
 		assertEquals(game.isPlayerOneTurn(), false);
 	}
@@ -68,7 +69,7 @@ public class GameTest {
 		Player player1 = new Player();
 		Player player2 = new Player();
 		Game game = new Game(player1, player2);	
-		
+		game.updateCondition();
 		game.PlayNextTurn(Move.ATTACK);
 		game.PlayNextTurn(Move.ATTACK);
 		game.PlayNextTurn(Move.ATTACK);
@@ -219,6 +220,22 @@ public class GameTest {
 	}
 	
 	@Test
+	public void playerOneTakesDamageDouble() {
+		// Check that player 1 takes damage from a double attack.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		turn.playTurnPlayerTwo(Move.DOUBLEATK);
+		
+		boolean damageTaken = false;
+		if(status1.getHitPts() < Status.getMaxHP()) {
+			damageTaken = true;
+		}
+		assertTrue(damageTaken);
+		
+	}
+	
+	@Test
 	public void playerTwoTakesDamage() {
 		// Check that player 2 takes damage from an attack.
 		Status status1 = new Status();
@@ -228,6 +245,22 @@ public class GameTest {
 		
 		boolean damageTaken = false;
 		if(status2.getHitPts() < Status.getMaxHP()) {
+			damageTaken = true;
+		}
+		assertTrue(damageTaken);
+		
+	}
+	
+	@Test
+	public void playerTwoTakesDamageDouble() {
+		// Check that player 2 takes damage from a double attack.
+		Status status1 = new Status();
+		Status status2 = new Status();
+		Turn turn = new Turn(status1, status2);
+		turn.playTurnPlayerTwo(Move.DOUBLEATK);
+		
+		boolean damageTaken = false;
+		if(status1.getHitPts() < Status.getMaxHP()) {
 			damageTaken = true;
 		}
 		assertTrue(damageTaken);

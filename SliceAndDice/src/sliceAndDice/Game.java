@@ -725,9 +725,6 @@ class Turn {
 		}
 		sumBoost = (int) (sumBoost * 0.75 + 0.5);
 		turnPlayer.increaseMana(sumBoost);
-		if(turnPlayer.getMana() > Status.getMaxMana()) {
-			turnPlayer.setMana(Status.getMaxMana());
-		}
 	}
 	/**
 	 * Static getter for mana cost for freeze attack

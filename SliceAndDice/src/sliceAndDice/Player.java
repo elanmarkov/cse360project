@@ -271,7 +271,12 @@ class Status {
 	 */
 	void increaseMana(int increaseCount) {
 		prevMana = mana;
-		mana += increaseCount;
+		if(mana + increaseCount > maxMana) {
+			mana = maxMana;
+		}
+		else {
+			mana += increaseCount;
+		}
 	}
 	/**
 	 * Reduces the player's food count (ate food).

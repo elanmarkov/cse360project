@@ -247,6 +247,10 @@ public class Robot extends Player {
 	int getID() {
 		return robotID;
 	}
+	/**
+	 * Returns the value that is used for the Robot ID.
+	 * @return robot's ID
+	 */
 	static int getRobotID() {
 		return robotID;
 	}
