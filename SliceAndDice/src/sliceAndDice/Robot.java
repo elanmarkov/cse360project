@@ -96,7 +96,7 @@ public class Robot extends Player {
 						oppStatus.getHitPts() < 25) {
 					nextMove = Move.FREEZE;
 				}
-				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 35) {
+				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 25) {
 					nextMove = Move.CHARGE;
 				}
 				else {
@@ -109,10 +109,12 @@ public class Robot extends Player {
 				if(ownStatus.getHitPts() < 30 && ownStatus.getFoodCount() > 0) {
 					nextMove = Move.FOOD;
 				}
-				else if((ownStatus.getCondition() == Condition.POISON4 ||
+				else if((ownStatus.getCondition() == Condition.POISON2 ||
+						ownStatus.getCondition() == Condition.POISON3 ||
+						ownStatus.getCondition() == Condition.POISON4 ||
 						ownStatus.getCondition() == Condition.POISON5) &&
 						ownStatus.getMana() >= Turn.getManaAura()) {
-					// heal only after damage has become significant
+					// Can wait 1 turn to Aura
 					nextMove = Move.AURA;
 				}
 				else if(ownStatus.getMana() >= Turn.getManaPoison() && 
@@ -128,7 +130,7 @@ public class Robot extends Player {
 						oppStatus.getHitPts() < 25) {
 					nextMove = Move.FREEZE;
 				}
-				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 35) {
+				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 25) {
 					nextMove = Move.CHARGE;
 				}
 				else {
@@ -168,7 +170,7 @@ public class Robot extends Player {
 						oppStatus.getHitPts() < 25) {
 					nextMove = Move.FREEZE;
 				}
-				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 35) {
+				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 25) {
 					nextMove = Move.CHARGE;
 				}
 				else {
@@ -199,7 +201,7 @@ public class Robot extends Player {
 						oppStatus.getDef() == 0) {
 					nextMove = Move.DOUBLEATK;
 				}
-				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 35) {
+				else if(ownStatus.getHitPts() - oppStatus.getHitPts() > 25) {
 					nextMove = Move.CHARGE;
 				}
 				else {
