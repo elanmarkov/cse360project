@@ -1236,6 +1236,8 @@ public class SliceAndDiceUI {
 							
 							}
 							
+							playerOneATKValue.setText(Integer.toString(game.getPlayerOneStatus().getAtk()));
+							playerOneDEFValue.setText(Integer.toString(game.getPlayerOneStatus().getDef()));
 							playerOneHealthRatio.setText(game.getPlayerOneStatus().getHitPts() + "/" + Status.getMaxHP());
 							playerOneManaRatio.setText(game.getPlayerOneStatus().getMana() + "/" + Status.getMaxMana());
 							playerOneFoodRatio.setText(game.getPlayerOneStatus().getFoodCount() + "/" + Status.getMaxFood());
@@ -1243,6 +1245,8 @@ public class SliceAndDiceUI {
 							plOneManaStatus.setValue(game.getPlayerOneStatus().getMana());
 							plOneFoodStatus.setValue(game.getPlayerOneStatus().getFoodCount());
 							
+							playerTwoATKValue.setText(Integer.toString(game.getPlayerTwoStatus().getAtk()));
+							playerTwoDEFValue.setText(Integer.toString(game.getPlayerTwoStatus().getDef()));
 							playerTwoHealthRatio.setText(game.getPlayerTwoStatus().getHitPts() + "/" + Status.getMaxHP());
 							playerTwoManaRatio.setText(game.getPlayerTwoStatus().getMana() + "/" + Status.getMaxMana());
 							playerTwoFoodRatio.setText(game.getPlayerTwoStatus().getFoodCount() + "/" + Status.getMaxFood());
@@ -1326,6 +1330,29 @@ public class SliceAndDiceUI {
 							plOneManaStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
 							plOneManaStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
 						}
+						
+						if(plOneFoodStatus.getValue() <= (MAX_FOOD / 2) && plOneFoodStatus.getValue() > (MAX_FOOD / 5)){
+							plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+							plOneFoodStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+						}else if(plOneFoodStatus.getValue() <= (MAX_FOOD / 5)){
+							plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+							plOneFoodStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+						}else{
+							plOneFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+							plOneFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+						}
+						
+						if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 2) && plTwoFoodStatus.getValue() > (MAX_FOOD / 5)){
+							plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+							plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  orangeDefaults);
+						}else if(plTwoFoodStatus.getValue() <= (MAX_FOOD / 5)){
+							plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+							plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  redDefaults);
+						}else{
+							plTwoFoodStatus.putClientProperty("Numbus.Overrides.InheritDefaults", Boolean.TRUE);
+							plTwoFoodStatus.putClientProperty("Nimbus.Overrides",  greenDefaults);
+						}
+						
 						gameFrame.pack();
 						playerPane.setDividerLocation(.25);
 						gameFrame.validate();
@@ -3027,7 +3054,7 @@ public class SliceAndDiceUI {
 
 /**
  * Display button to stop in game dice roll
- * @author Jacob
+ * @author Jacob Loden PIN 514
  *
  */
 @SuppressWarnings("serial")
@@ -3109,7 +3136,7 @@ class StopRoll extends JFrame{
 
 /**
  * Custom painter class to fill progress bars with custom color
- * @author Jacob
+ * @author Jacob Loden PIN 514
  *
  */
 class FillPainter implements Painter<JComponent>{
@@ -3131,7 +3158,7 @@ class FillPainter implements Painter<JComponent>{
 
 /**
  * Get player statistic class
- * @author Jacob
+ * @author Jacob Loden PIN 514
  *
  */
 @SuppressWarnings("rawtypes")
@@ -3286,7 +3313,7 @@ class GetStats{
 
 /**
  * Double attack dice roll frame
- * @author Jacob Loden
+ * @author Jacob Loden PIN 514
  */
 @SuppressWarnings("serial")
 class DoubleAtk extends JFrame{
@@ -3487,7 +3514,7 @@ class DoubleAtk extends JFrame{
 	
 	/**
 	 * Action listener classes
-	 * @author Jacob Loden
+	 * @author Jacob Loden PIN 514
 	 *
 	 */
 	public class StopButton implements ActionListener{
@@ -3519,7 +3546,7 @@ class DoubleAtk extends JFrame{
 
 /**
  * Choose special attack frame
- * @author Jacob Loden
+ * @author Jacob Loden PIN 514
  *
  */
 @SuppressWarnings("serial")
@@ -3693,7 +3720,7 @@ class ChooseAttack extends JFrame{
 	
 	/**
 	 * Action listener classes
-	 * @author Jacob Loden
+	 * @author Jacob Loden PIN 514
 	 *
 	 */
 	public class FreezeButton implements ActionListener{
@@ -3750,7 +3777,7 @@ class ChooseAttack extends JFrame{
 
 /**
  * Player select class.  Determines who goes first when new game is started
- * @author Jacob
+ * @author Jacob Loden PIN 514
  *
  */
 @SuppressWarnings("serial")
