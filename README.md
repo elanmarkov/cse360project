@@ -12,7 +12,7 @@ Download Instructions:
   Unzip to desktop
   Note directory location of "SliceAndDice" folder
   
-Installation Instructions (Using Eclipse IDE)
+Installation Instructions (Using Eclipse IDE):
   New project inside the workspace dir:
     Create a new empty Java project into the workspace (File->New->Java Project).
     Right click on the source folder and choose Import...->General->File system
