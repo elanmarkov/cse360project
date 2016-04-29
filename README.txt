@@ -8,13 +8,20 @@
  Andrew Stanton (dstanto2)
  
 Slice and Dice is a simple, GUI based dice game.  Once started you will presented with the main mode select
-panel.  To read the full rules and game instructions, simply click the "About Game" button upon startup.
+panel. To read the full rules and game instructions, simply click the "About Game" button upon startup.
 
 User statistics are tracked for each player that uses the game, these statistics can be viewed by clicking the 
 "Player Stats" button on the mode select panel.  Note:  the initial run of program will not show any statistics as no-
 one has played the game.  After a completed game, the user can click the "Main Menu" button, then select "Player Stats"
 to view the statistics from the previous game.
 
+The project contains contains three source packages: sliceAndDice - source code and JUnit test classes (file names ending
+in "Test"), sliceAndDice.game_resources - game icons, pictures, and animations, and sliceAndDice.game_resources.gif - additional
+game animations.
+
+Note:
+  JRE 1.8 and JUnit required
+  
 There are two methods to install the game for use (see below).
  
 Download And Install Instructions (using Eclipse IDE):
