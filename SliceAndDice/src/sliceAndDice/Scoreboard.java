@@ -138,9 +138,6 @@ static ArrayList<Player> players;
 		createNewFile.write("\n");
 		createNewFile.close();
 		}
-		finally { // if numberOfPlayers is 0, it should skip the for loop
-			readPlayers.close();
-		}
 		readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
 		int numberOfPlayers = readPlayers.nextInt();
 		for(int count = 0; count < numberOfPlayers; count++) {
