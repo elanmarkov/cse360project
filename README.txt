@@ -20,7 +20,7 @@ in "Test"), sliceAndDice.game_resources - game icons, pictures, and animations, 
 game animations.
 
 Note:
-  JRE 1.8 and JUnit required
+  Eclipse Java IDE, JRE 1.8, and JUnit required
   
 There are two methods to install the game for use (see below).
  
@@ -43,4 +43,7 @@ Download And Install Instructions (using Eclipse IDE):
   4) Enter username/ password in authentication field
   5) Click next
   
-  Once project is imported to Eclipse, simply press Run button to start game.
+  Once project is imported to Eclipse, click to highlight project folder in project explorer,
+  press the "Run" button (or select "Run" from the Run menu), select "Run as java application"
+  (if presented with the "select main class window", select SliceAndDiceUI.java). Game should
+  start automatically.
