@@ -8,16 +8,12 @@ import sliceAndDice.Player;
 
 import java.lang.Integer;
 
-/* Sources:
- * https://metinmediamath.wordpress.com/2013/11/27/how-to-calculate-the-elo-rating-including-example/
- */
-
 
 /**
- * Scoreboard2 reads and writes data to and from data.txt, loads ArrayList of Players with data, computes
- * scores for Players, and sorts by scores to determine ranks.
+ * Scoreboard reads and writes data to and from data.txt, loads ArrayList of Players with data,
+ * computes scores for Players, and sorts Players by score.
  * @author Andrew Stanton, PIN: 817, CSE 360, Spring 2016
- * @version 4/15/16
+ * @version 4/29/16
  */
 public class Scoreboard{
 static ArrayList<Player> players;
@@ -187,10 +183,7 @@ static ArrayList<Player> players;
     	}
     	return found;
     }
-    /*
-     * Note: It seems like the following method is not needed because Players will be updated automatically
-     */
- //   /**
+ //   /** Method Not Needed
  //    * Updates data of Player in Scoreboard's ArrayList using the Player's updated data.
  //    * @param playerToUpdate Player with data to update
  //    */
@@ -201,7 +194,6 @@ static ArrayList<Player> players;
  //   		}
  //   	}
  //   }
-
     /**
      * Returns Scoreboard's ArrayList of Players with information on separate lines.
      */
@@ -248,6 +240,9 @@ static ArrayList<Player> players;
      * @param oldScore2 current score of player 2
      * @param winner which player won
      * @return new score of Player whose old score was oldScore1
+     */
+    /* Source for following commented out method:
+     * https://metinmediamath.wordpress.com/2013/11/27/how-to-calculate-the-elo-rating-including-example/
      */
     /*
     public static double calculateScore2(double oldScore1, double oldScore2, int winner) {
