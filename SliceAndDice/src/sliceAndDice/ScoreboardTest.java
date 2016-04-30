@@ -20,6 +20,7 @@ import org.junit.Test;
  */
 public class ScoreboardTest extends Scoreboard{
 	
+	
 	/*
 	 * Test Scoreboard constructor
 	 */
@@ -28,12 +29,14 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard board = new Scoreboard();
 		assertNotNull(board);
 	}
+	
 	@Test // ensures that the constructor allows players to be added
 	public void testScoreboardConstructor2() {
 		Scoreboard board = new Scoreboard();
 		board.addNewPlayerFromUsername("user1");
 		//System.out.println(board.toString()); // Uncomment this line to test
 	}
+	
 	@Test // ensures the ArrayList is not null after constructing scoreboard
 	public void testScoreboardConstructor3() throws IOException{
 		Scanner readPlayers = new Scanner(new BufferedReader(new FileReader("data.txt")));
@@ -42,6 +45,7 @@ public class ScoreboardTest extends Scoreboard{
 		assertNotNull(Scoreboard.getPlayerArrayList());
 		readPlayers.close();
 	}
+	
 	
 	/*
 	 * Testing getting Player Data from file
@@ -55,6 +59,7 @@ public class ScoreboardTest extends Scoreboard{
 		readPlayers.close();
 	}
 	
+	
 	/*
 	 * Testing getting Player ArrayList
 	 */
@@ -65,6 +70,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.addNewPlayerFromUsername("newUser");
 		//System.out.println(Scoreboard.getPlayerArrayList().toString()); // uncomment line to test
 	}
+	
 	@Test // ensures the ArrayList of Players correctly returns the ArrayList
 	public void testGetPlayerArrayList2() throws IOException {
 		Scoreboard board = new Scoreboard();
@@ -72,6 +78,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.addNewPlayerFromUsername("newUser");
 		//System.out.println(Scoreboard.getPlayerArrayList().get(0).getPlayerData().toString()); // uncomment line to test
 	}
+	
 	
 	/*
 	 * Testing get Player and Player info methods
@@ -93,6 +100,7 @@ public class ScoreboardTest extends Scoreboard{
 		}
 		//System.out.println(board.toString());
 	}
+	
 	@Test // tests that Players are properly returned given their ID
 	// Note: this test requires data.txt file with at least three users in it with number of players at top
 	public void testGetPlayerByID() throws IOException {
@@ -103,6 +111,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(Scoreboard.getPlayerByID(1).toString());
 		//System.out.println(Scoreboard.getPlayerByID(3).toString()); // this causes exception if only three players in file
 	}
+	
 	@Test // tests that IDs are properly returned given username
 		  // even after Player is added after loading data
 	public void testGetIDByUsername() throws IOException {
@@ -112,6 +121,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(Scoreboard.getIDByUsername("user1")); // uncomment line to test
 		//System.out.println(board.toString()); // shows contents of ArrayList for further testing
 	}
+	
 	@Test // tests that username is properly returned given ID
 	public void testGetUsernameByID() throws IOException {
 		Scoreboard board = new Scoreboard();
@@ -120,6 +130,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.addNewPlayerFromUsername("user5");
 		//System.out.println(Scoreboard.getUsernameByID(1)); uncomment line to test
 	}
+	
 	/*
 	 * Setup: data.txt has 1 user with username user1 and ID 0 and default data
 	 * Expected Result: Should print out user1 then 1000 then fourteen 0s all on separate lines
@@ -132,6 +143,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(getPlayerDataFromFile(readPlayers).toString()); // uncomment line to test
 		readPlayers.close();
 	}
+	
 	/*
 	 * Setup: data.txt has 2 users, usernames user1 and user2, IDs 0 and 1, and both have default data
 	 * Expected Result: Should print out user1 then 1000 then fourteen 0s then user2 then 1000 then fourteen 0s all on separate lines
@@ -145,6 +157,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(getPlayerDataFromFile(readPlayers).toString());
 		readPlayers.close();
 	}
+	
 	/*
 	 * Setup: data.txt has three players with default data and each has different data
 	 * Expected Output: usernames followed by their 15 pieces of data (this repeated three times)
@@ -160,6 +173,7 @@ public class ScoreboardTest extends Scoreboard{
 		readPlayers.close();
 	}
 	
+	
 	/*
 	 * Testing reading data into ArrayList from file
 	 */
@@ -170,6 +184,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.readDataIntoArrayListFromFile();
 		//System.out.println(board.toString()); // uncomment line to test
 	}
+	
 	
 	/*
 	 * Testing reset Player Data in ArrayList
@@ -188,6 +203,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(board.toString());
 	}
 	
+	
 	/*
 	 * Testing add player to ArrayList
 	 */
@@ -201,6 +217,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(board.toString()); // uncomment line to test
 	}
 
+	
 	/*
 	 * Test check for Player in ArrayList
 	 */
@@ -213,6 +230,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.print(board.checkForPlayerInArrayList(2)); // uncomment lines to test
 		//System.out.println("\n");
 	}
+	
 	@Test // checks that method returns false when Player with given ID not in ArrayList
 	// Note: returned false because no user had ID 4 in ArrayList for test
 	public void testCheckForPlayerInArrayList2() throws IOException{
@@ -221,6 +239,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.print(board.checkForPlayerInArrayList(4)); // uncomment lines to test
 		//System.out.println("\n");
 	}
+	
 	
 	/*
 	 * Testing updating Data in ArrayList
@@ -237,6 +256,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(board.getPlayerByID(2).toString());
 	}
 
+	
 	/*
 	 * Testing sending Player Data to file
 	 */
@@ -249,6 +269,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.readDataIntoArrayListFromFile();
 		//board.sendPlayerDataToFile(); // uncomment line to test
 	}
+	
 	@Test // tests that Player can be added and then written to file
 	public void testAddPlayerAndSendPlayerDataToFile() throws IOException{
 		Scoreboard board = new Scoreboard();
@@ -256,6 +277,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.addNewPlayerFromUsername("joseph");
 		//board.sendPlayerDataToFile(); // uncomment line to test
 	}
+	
 	@Test // tests that multiple Players can be added and have Data updated
 		  // and have score calculated and be sorted and be succesfully written to file
 	public void testAddPlayerAndSortAndSendPlayerDataToFile() throws IOException{
@@ -271,6 +293,7 @@ public class ScoreboardTest extends Scoreboard{
 		board.sortArrayListByScore();
 		//board.sendPlayerDataToFile(); // uncomment line to test
 	}
+	
 	
 	/* Not Used
 	@Test // tests that win percentage is correctly calculated
@@ -290,6 +313,7 @@ public class ScoreboardTest extends Scoreboard{
 		assertEquals(2115.9, Scoreboard.calculateScore2(2100, 3100, 1), .1);
 	} */
 	
+	
 	/*
 	 * Testing that methods to calculate score do not cause null problem
 	 */
@@ -301,6 +325,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertNotNull(Scoreboard.getPlayerByID(0));
 	}
+	
 	@Test // ensures score method does not cause null problem with two Players
 	public void testCalculateScore00() {
 		Scoreboard board = new Scoreboard();
@@ -309,6 +334,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertNotNull(Scoreboard.getPlayerByID(1));
 	}
+	
 	@Test // ensures score method does not cause null problem with two Players
 	// also shows Player info after calculating score to aid testing
 	public void testCalculateScore000() {
@@ -323,6 +349,7 @@ public class ScoreboardTest extends Scoreboard{
 		assertNotNull(Scoreboard.getPlayerByID(2));
 	}
 	
+	
 	/*
 	 * Testing calculate score method properly computes score
 	 */
@@ -334,6 +361,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(1020, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
 	}
+	
 	@Test // tests that loser score is correct for two Players
 	public void testCalculateScore2() {
 		Scoreboard board = new Scoreboard();
@@ -342,6 +370,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(980, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .000001);
 	}
+	
 	@Test // tests that winner score is correct for two Players after winning twice in a row
 	public void testCalculateScore3() {
 		Scoreboard board = new Scoreboard();
@@ -351,6 +380,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(1039.21568627, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
 	}
+	
 	@Test // tests that loser score is correct for two Players after losing twice in a row
 	public void testCalculateScore4() {
 		Scoreboard board = new Scoreboard();
@@ -360,6 +390,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(960.7843137, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .0000001);
 	}
+	
 	@Test // tests that winner score is correct for two Players after two wins in a row
 		  // and starting with large disparity in scores
 	public void testCalculateScore5() {
@@ -372,6 +403,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(564, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .0000001);
 	}
+	
 	@Test // tests that loser score is correct for two Players after two losses in a row
 	  // and starting with large disparity in scores
 	public void testCalculateScore6() {
@@ -384,6 +416,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Scoreboard.getIDByUsername("user2"));
 		assertEquals(1536, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .0000001);
 	}
+	
 	@Test // tests that user1 score correct for two Players after one win and one loss, similar start scores
 	public void testCalculateScore7() {
 		Scoreboard board = new Scoreboard();
@@ -395,6 +428,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user2"), Scoreboard.getIDByUsername("user1"));
 		assertEquals(1903.604756, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
 	}
+	
 	@Test // tests that user2 score correct for two Players after one win and one loss, similar start scores
 	public void testCalculateScore8() {
 		Scoreboard board = new Scoreboard();
@@ -407,6 +441,7 @@ public class ScoreboardTest extends Scoreboard{
 		//Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user3"), Scoreboard.getIDByUsername("user1"));
 		assertEquals(2096.395244, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .000001);
 	}
+	
 	// Note: for some reason, the following two tests do not seem to work at same time,
 	// although they seem to work correctly when executed separately
 	// but when executed at same time, the wrong score is very close to correct
@@ -418,6 +453,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Robot.getRobotID(), Scoreboard.getIDByUsername("user2"));
 		assertEquals(980, Scoreboard.getPlayerByUsername("user2").getPlayerData().getScore(), .5); // give buffer because other test seems to interfere with this test
 	}
+	
 	@Test // tests that Player score correct after win against Robot
 	public void testCalculateScoreRobot1() {
 		Scoreboard board = new Scoreboard();
@@ -426,6 +462,7 @@ public class ScoreboardTest extends Scoreboard{
 		Scoreboard.calculateNewScore(Scoreboard.getIDByUsername("user1"), Robot.getRobotID());
 		assertEquals(1020, Scoreboard.getPlayerByUsername("user1").getPlayerData().getScore(), .000001);
 	}
+	
 	
 	/*
 	 * Test sorting ArrayList by score
@@ -439,6 +476,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(board.toString());
 	}
 	
+	
 	/*
 	 * Test add new Player given username
 	 */
@@ -449,6 +487,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println(board.toString()); // uncomment print lines to test
 		//System.out.println("ID = " + Scoreboard.getIDByUsername("user222"));
 	}
+	
 	@Test // test that three Players added given username and can be printed out
 	public void testAddNewPlayerFromUsername2() {
 		Scoreboard board = new Scoreboard();
@@ -461,6 +500,7 @@ public class ScoreboardTest extends Scoreboard{
 		//System.out.println("ID = " + Scoreboard.getIDByUsername("user333"));
 		//System.out.println("ID = " + Scoreboard.getIDByUsername("user444"));
 	}
+	
 	
 	/*
 	 * Test clear all data method
