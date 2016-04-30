@@ -4,11 +4,11 @@ import sliceAndDice.Data;
 import java.util.Scanner;
 
 
-
 /**
- * Data class stores data for Players.
+ * Data stores data for Players, and it is used during Games to update Player Data.
+ * It stores the data that users can view on the view statistics pages.
  * @author Andrew Stanton, PIN: 817, CSE 360, Spring 2016
- * @version 4/25/16
+ * @version 4/29/16
  */
 public class Data {
 	double score; // updated at end of game, only if there is winner
@@ -17,22 +17,22 @@ public class Data {
 	int totalWinCount; // updated where winner is evaluated, updated only when winner
 	//int totalNumActions; // NOT STORED - this is the sum of totalNumAttacks and totalNumMeals
 	//int totalNumAttacks; // NOT STORED - this is the sum of totalNumBaseAttacks and totalNumSPAttacks
-	int totalNumBaseAttacks; // updated every base attack
+	int totalNumBaseAttacks;
 	//int totalNumSPAttacks; // NOT STORED - this is the sum of the numbers of each of the five special attacks
-	int totalNumFreezes; // updated every freeze
+	int totalNumFreezes;
 	int totalNumDoubles;
 	int totalNumPoisons;
 	int totalNumAuras;
 	int totalNumCharges;
-	int totalNumMeals;// updated every meal
-	int totalHealthLost; // updated at end of game
-	int totalManaUsed; // end of game
+	int totalNumMeals;
+	int totalHealthLost;
+	int totalManaUsed;
 	//int totalFoodUsed; // NOT STORED - this is the same as totalNumMeals
-	int totalHPHealed; // updated every heal
-	int totalMPCharged; // updated every charge
+	int totalHPHealed;
+	int totalMPCharged;
 
 	/**
-	 * Constructor for Data, setting all of the data but score to 0 and score to 0.
+	 * Constructor for Data, setting all of the data but score to 0 and setting score to 0.
 	 */
 	Data() {
 		score = 1000;
@@ -83,7 +83,7 @@ public class Data {
 	/**
 	 * Returns Data in String form with information on separate lines.
 	 */
-	public String toString() { // put this as a method in Data
+	public String toString() {
 		String dataString = "";
 		dataString += score + "\n";
 		dataString +=  numAborts + "\n";
@@ -108,7 +108,7 @@ public class Data {
 		return dataString;
 	}
 	/**
-	 * resets data in Data object to initial setting
+	 * Resets data in Data object to initial setting.
 	 */
 	public void resetData() {
 		score = 1000;
@@ -164,8 +164,7 @@ public class Data {
 	 * @param totalNumActions new number of actions
 	void setAction(int totalNumActions) {
 		this.totalNumActions = totalNumActions;
-	}
-	 */
+	}*/
 	/**
 	 * Sets the number of attacks to the given number.
 	 * @param totalNumAttacks new number of attacks
@@ -175,8 +174,7 @@ public class Data {
 	 * @param totalNumAttacks new number of attacks
 	void setAttack(int totalNumAttacks) {
 		this.totalNumAttacks = totalNumAttacks;
-	}
-	 */
+	}*/
 	/**
 	 * Sets the number of base attacks to the given number.
 	 * @param totalNumBaseAttacks new number of base attacks
@@ -189,8 +187,7 @@ public class Data {
 	 * @param totalNumSPAttacks new number of special attacks
 	void setSPAttack(int totalNumSPAttacks) {
 		this.totalNumSPAttacks = totalNumSPAttacks;
-	}
-	 */
+	}*/
 	/**
 	 * Sets the total number of freezes to the given number.
 	 * @param totalNumFreezes new number of freezes
@@ -254,8 +251,7 @@ public class Data {
 	/* NOT STORED
 	void setFoodUsed(int totalFoodUsed) {
 		this.totalFoodUsed = totalFoodUsed;
-	}
-	 */
+	}*/
 	/**
 	 * Sets the amount of health points restored to the given number.
 	 * @param totalHPHealed new number of restored health points
@@ -298,33 +294,46 @@ public class Data {
 	int getWin() {
 		return totalWinCount;
 	}
+	/**
+	 * Returns the total number of actions of the Data object.
+	 * @return total number of actions
+	 */
 	int getTotalActions() {
 		return totalNumBaseAttacks + totalNumFreezes + totalNumDoubles + totalNumPoisons + totalNumAuras + totalNumCharges + totalNumMeals;
 	}
+	/**
+	 * Returns the total number of attacks of the Data object.
+	 * @return total number of attacks
+	 */
 	int getTotalNumAttacks() {
 		return totalNumBaseAttacks + totalNumFreezes + totalNumDoubles + totalNumPoisons + totalNumAuras + totalNumCharges;
 	}
+	/**
+	 * Returns the total number of special attacks of the Data object.
+	 * @return total number of special attacks
+	 */
 	int getTotalNumSPAttacks() {
 		return totalNumFreezes + totalNumDoubles + totalNumPoisons + totalNumAuras + totalNumCharges;
 	}
+	/**
+	 * Returns the total number of meals of the Data object.
+	 * @return total number of meals
+	 */
 	int getTotalFoodUsed() {
 		return totalNumMeals;
 	}
-	
 	/* NOT STORED
 	 * Returns the total number of actions of the Data object.
 	 * @return total number of actions
 	int getAction() {
 		return totalNumActions;
-	}
-	 */
+	}*/
 	/* NOT STORED
 	 * Returns the total number of attacks of the Data object.
 	 * @return total number of attacks
 	int getAttack() {
 		return totalNumAttacks;
-	}
-	 */
+	}*/
 	/**
 	 * Returns the number of base attacks of the Data object.
 	 * @return number of base attacks
@@ -337,8 +346,7 @@ public class Data {
 	 * @return number of special attacks
 	int getSPAttack() {
 		return totalNumSPAttacks;
-	}
-	 */
+	}*/
 	/**
 	 * Returns the number of freeze attacks of the Data object.
 	 * @return number of freeze attacks
@@ -395,9 +403,17 @@ public class Data {
 	int getManaUsed() {
 		return totalManaUsed;
 	}
+	/**
+	 * Returns amount of HP healed of the Data object.
+	 * @return amount of HP healed
+	 */
 	int getHPHealed() {
 		return totalHPHealed;
 	}
+	/**
+	 * Returns amount of MP charged of the Data object.
+	 * @return amount of MP charged
+	 */
 	int getMPCharged() {
 		return totalMPCharged;
 	}
@@ -406,10 +422,10 @@ public class Data {
 	 * @return amount of food points used
 	int getFoodUsed() {
 		return totalFoodUsed;
-	}
-	 */
+	}*/
 	/**
-	 * Increments the Data object's number of aborted games. Called when a Player ends a Game before a Player wins.
+	 * Increments the Data object's number of aborted games.
+	 * Called when a Player ends a Game before a Player wins.
 	 */
 	public void incrNumAborts() {
 		numAborts++;
@@ -433,31 +449,31 @@ public class Data {
 		totalNumBaseAttacks++;
 	}
 	/**
-	 * Increments Data object's number of freezes
+	 * Increments Data object's number of freezes. Called when a Player performs a freeze.
 	 */
 	public void incrNumFreezes() {
 		totalNumFreezes++;
 	}
 	/**
-	 * Increments the Data object's number of poisons
+	 * Increments the Data object's number of double attacks. Called when a Player performs a double attack.
 	 */
 	public void incrNumDoubles() {
 		totalNumDoubles++;
 	}
 	/**
-	 * Increments the Data object's number of poisons
+	 * Increments the Data object's number of poisons. Called when a Player performs a poison.
 	 */
 	public void incrNumPoisons() {
 		totalNumPoisons++;
 	}
 	/**
-	 * Increments the Data object's number of auras.
+	 * Increments the Data object's number of auras. Called when a Player casts an aura.
 	 */
 	public void incrNumAuras() {
 		totalNumAuras++;
 	}
 	/**
-	 * Increments the Data object's number of charges.
+	 * Increments the Data object's number of charges. Called when a Player charges.
 	 */
 	public void incrNumCharges() {
 		totalNumCharges++;
@@ -487,8 +503,7 @@ public class Data {
 	 * @param finalFood amount of food points the Player has at the end of the game
 	public void updateFoodUsed(int finalFood) {
 		totalFoodUsed += (Status.getMaxFood() - finalFood); // 5 is maxFood
-	}
-	 */
+	}*/
 	/**
 	 * Updates the number of health points the Player has healed.
 	 * @param hpHealed amount of HP healed by a meal
@@ -499,7 +514,7 @@ public class Data {
 	}
 	/**
 	 * Updates the number of mana points the Player has charged.
-	 * @param mpCharged amount of MP healed by a charge
+	 * @param mpCharged amount of MP charged by a charge
 	 */
 	public void updateMPChargedAndUsed(int mpCharged) {
 		totalMPCharged += mpCharged;
